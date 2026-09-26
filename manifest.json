@@ -1,0 +1,15 @@
+{
+  "name": "Agenda",
+  "short_name": "Agenda",
+  "description": "Organizador personal: objetivos, rutina, salud, dinero y evolución.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F5F0",
+  "theme_color": "#16283D",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
