@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#060B1A">
+<meta name="theme-color" content="#04050D">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" href="./favicon.png">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Agenda">
-<meta name="description" content="Organizador personal: objetivos, rutina, salud, finanzas y evolución.">
-<title>Agenda</title>
+<meta name="apple-mobile-web-app-title" content="NEXA">
+<meta name="description" content="NEXA: tu sistema operativo personal. Objetivos, rutina, salud, finanzas, aprendizaje y evolución en un universo 3D.">
+<title>NEXA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" crossorigin="anonymous"></script>
 <style>
 :root {
   color-scheme: dark;
@@ -27,6 +27,17 @@
   --amber: #F5A524; --green: #12C99B; --rose: #F43F5E; --pink: #EC4899;
   --shadow: 0 14px 34px rgba(0, 0, 0, .38);
   --r: 18px;
+  /* NEXA Design System: los mismos tokens que usa el universo 3D */
+  --accent-nexa: #FF3D71; --accent-nexa-soft: #FF7AA0;
+  --accent-plan: #9B6BFF; --accent-routine: #38BDF8; --accent-finance: #F5B83D;
+  --accent-health: #14E0B4; --accent-learning: #4F7BFF; --accent-evolution: #FF9A3D;
+  --positive: #3DF0B0; --negative: #FF6B8A; --warning: #FF7A45;
+  --radius-xs: 8px; --radius-sm: 12px; --radius-md: 16px; --radius-lg: 22px; --radius-xl: 28px;
+  --motion-fast: 160ms; --motion-normal: 320ms; --motion-slow: 700ms;
+  --ease-standard: cubic-bezier(.22, .9, .25, 1); --ease-cinematic: cubic-bezier(.7, 0, .2, 1);
+  --font-ui: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-hud: 'Rajdhani', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Unbounded', 'Plus Jakarta Sans', sans-serif;
 }
 body.light {
   color-scheme: light;
@@ -77,8 +88,8 @@ button { cursor: pointer; }
 .rail-btn .i { width: 22px; height: 22px; }
 .rail-btn:hover { color: var(--ink); background: var(--card2); }
 .rail-btn.active {
-  color: #fff; background: linear-gradient(160deg, #3B82F6, #1D4ED8);
-  border-color: rgba(147, 187, 255, .35); box-shadow: 0 8px 22px rgba(37, 99, 235, .35);
+  color: #fff; background: linear-gradient(160deg, #FF6A92, #E11D5A);
+  border-color: rgba(255, 160, 190, .4); box-shadow: 0 8px 22px rgba(255, 61, 113, .35);
 }
 .rail .spacer { flex: 1; }
 .more-pop {
@@ -108,6 +119,8 @@ button { cursor: pointer; }
 .ico.sm { width: 34px; height: 34px; border-radius: 11px; }
 .c-blue { --c: var(--blue); } .c-cyan { --c: var(--cyan); } .c-violet { --c: var(--violet); }
 .c-amber { --c: var(--amber); } .c-green { --c: var(--green); } .c-rose { --c: var(--rose); } .c-pink { --c: var(--pink); }
+.c-nexa { --c: var(--accent-nexa); } .c-plan { --c: var(--accent-plan); } .c-routine { --c: var(--accent-routine); } .c-finance { --c: var(--accent-finance); }
+.c-health { --c: var(--accent-health); } .c-learning { --c: var(--accent-learning); } .c-evolution { --c: var(--accent-evolution); }
 
 .grid { display: grid; gap: 16px; }
 .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -346,6 +359,7 @@ body.light .split-card { color: var(--ink); background: linear-gradient(130deg, 
 .hcal .d.ko { background: color-mix(in srgb, var(--rose) 40%, #0B1330); color: #fff; }
 .hcal .d.today { outline: 2px solid var(--ink); outline-offset: 1px; }
 .hdots { display: flex; gap: 4px; }
+#habitList .li .t { flex: 1 1 150px; } /* en pantallas estrechas los puntos y la racha bajan de línea en vez de aplastar el nombre */
 .hdots i { width: 9px; height: 9px; border-radius: 3px; background: var(--card2); border: 1px solid var(--line); }
 .hdots i.on { background: var(--cyan); border-color: var(--cyan); }
 .streak { font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 99px; background: linear-gradient(160deg, #F5A524, #D97706); color: #1A1204; white-space: nowrap; }
@@ -440,6 +454,101 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
 .btn.google { background: #fff; color: #1f2937; box-shadow: none; border: 1px solid var(--line2); }
 .cloud-status { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); margin-bottom: 12px; }
 .cloud-status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sc, var(--faint)); box-shadow: 0 0 8px var(--sc, transparent); flex-shrink: 0; }
+
+/* ---- Hoy por bloques ---- */
+.hoy-blocks { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; grid-auto-flow: row dense; }
+.hoy-blocks > .span-6 { grid-column: span 6; } .hoy-blocks > .span-3 { grid-column: span 3; } .hoy-blocks > .span-2 { grid-column: span 2; }
+.tiles-grid { display: grid; gap: 16px; }
+@media (max-width: 1000px) { .hoy-blocks > .span-2 { grid-column: span 3; } }
+@media (max-width: 720px) { .hoy-blocks { gap: 14px; } .hoy-blocks > .span-2, .hoy-blocks > .span-3 { grid-column: span 6; } .tiles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px; } }
+.lock-dot { position: absolute; top: 6px; right: 8px; color: var(--amber); }
+.rail-btn { position: relative; }
+/* ---- Mis secciones ---- */
+.lay-list .li { gap: 10px; }
+.lay-list .li.off .t { color: var(--muted); }
+.lay-arrows { display: flex; gap: 2px; }
+.lay-arrows .icon-btn { width: 30px; height: 30px; color: var(--ink2); }
+.lay-arrows .icon-btn:hover { color: var(--blue); }
+.lay-arrows .icon-btn:disabled { opacity: .25; cursor: default; }
+.switch.sm { width: 44px; height: 26px; }
+.switch.sm::after { width: 18px; height: 18px; }
+.switch.sm.on::after { transform: translateX(18px); }
+.onb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.onb-grid .chip { text-align: left; padding: 12px; display: flex; gap: 10px; align-items: center; }
+.onb-grid .chip .e { font-size: 18px; }
+@media (max-width: 420px) { .onb-grid { grid-template-columns: minmax(0, 1fr); } }
+.plan-card { padding: 14px; border-radius: 14px; border: 1px solid var(--line2); background: var(--card2); }
+.plan-card b { display: block; font-size: 15px; }
+.plan-card .price { font-size: 20px; font-weight: 800; margin-top: 6px; }
+
+/* ================= MAPA 3D · NEXA Universe ================= */
+.nx { position: fixed; inset: 0; z-index: 20; background: #04050D; color: #F3F2FF; overflow: hidden; font-family: var(--font-ui); -webkit-tap-highlight-color: transparent; }
+.nx.nx-in { animation: nxIn var(--motion-slow) var(--ease-standard) both; }
+@keyframes nxIn { from { opacity: 0; } to { opacity: 1; } }
+.nx-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.nx-gl.grab { cursor: grab; } .nx-gl.grabbing { cursor: grabbing; } .nx-gl.point { cursor: pointer; }
+.nx-vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(130% 95% at 52% 52%, transparent 58%, rgba(2, 2, 8, .7) 100%); }
+.nx-loader { position: absolute; left: calc(var(--nx-rail, 88px) + (100% - var(--nx-rail, 88px)) / 2); top: 50%; transform: translate(-50%, -50%); font-family: var(--font-hud); font-weight: 700; font-size: 12px; letter-spacing: .42em; color: var(--accent-nexa-soft); white-space: nowrap; text-align: center; transition: opacity var(--motion-slow) var(--ease-standard); pointer-events: none; }
+.nx-loader i { display: block; width: 180px; height: 2px; margin: 12px auto 0; background: linear-gradient(90deg, transparent, var(--accent-nexa), transparent) no-repeat; background-size: 40% 100%; animation: nxScan 1.3s linear infinite; }
+.nx-loader.out { opacity: 0; }
+@keyframes nxScan { from { background-position: -60% 0; } to { background-position: 160% 0; } }
+
+.nx-top { position: absolute; z-index: 3; top: calc(14px + env(safe-area-inset-top, 0px)); left: calc(var(--nx-rail, 88px) + 18px); right: 18px; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.nx-top > * { pointer-events: auto; }
+.nx-brand { margin-right: auto; min-width: 0; }
+.nx-brand b { display: block; font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: .08em; line-height: 1; color: #F3F2FF; }
+.nx-brand small { display: block; font-family: var(--font-hud); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #C8C6EA; margin-top: 4px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nx-ibtn, .nx-box { background: rgba(16, 18, 40, .58); border: 1px solid rgba(160, 160, 255, .14); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.nx-ibtn { width: 42px; height: 42px; border-radius: var(--radius-sm); display: grid; place-items: center; color: #C8C6EA; padding: 0; transition: color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast); }
+.nx-ibtn:hover { color: #fff; border-color: rgba(170, 170, 255, .28); }
+.nx-ibtn.on { color: #fff; border-color: rgba(255, 61, 113, .6); box-shadow: 0 0 16px rgba(255, 61, 113, .35); }
+.nx-search { position: relative; }
+.nx-box { display: flex; align-items: center; justify-content: center; gap: 10px; width: 42px; height: 42px; padding: 0; border-radius: var(--radius-sm); color: #C8C6EA; cursor: pointer; }
+.nx-box input { display: none; flex: 1; min-width: 0; border: none; background: none; outline: none; font-size: 15px; color: #F3F2FF; }
+.nx-box input::placeholder { color: #8B89B3; }
+.nx-mic { display: none; border: none; background: none; color: #C8C6EA; padding: 4px; border-radius: var(--radius-xs); }
+.nx-kbd { display: none; font-family: var(--font-hud); font-weight: 700; font-size: 12px; letter-spacing: .08em; color: #8B89B3; border: 1px solid rgba(170, 170, 255, .24); border-radius: 6px; padding: 1px 6px; }
+.nx-search.open .nx-box { position: fixed; z-index: 30; top: calc(12px + env(safe-area-inset-top, 0px)); left: calc(var(--nx-rail, 88px) + (100vw - var(--nx-rail, 88px)) / 2); transform: translateX(-50%); width: min(480px, calc(100vw - var(--nx-rail, 88px) - 28px)); height: 48px; padding: 0 12px 0 16px; justify-content: flex-start; background: rgba(12, 13, 32, .96); border-color: rgba(255, 61, 113, .45); box-shadow: 0 0 28px rgba(255, 61, 113, .2); cursor: text; }
+.nx-search.open input { display: block; }
+.nx-search.open .nx-mic.ok { display: grid; }
+.nx-sugg { position: fixed; z-index: 30; top: calc(66px + env(safe-area-inset-top, 0px)); left: calc(var(--nx-rail, 88px) + (100vw - var(--nx-rail, 88px)) / 2); transform: translateX(-50%); width: min(480px, calc(100vw - var(--nx-rail, 88px) - 28px)); border-radius: var(--radius-md); padding: 6px; background: rgba(12, 13, 32, .97); border: 1px solid rgba(170, 170, 255, .24); box-shadow: 0 20px 48px rgba(0, 0, 0, .55); }
+.nx-sugg button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: none; background: none; border-radius: var(--radius-sm); text-align: left; font-weight: 600; font-size: 14.5px; color: #F3F2FF; transition: background var(--motion-fast); }
+.nx-sugg button:hover, .nx-sugg button.hl { background: rgba(255, 255, 255, .06); }
+.nx-sugg .sw { width: 10px; height: 10px; border-radius: 3px; background: var(--c); box-shadow: 0 0 8px var(--c); flex-shrink: 0; }
+.nx-sugg .st { margin-left: auto; color: #8B89B3; font-weight: 500; font-size: 12.5px; }
+.nx-sugg .tip { padding: 6px 12px 8px; color: #8B89B3; font-size: 12px; }
+
+.nx-hint { position: absolute; z-index: 2; left: calc(var(--nx-rail, 88px) + (100% - var(--nx-rail, 88px)) / 2); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); font-family: var(--font-hud); font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: rgba(200, 198, 234, .7); white-space: nowrap; text-shadow: 0 0 10px rgba(0, 0, 0, .9); transition: opacity var(--motion-slow); pointer-events: none; }
+.nx-caption { position: absolute; z-index: 4; left: calc(var(--nx-rail, 88px) + (100% - var(--nx-rail, 88px)) / 2); bottom: calc(44px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); width: min(660px, calc(100% - var(--nx-rail, 88px) - 32px)); text-align: center; pointer-events: none; opacity: 0; transition: opacity var(--motion-normal); font-family: var(--font-hud); }
+.nx-caption.on { opacity: 1; }
+.nx-caption .who { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .34em; color: var(--accent-nexa-soft); text-shadow: 0 0 10px rgba(255, 61, 113, .8); margin-bottom: 3px; }
+.nx-caption .txt { font-size: 19px; font-weight: 600; line-height: 1.4; letter-spacing: .02em; color: #F4F7FF; text-shadow: 0 0 16px rgba(255, 61, 113, .5), 0 1px 3px #000; }
+.nx-caption .txt i { display: inline-block; width: 8px; height: 17px; margin-left: 3px; vertical-align: -2px; background: var(--accent-nexa-soft); box-shadow: 0 0 8px var(--accent-nexa); animation: nxBlink 1s steps(2) infinite; }
+@keyframes nxBlink { 50% { opacity: 0; } }
+
+/* el mapa a la vista: la barra lateral flota sobre el universo y la página no se desplaza */
+body.on-map { overflow: hidden; }
+body.on-map .main { visibility: hidden; }
+body.on-map .rail { --muted: #A9A7D1; --ink: #F3F2FF; --card2: rgba(40, 42, 86, .55); --line: rgba(160, 160, 255, .12); color-scheme: dark; background: rgba(5, 7, 18, .55); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+/* la superficie del objeto se convierte en la sección: la página se proyecta desde ella */
+body.nx-morph .main { position: fixed; top: 0; bottom: 0; left: var(--nx-rail, 88px); right: 0; overflow-y: auto; overflow-x: hidden; z-index: 25; visibility: visible; transform-origin: 0 0; will-change: transform, opacity; pointer-events: none;
+  background-color: var(--bg); background-image: radial-gradient(900px 500px at 85% -10%, rgba(59, 130, 246, .16), transparent 60%), radial-gradient(700px 500px at 0% 100%, rgba(139, 92, 246, .10), transparent 60%); }
+body.light.nx-morph .main { background-image: radial-gradient(900px 500px at 85% -10%, rgba(59, 130, 246, .10), transparent 60%); }
+body.nx-morph .main .card { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.rail { transition: background-color var(--motion-normal) var(--ease-standard), border-color var(--motion-normal) var(--ease-standard); }
+.nx-hint.gone { opacity: 0; }
+/* al llegar a una sección el foco pasa a su título (lectores de pantalla) sin dibujar un marco */
+.view h1[tabindex="-1"]:focus { outline: none; }
+
+@media (max-width: 720px) {
+  .nx-top { left: calc(var(--nx-rail, 66px) + 12px); right: 12px; gap: 6px; }
+  .nx-brand b { font-size: 17px; } .nx-brand small { font-size: 10.5px; letter-spacing: .08em; margin-top: 3px; }
+  .nx-ibtn, .nx-box { width: 38px; height: 38px; border-radius: 11px; }
+  .nx-hint { font-size: 10.5px; letter-spacing: .1em; } .nx-hint .full { display: none; }
+  .nx-caption .txt { font-size: 16px; }
+}
+@media (min-width: 721px) { .nx-search.open .nx-kbd { display: inline-block; } }
+@media (prefers-reduced-motion: reduce) { .nx.nx-in { animation: none; } .nx-loader i { animation: none; } }
 </style>
 </head>
 <body>
@@ -488,24 +597,18 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
     <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4.5 4.5 0 0 1-.5 9.5z"/></symbol>
     <symbol id="i-google" viewBox="0 0 24 24"><path d="M21 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h5.1a4.4 4.4 0 0 1-1.9 2.9v2.4h3.1c1.8-1.7 2.7-4.1 2.7-7z" fill="#4285F4" stroke="none"/><path d="M12 21.5c2.6 0 4.7-.9 6.3-2.3l-3.1-2.4c-.9.6-2 .9-3.2.9-2.5 0-4.6-1.7-5.3-3.9H3.5v2.5a9.5 9.5 0 0 0 8.5 5.2z" fill="#34A853" stroke="none"/><path d="M6.7 13.8a5.7 5.7 0 0 1 0-3.6V7.7H3.5a9.5 9.5 0 0 0 0 8.6z" fill="#FBBC05" stroke="none"/><path d="M12 6.3c1.4 0 2.6.5 3.6 1.4l2.7-2.7A9.5 9.5 0 0 0 3.5 7.7l3.2 2.5C7.4 8 9.5 6.3 12 6.3z" fill="#EA4335" stroke="none"/></symbol>
+    <symbol id="i-up2" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-down2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.6" transform="rotate(-24 12 12)"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></symbol>
     <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
   </defs>
 </svg>
 
 <div class="shell">
-  <nav class="rail" aria-label="Secciones">
-    <button class="rail-btn active" data-view="hoy"><svg class="i"><use href="#i-home"/></svg>Hoy</button>
-    <button class="rail-btn" data-view="plan"><svg class="i"><use href="#i-cal"/></svg>Plan</button>
-    <button class="rail-btn" data-view="rutina"><svg class="i"><use href="#i-dumbbell"/></svg>Rutina</button>
-    <button class="rail-btn" data-view="finanzas"><svg class="i"><use href="#i-coins"/></svg>Finanzas</button>
-    <button class="rail-btn" data-view="salud"><svg class="i"><use href="#i-heart"/></svg>Salud</button>
-    <button class="rail-btn" data-view="evolucion"><svg class="i"><use href="#i-bars"/></svg>Evolución</button>
-    <button class="rail-btn" id="moreBtn" data-more="1"><svg class="i"><use href="#i-dots"/></svg>Más</button>
-  </nav>
-  <div class="more-pop" id="morePop" hidden>
-    <button data-view="aprendizaje"><span class="ico sm c-cyan"><svg class="i sm"><use href="#i-book"/></svg></span>Aprendizaje</button>
-    <button data-view="ajustes"><span class="ico sm c-violet"><svg class="i sm"><use href="#i-gear"/></svg></span>Ajustes</button>
-  </div>
+  <nav class="rail" id="rail" aria-label="Secciones"></nav>
+  <div class="more-pop" id="morePop" hidden></div>
 
   <main class="main">
 
@@ -602,7 +705,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= PLAN ================= -->
     <section class="wrap view" id="view-plan" hidden>
       <div class="page-head">
-        <span class="ico c-violet"><svg class="i lg"><use href="#i-cal"/></svg></span>
+        <span class="ico c-plan"><svg class="i lg"><use href="#i-cal"/></svg></span>
         <div class="grow"><h1>Plan</h1><p>Objetivos, proyectos y tu calendario.</p></div>
         <div class="seg" data-tabs="plan">
           <button class="on" data-tab="objetivos">Objetivos</button><button data-tab="proyectos">Proyectos</button><button data-tab="agenda">Agenda</button>
@@ -671,7 +774,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= RUTINA ================= -->
     <section class="wrap view" id="view-rutina" hidden>
       <div class="page-head">
-        <span class="ico c-cyan"><svg class="i lg"><use href="#i-dumbbell"/></svg></span>
+        <span class="ico c-routine"><svg class="i lg"><use href="#i-dumbbell"/></svg></span>
         <div class="grow"><h1>Rutina no negociable</h1><p>Lo que tienes que hacer cada día, con historial real.</p></div>
         <div class="seg" data-tabs="rutina"><button class="on" data-tab="hoy">Hoy</button><button data-tab="historial">Historial</button></div>
       </div>
@@ -717,7 +820,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= FINANZAS ================= -->
     <section class="wrap view" id="view-finanzas" hidden>
       <div class="page-head">
-        <span class="ico c-amber"><svg class="i lg"><use href="#i-coins"/></svg></span>
+        <span class="ico c-finance"><svg class="i lg"><use href="#i-coins"/></svg></span>
         <div class="grow"><h1>Finanzas</h1><p>Movimientos, inversiones y negocio.</p></div>
         <div class="seg" data-tabs="fin"><button class="on" data-tab="mov">Movimientos</button><button data-tab="inv">Inversión</button><button data-tab="biz">Negocio</button></div>
       </div>
@@ -819,7 +922,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= SALUD ================= -->
     <section class="wrap view" id="view-salud" hidden>
       <div class="page-head">
-        <span class="ico c-rose"><svg class="i lg"><use href="#i-heart"/></svg></span>
+        <span class="ico c-health"><svg class="i lg"><use href="#i-heart"/></svg></span>
         <div class="grow"><h1>Salud</h1><p>Nutrición, entrenamiento y sueño.</p></div>
         <div class="seg" data-tabs="salud"><button class="on" data-tab="nut">Nutrición</button><button data-tab="ent">Entrenamiento</button><button data-tab="sue">Sueño</button></div>
       </div>
@@ -924,7 +1027,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= EVOLUCIÓN ================= -->
     <section class="wrap view" id="view-evolucion" hidden>
       <div class="page-head">
-        <span class="ico c-green"><svg class="i lg"><use href="#i-bars"/></svg></span>
+        <span class="ico c-evolution"><svg class="i lg"><use href="#i-bars"/></svg></span>
         <div class="grow"><h1>Evolución</h1><p>Esta semana frente a la anterior, con tus datos reales.</p></div>
         <div class="date-chip"><svg class="i sm"><use href="#i-sparkle"/></svg>Informe automático: <span id="nextReport"></span></div>
       </div>
@@ -968,7 +1071,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
     <!-- ================= APRENDIZAJE ================= -->
     <section class="wrap view" id="view-aprendizaje" hidden>
       <div class="page-head">
-        <span class="ico c-cyan"><svg class="i lg"><use href="#i-book"/></svg></span>
+        <span class="ico c-learning"><svg class="i lg"><use href="#i-book"/></svg></span>
         <div class="grow"><h1>Aprendizaje</h1><p>Sesiones de estudio y horas acumuladas por habilidad.</p></div>
       </div>
       <div class="kpis" id="skillKpis"></div>
@@ -999,7 +1102,11 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
         <span class="ico c-violet"><svg class="i lg"><use href="#i-gear"/></svg></span>
         <div class="grow"><h1>Ajustes</h1><p>Apariencia, objetivos, precios en vivo y tus datos.</p></div>
       </div>
-            <div class="card" id="cloudCard">
+            <div class="card" id="layoutCard">
+        <div class="card-h"><span class="ico c-violet"><svg class="i"><use href="#i-list"/></svg></span><h3>Mis secciones<span class="sub">Elige qué va en la barra lateral y qué ves en Hoy. Lo que quites no se borra: queda en “Más”.</span></h3><button class="pill-btn" id="redoOnboarding"><svg class="i sm"><use href="#i-sparkle"/></svg><span class="pl">Preguntas iniciales</span></button></div>
+        <div class="grid g2" id="layoutBody"></div>
+      </div>
+      <div class="card" id="cloudCard">
         <div class="card-h"><span class="ico c-blue"><svg class="i"><use href="#i-cloud"/></svg></span><h3>Copia en la nube<span class="sub">Entra con Google y tus datos se sincronizan entre el móvil y el ordenador.</span></h3><span class="tag" id="cloudBadge">Desactivada</span></div>
         <div id="cloudBody"></div>
       </div>
@@ -1035,7 +1142,7 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
           <div class="card-h"><h3>Legal y versión</h3></div>
           <div class="set-row"><div class="t"><b>Política de privacidad</b><small>Necesita redacción legal real antes de publicar.</small></div><span class="tag c c-rose" style="--c:var(--rose)">Pendiente</span></div>
           <div class="set-row"><div class="t"><b>Términos de uso</b><small>Necesita redacción legal real antes de publicar.</small></div><span class="tag c" style="--c:var(--rose)">Pendiente</span></div>
-          <div class="set-row"><div class="t"><b>Versión</b><small>Guardado automático en el dispositivo.</small></div><span class="tag">Agenda 2.1</span></div>
+          <div class="set-row"><div class="t"><b>Versión</b><small>Guardado automático en el dispositivo.</small></div><span class="tag">NEXA 3.0</span></div>
         </div>
       </div>
     </section>
@@ -1045,6 +1152,23 @@ pre.code { display: block; padding: 10px 12px; white-space: pre; overflow-x: aut
 
 <div id="modalRoot"></div>
 <div id="toastRoot"></div>
+
+<!-- ================= MAPA 3D · NEXA Universe ================= -->
+<div class="nx" id="nexaMap" hidden>
+  <canvas class="nx-gl grab" id="nxGl" aria-label="Mapa 3D de tu vida. Arrastra para girar y toca un módulo para entrar."></canvas>
+  <div class="nx-vignette" aria-hidden="true"></div>
+  <div class="nx-loader" id="nxLoader" aria-hidden="true">INICIANDO NÚCLEO<i></i></div>
+  <header class="nx-top">
+    <div class="nx-brand"><b>NEXA</b><small id="nxGreet">Centro de mando</small></div>
+    <div class="nx-search" id="nxSearch">
+      <label class="nx-box"><svg class="i"><use href="#i-search"/></svg><input id="nxQ" placeholder="¿A dónde vamos? «abre finanzas», «modo foco»…" autocomplete="off" aria-label="Buscar o dar una orden"><span class="nx-kbd">ESC</span><button class="nx-mic" id="nxMic" type="button" aria-label="Hablar"><svg class="i"><use href="#i-mic"/></svg></button></label>
+      <div class="nx-sugg" id="nxSugg" hidden></div>
+    </div>
+    <button class="nx-ibtn" id="nxVoice" aria-label="Informe del día"><svg class="i"><use href="#i-wave"/></svg></button>
+  </header>
+  <div class="nx-caption" id="nxCaption" aria-live="polite"><span class="who">NEXA</span><span class="txt" id="nxCap"></span></div>
+  <div class="nx-hint" id="nxHint">Arrastra para girar · toca un módulo<span class="full"> para entrar</span></div>
+</div>
 <script>
 // Valores aproximados por 100 g (kcal, proteína g). Fuentes de referencia habituales (BEDCA / USDA).
 const FOODS = [
@@ -1080,6 +1204,1669 @@ const FOODS = [
   ['Tortilla de patatas', 170, 6], ['Pizza', 266, 11], ['Zumo de naranja', 45, 0.7], ['Refresco de cola', 42, 0],
   ['Refresco zero', 0, 0], ['Cerveza', 43, 0.5], ['Vino tinto', 85, 0.1], ['Café solo', 2, 0.1]
 ];
+
+
+/* ================= MAPA 3D · NEXA Universe =================
+   Pantalla de inicio de la app: el sol (NEXA Core) y un módulo 3D por cada área de tu vida.
+   Lee tus datos reales a través de window.NEXA_APP (app.js) y, al tocar un módulo,
+   su superficie se convierte en la sección real de la app. */
+(() => {
+'use strict';
+const APP = () => window.NEXA_APP;
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const TAU = Math.PI * 2;
+const cssv = getComputedStyle(document.documentElement);
+const tok = (n, d) => cssv.getPropertyValue('--' + n).trim() || d;
+// Colores del sistema de diseño (los mismos que usa la app)
+const ACC = { hoy: tok('accent-nexa', '#FF3D71'), plan: tok('accent-plan', '#9B6BFF'), rutina: tok('accent-routine', '#38BDF8'), finanzas: tok('accent-finance', '#F5B83D'), salud: tok('accent-health', '#14E0B4'), aprendizaje: tok('accent-learning', '#4F7BFF'), evolucion: tok('accent-evolution', '#FF9A3D') };
+const COL = { warning: tok('warning', '#FF7A45'), bg: '#04050D' };
+const MOTION = { fast: parseFloat(tok('motion-fast', '160ms')) || 160, normal: parseFloat(tok('motion-normal', '320ms')) || 320, slow: parseFloat(tok('motion-slow', '700ms')) || 700 };
+const fmt = (n, dec) => { const neg = n < 0, a = Math.abs(Number(n) || 0).toFixed(dec).split('.'); a[0] = a[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.'); return (neg ? '-' : '') + a.join(','); };
+const fmtN = n => fmt(n, Math.abs(n - Math.round(n)) < .05 ? 0 : 1);
+const eurS = n => fmt(n, 2) + ' €';
+const sEur = n => (n >= 0 ? '+' : '−') + fmt(Math.abs(n), 2) + ' €';
+const saludo = () => { const h = new Date().getHours(); return h < 6 ? 'Buenas noches' : h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches'; };
+const norm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const ICONS = { hoy: 'home', plan: 'cal', rutina: 'dumbbell', finanzas: 'coins', salud: 'heart', aprendizaje: 'book', evolucion: 'bars' };
+let M = null; // datos actuales (APP.data())
+const label = k => k === 'hoy' ? 'Hoy' : (M && M.labels[k]) || k;
+const secOf = k => ({ k, c: ACC[k], l: label(k), desc: (M && M.desc[k]) || '' });
+/* ============ dibujo holográfico (canvas 2D) ============ */
+const HF = "Rajdhani, 'Plus Jakarta Sans', system-ui, sans-serif";
+const W0 = '#EAF4FF', DIM = 'rgba(200,215,255,.62)', UP = '#3DF0B0', DOWN = '#FF6B8A';
+const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+function rgba(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${Math.max(0, a)})`; }
+function T(x, s, X, Y, o = {}) {
+  x.save(); x.font = `${o.w || 600} ${o.size || 20}px ${HF}`; x.textAlign = o.align || 'left'; x.textBaseline = 'alphabetic';
+  const ls = o.ls || 0; if ('letterSpacing' in x) x.letterSpacing = ls + 'px';
+  const dx = ls && 'letterSpacing' in x ? (o.align === 'center' ? ls / 2 : o.align === 'right' ? ls : 0) : 0;
+  x.fillStyle = o.color || W0;
+  if (o.glow) { x.shadowColor = o.glowColor || o.color || W0; x.shadowBlur = o.glow; x.fillText(s, X + dx, Y); x.shadowBlur = 0; }
+  x.fillText(s, X + dx, Y); x.restore();
+}
+function TW(x, s, size, w = 600, ls = 0) { x.save(); x.font = `${w} ${size}px ${HF}`; if ('letterSpacing' in x) x.letterSpacing = ls + 'px'; const m = x.measureText(s).width; x.restore(); return m; }
+function num(x, big, unit, X, Y, c, o = {}) {
+  const bs = o.size || 100, us = o.us || 30, gap = o.gap || 8, wb = TW(x, big, bs, 600), wu = TW(x, unit, us, 700, o.uls || 0);
+  const X0 = o.center ? X - (wb + gap + wu) / 2 : X;
+  T(x, big, X0, Y, { size: bs, w: 600, glow: o.glow || 16, glowColor: c, color: o.color || W0 });
+  T(x, unit, X0 + wb + gap, o.raise ? Y - bs * .42 : Y, { size: us, w: 700, ls: o.uls || 0, color: c });
+}
+function L(x, x1, y1, x2, y2) { x.beginPath(); x.moveTo(x1, y1); x.lineTo(x2, y2); x.stroke(); }
+function panel(x, c, title, code) {
+  const S = 512, m = 16, w = S - 2 * m;
+  const g = x.createLinearGradient(0, m, 0, S - m); g.addColorStop(0, rgba(c, .2)); g.addColorStop(.3, 'rgba(4,7,20,.5)'); g.addColorStop(1, 'rgba(3,5,16,.58)');
+  x.fillStyle = g; x.fillRect(m, m, w, w);
+  x.strokeStyle = rgba(c, .07); x.lineWidth = 1;
+  for (let i = m + 32; i < S - m; i += 32) { L(x, i, m, i, S - m); L(x, m, i, S - m, i); }
+  x.strokeStyle = rgba(c, .4); x.lineWidth = 1.5; x.strokeRect(m + .75, m + .75, w - 1.5, w - 1.5);
+  x.save(); x.strokeStyle = c; x.lineWidth = 4; x.shadowColor = c; x.shadowBlur = 12; const k = 38, a = m + 2, b = S - m - 2;
+  [[a, a, 1, 1], [b, a, -1, 1], [a, b, 1, -1], [b, b, -1, -1]].forEach(([X, Y, sx, sy]) => { x.beginPath(); x.moveTo(X, Y + sy * k); x.lineTo(X, Y); x.lineTo(X + sx * k, Y); x.stroke(); });
+  x.restore();
+  T(x, title, m + 24, m + 44, { size: 25, w: 700, ls: 4, color: c, glow: 10 });
+  T(x, code, S - m - 24, m + 44, { size: 17, w: 600, ls: 2, color: DIM, align: 'right' });
+  x.strokeStyle = rgba(c, .45); x.lineWidth = 1.5; L(x, m + 24, m + 58, S - m - 24, m + 58);
+  x.fillStyle = c; x.fillRect(m + 24, m + 56, 64, 4);
+  for (let i = 0; i < 8; i++) { x.fillStyle = rgba(c, i % 2 ? .35 : .75); x.fillRect(S - m - 28 - i * 9, m + 64, 4, 8); }
+}
+function ring(x, cx, cy, r, pct, c, lw = 12) {
+  x.save();
+  x.strokeStyle = rgba(c, .14); x.lineWidth = lw; x.beginPath(); x.arc(cx, cy, r, 0, TAU); x.stroke();
+  x.strokeStyle = c; x.shadowColor = c; x.shadowBlur = 16; x.lineCap = 'round';
+  x.beginPath(); x.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + TAU * Math.max(.01, Math.min(1, pct))); x.stroke();
+  x.shadowBlur = 0;
+  for (let i = 0; i < 60; i++) { const a = i / 60 * TAU, r1 = r + lw / 2 + 6, r2 = r1 + (i % 5 ? 6 : 13); x.strokeStyle = rgba(c, i % 5 ? .3 : .75); x.lineWidth = i % 5 ? 1.5 : 2.5; L(x, cx + Math.cos(a) * r1, cy + Math.sin(a) * r1, cx + Math.cos(a) * r2, cy + Math.sin(a) * r2); }
+  x.strokeStyle = rgba(c, .28); x.lineWidth = 1.2; x.setLineDash([3, 6]); x.beginPath(); x.arc(cx, cy, r - lw / 2 - 10, 0, TAU); x.stroke(); x.setLineDash([]);
+  x.restore();
+}
+function hbar(x, X, Y, W, H, pct, c) {
+  x.fillStyle = rgba(c, .14); x.fillRect(X, Y, W, H);
+  x.save(); x.fillStyle = c; x.shadowColor = c; x.shadowBlur = 10; x.fillRect(X, Y, W * clamp(pct, 0, 1), H); x.restore();
+  x.fillStyle = 'rgba(3,5,16,.6)'; for (let i = X + 9; i < X + W; i += 9) x.fillRect(i, Y, 2, H);
+}
+function vbars(x, X, Y, W, H, vals, c, hiLast = true) {
+  const mx = Math.max(...vals) || 1, n = vals.length, bw = W / n;
+  vals.forEach((v, i) => {
+    const h = Math.max(3, v / mx * H), last = hiLast && i === n - 1;
+    const g = x.createLinearGradient(0, Y + H - h, 0, Y + H); g.addColorStop(0, last ? W0 : c); g.addColorStop(1, rgba(c, .12));
+    x.save(); x.fillStyle = g; if (last) { x.shadowColor = c; x.shadowBlur = 14; } x.fillRect(X + i * bw + bw * .18, Y + H - h, bw * .64, h); x.restore();
+  });
+  x.strokeStyle = rgba(c, .45); x.lineWidth = 1.5; L(x, X, Y + H + .5, X + W, Y + H + .5);
+}
+function spark(x, X, Y, W, H, vals, c) {
+  const mx = Math.max(...vals), mn = Math.min(...vals), n = vals.length;
+  const px = i => X + i / (n - 1) * W, py = v => Y + H - (v - mn) / ((mx - mn) || 1) * H * .9 - H * .05;
+  const path = () => { x.beginPath(); vals.forEach((v, i) => i ? x.lineTo(px(i), py(v)) : x.moveTo(px(i), py(v))); };
+  path(); x.lineTo(X + W, Y + H); x.lineTo(X, Y + H); x.closePath();
+  const g = x.createLinearGradient(0, Y, 0, Y + H); g.addColorStop(0, rgba(c, .32)); g.addColorStop(1, rgba(c, 0)); x.fillStyle = g; x.fill();
+  path(); x.save(); x.strokeStyle = c; x.lineWidth = 3.5; x.lineJoin = 'round'; x.shadowColor = c; x.shadowBlur = 12; x.stroke(); x.restore();
+  x.fillStyle = W0; x.beginPath(); x.arc(px(n - 1), py(vals[n - 1]), 5, 0, TAU); x.fill();
+}
+function grid(x, X, Y, W, H, c, nx = 8, ny = 4) { x.strokeStyle = rgba(c, .13); x.lineWidth = 1; for (let i = 0; i <= nx; i++) L(x, X + i * W / nx, Y, X + i * W / nx, Y + H); for (let j = 0; j <= ny; j++) L(x, X, Y + j * H / ny, X + W, Y + j * H / ny); }
+function kv(x, k, v, X, Y, align = 'left') { T(x, k, X, Y, { size: 16, ls: 2.5, color: DIM, align }); T(x, v, X, Y + 34, { size: 32, w: 700, color: W0, align }); }
+function box(x, X, Y, S, done, c) {
+  x.save(); x.strokeStyle = done ? c : rgba(c, .6); x.lineWidth = 2.5; x.strokeRect(X, Y, S, S);
+  if (done) { x.fillStyle = rgba(c, .92); x.shadowColor = c; x.shadowBlur = 10; x.fillRect(X + 4, Y + 4, S - 8, S - 8); x.shadowBlur = 0; x.strokeStyle = '#06101a'; x.lineWidth = 3; x.beginPath(); x.moveTo(X + S * .26, Y + S * .52); x.lineTo(X + S * .44, Y + S * .7); x.lineTo(X + S * .76, Y + S * .32); x.stroke(); }
+  x.restore();
+}
+// elementos vivos (se redibujan solo en su zona)
+function sweep(cx, cy, r) {
+  return (x, t, c) => {
+    const a = t * 1.25; x.lineCap = 'round'; x.lineWidth = 4;
+    for (let i = 0; i < 16; i++) { x.strokeStyle = rgba(c, (1 - i / 16) * .9); x.beginPath(); x.arc(cx, cy, r, a - (i + 1) * .045, a - i * .045); x.stroke(); }
+    x.fillStyle = W0; x.shadowColor = c; x.shadowBlur = 12; x.beginPath(); x.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 5, 0, TAU); x.fill(); x.shadowBlur = 0;
+    x.strokeStyle = rgba(c, .55); x.lineWidth = 2; const b = -t * .6;
+    for (let k = 0; k < 3; k++) { x.beginPath(); x.arc(cx, cy, r + 11, b + k * 2.094, b + k * 2.094 + .75); x.stroke(); }
+  };
+}
+function scanLive(X, Y, W, H) {
+  return (x, t, c) => {
+    const p = X - 60 + ((t * .22) % 1) * (W + 120), x0 = Math.max(X, p - 90), x1 = Math.min(X + W, p);
+    if (x1 > x0) { const g = x.createLinearGradient(p - 90, 0, p, 0); g.addColorStop(0, rgba(c, 0)); g.addColorStop(1, rgba(c, .34)); x.fillStyle = g; x.fillRect(x0, Y, x1 - x0, H); }
+    if (p >= X && p <= X + W) { x.strokeStyle = 'rgba(234,244,255,.9)'; x.lineWidth = 2; x.shadowColor = c; x.shadowBlur = 10; L(x, p, Y, p, Y + H); x.shadowBlur = 0; }
+  };
+}
+function ecgLive(X, Y, W, H) {
+  const beat = u => { u -= Math.floor(u); const g = (m, s) => Math.exp(-((u - m) * (u - m)) / (2 * s * s)); return .12 * g(.1, .025) - .14 * g(.2, .008) + g(.23, .011) - .3 * g(.26, .01) + .26 * g(.46, .04); };
+  return (x, t, c) => {
+    const mid = Y + H * .62, amp = H * .5, head = ((t * .36) % 1) * W;
+    x.lineWidth = 3.2; x.lineJoin = 'round'; x.shadowColor = c; x.shadowBlur = 8;
+    const seg = (a, b, a0, a1) => { if (b - a < 2) return; const g = x.createLinearGradient(X + a, 0, X + b, 0); g.addColorStop(0, rgba(c, a0)); g.addColorStop(1, rgba(c, a1)); x.strokeStyle = g; x.beginPath(); for (let px = a; px <= b; px += 2) { const y = mid - beat(px / W * 3.2) * amp; px === a ? x.moveTo(X + px, y) : x.lineTo(X + px, y); } x.stroke(); };
+    seg(0, head, .15, 1); seg(Math.min(W, head + 22), W, .05, .16);
+    x.fillStyle = W0; x.shadowBlur = 16; x.beginPath(); x.arc(X + head, mid - beat(head / W * 3.2) * amp, 5.5, 0, TAU); x.fill(); x.shadowBlur = 0;
+  };
+}
+function tickerLive(X, Y, W, H) {
+  const f = s => .52 + .2 * Math.sin(s * .8) + .12 * Math.sin(s * 2.1 + 1.3) + .06 * Math.sin(s * 4.7 + .4);
+  return (x, t, c) => {
+    const n = 64, off = t * 1.4, Wc = W - 16, px = i => X + i / (n - 1) * Wc, py = v => Y + H * (1 - v);
+    const vals = Array.from({ length: n }, (_, i) => f(off + i * .18));
+    const path = () => { x.beginPath(); vals.forEach((v, i) => i ? x.lineTo(px(i), py(v)) : x.moveTo(px(i), py(v))); };
+    path(); x.lineTo(X + Wc, Y + H); x.lineTo(X, Y + H); x.closePath();
+    const g = x.createLinearGradient(0, Y, 0, Y + H); g.addColorStop(0, rgba(c, .34)); g.addColorStop(1, rgba(c, 0)); x.fillStyle = g; x.fill();
+    path(); x.strokeStyle = c; x.lineWidth = 3.5; x.lineJoin = 'round'; x.shadowColor = c; x.shadowBlur = 10; x.stroke(); x.shadowBlur = 0;
+    const ly = py(vals[n - 1]); x.setLineDash([5, 7]); x.strokeStyle = 'rgba(234,244,255,.45)'; x.lineWidth = 1.5; L(x, X, ly, X + Wc, ly); x.setLineDash([]);
+    x.fillStyle = W0; x.shadowColor = c; x.shadowBlur = 14; x.beginPath(); x.arc(X + Wc, ly, 6, 0, TAU); x.fill(); x.shadowBlur = 0;
+  };
+}
+function nowLive(X0, X1, Y) {
+  return (x, t, c) => {
+    const d = new Date(), h = d.getHours() + d.getMinutes() / 60, px = X0 + (clamp(h, 8, 22) - 8) / 14 * (X1 - X0);
+    x.strokeStyle = c; x.lineWidth = 4; x.shadowColor = c; x.shadowBlur = 12; L(x, X0, Y, px, Y); x.shadowBlur = 0;
+    x.setLineDash([4, 6]); x.strokeStyle = 'rgba(234,244,255,.7)'; x.lineWidth = 2; L(x, px, Y - 118, px, Y + 48); x.setLineDash([]);
+    const ph = (t % 1.4) / 1.4;
+    x.strokeStyle = rgba(c, .7 * (1 - ph)); x.lineWidth = 2; x.beginPath(); x.arc(px, Y, 10 + ph * 26, 0, TAU); x.stroke();
+    x.fillStyle = W0; x.shadowColor = c; x.shadowBlur = 16; x.beginPath(); x.arc(px, Y, 7, 0, TAU); x.fill(); x.shadowBlur = 0;
+    T(x, 'AHORA ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), clamp(px, X0 + 64, X1 - 64), Y + 76, { size: 19, w: 700, ls: 2, align: 'center', color: c, glow: 8 });
+  };
+}
+function timerLive(cx, cy, r) {
+  return (x, t, c) => {
+    const total = 1500, rem = total - Math.floor(t) % total, a0 = -Math.PI / 2, a1 = a0 + TAU * rem / total;
+    x.lineCap = 'round'; x.strokeStyle = c; x.lineWidth = 16; x.shadowColor = c; x.shadowBlur = 16; x.beginPath(); x.arc(cx, cy, r, a0, a1); x.stroke(); x.shadowBlur = 0;
+    x.fillStyle = W0; x.beginPath(); x.arc(cx + Math.cos(a1) * r, cy + Math.sin(a1) * r, 6, 0, TAU); x.fill();
+    T(x, String(Math.floor(rem / 60)).padStart(2, '0') + ':' + String(rem % 60).padStart(2, '0'), cx, cy + 24, { size: 72, w: 600, align: 'center', glow: 14, glowColor: c });
+    T(x, 'RESTANTE', cx, cy + 58, { size: 15, ls: 4, align: 'center', color: DIM });
+  };
+}
+const RADAR = { ax: ['RUTINA', 'SALUD', 'FINANZAS', 'ESTUDIO', 'PLAN'], v: [.74, .62, .8, .48, .66] };
+const radarAng = k => -Math.PI / 2 + k * TAU / 5;
+function radarLive(cx, cy, R) {
+  return (x, t, c) => {
+    const a = t * 1.5;
+    for (let i = 0; i < 22; i++) { x.fillStyle = rgba(c, .2 * (1 - i / 22)); x.beginPath(); x.moveTo(cx, cy); x.arc(cx, cy, R, a - (i + 1) * .04, a - i * .04); x.closePath(); x.fill(); }
+    x.strokeStyle = 'rgba(234,244,255,.85)'; x.lineWidth = 2; x.shadowColor = c; x.shadowBlur = 10; L(x, cx, cy, cx + Math.cos(a) * R, cy + Math.sin(a) * R); x.shadowBlur = 0;
+    RADAR.v.forEach((v, k) => { const an = radarAng(k); let d = (a - an) % TAU; if (d < 0) d += TAU; const q = Math.max(0, 1 - d / 1.5); if (q > 0) { x.fillStyle = rgba(c, q); x.shadowColor = c; x.shadowBlur = 14 * q; x.beginPath(); x.arc(cx + Math.cos(an) * R * v, cy + Math.sin(an) * R * v, 5 + 5 * q, 0, TAU); x.fill(); x.shadowBlur = 0; } });
+  };
+}
+
+
+
+
+/* ============ pantallas de cada módulo, dibujadas con tus datos ============ */
+const NONE = 'SIN DATOS TODAVÍA';
+const empty = (x, c, msg, sub) => { T(x, msg, 256, 270, { size: 24, w: 700, ls: 3, align: 'center', color: DIM }); if (sub) T(x, sub, 256, 302, { size: 15, ls: 2, align: 'center', color: rgba(c, .9) }); };
+const FACE = {
+  calendar: s => { const c = s.c; return { draw: x => {
+    const d = new Date(), y = d.getFullYear(), m = d.getMonth(), first = (new Date(y, m, 1).getDay() + 6) % 7, nd = new Date(y, m + 1, 0).getDate(), today = d.getDate();
+    panel(x, c, 'CALENDARIO', 'CAL·' + String(m + 1).padStart(2, '0'));
+    T(x, d.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase() + ' ' + y, 40, 122, { size: 28, w: 700, ls: 3 });
+    const X0 = 44, cw = 61, Y0 = 158, ev = M.monthDays;
+    ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach((s2, i) => T(x, s2, X0 + i * cw + cw / 2, Y0, { size: 17, align: 'center', color: DIM }));
+    for (let dd = 1; dd <= nd; dd++) {
+      const idx = first + dd - 1, cx = X0 + (idx % 7) * cw + cw / 2, cy = Y0 + 42 + Math.floor(idx / 7) * 50;
+      if (dd === today) { x.save(); x.fillStyle = rgba(c, .3); x.strokeStyle = c; x.lineWidth = 2.5; x.shadowColor = c; x.shadowBlur = 14; x.beginPath(); x.arc(cx, cy - 8, 21, 0, TAU); x.fill(); x.stroke(); x.restore(); }
+      T(x, String(dd), cx, cy, { size: 23, w: dd === today ? 700 : 500, align: 'center', color: dd === today ? W0 : idx % 7 > 4 ? DIM : 'rgba(234,244,255,.86)' });
+      if (ev.includes(dd) && dd !== today) { x.fillStyle = c; x.beginPath(); x.arc(cx, cy + 10, 3, 0, TAU); x.fill(); }
+    }
+  } }; },
+  balance: s => { const c = s.c; return { draw: x => {
+    const f = M.fin; panel(x, c, 'BALANCE', 'EUR·M');
+    T(x, 'BALANCE DEL MES', 42, 118, { size: 16, ls: 3, color: DIM });
+    T(x, sEur(f.bal), 40, 186, { size: 58, w: 700, color: f.bal >= 0 ? c : DOWN, glow: 16 });
+    T(x, `INGRESOS ${eurS(f.inc)}  ·  GASTOS ${eurS(f.exp)}`, 42, 222, { size: 15, ls: 1.5, color: DIM });
+    grid(x, 36, 250, 440, 210, c, 8, 4);
+    if (f.cum.length > 1 && (f.inc || f.exp)) spark(x, 40, 254, 432, 200, f.cum, f.bal >= 0 ? c : DOWN);
+    else T(x, 'SIN MOVIMIENTOS ESTE MES', 256, 362, { size: 18, w: 700, ls: 3, align: 'center', color: DIM });
+  }, live: { r: [36, 250, 440, 210], fn: scanLive(36, 250, 440, 210), fps: 18 } }; },
+  presupuesto: s => { const c = s.c; return { draw: x => {
+    const f = M.fin, b = f.budget, now = new Date(), left = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate();
+    panel(x, c, 'PRESUPUESTO', 'BGT');
+    if (!b) { empty(x, c, 'SIN PRESUPUESTO', 'PONLO EN AJUSTES'); return; }
+    const frac = f.exp / b, cc = frac >= .9 ? COL.warning : c, rest = b - f.exp;
+    ring(x, 256, 244, 112, clamp(frac, 0, 1), cc, 14);
+    T(x, eurS(Math.abs(rest)), 256, 258, { size: 46, w: 700, align: 'center', glow: 12, glowColor: cc });
+    T(x, rest >= 0 ? 'RESTANTE' : 'TE HAS PASADO', 256, 290, { size: 16, ls: 3, color: rest >= 0 ? DIM : DOWN, align: 'center' });
+    T(x, `${eurS(f.exp)} DE ${eurS(b)}`, 256, 436, { size: 19, w: 700, ls: 1.5, align: 'center', color: cc });
+    T(x, `${Math.round(frac * 100)} % USADO · ${left === 0 ? 'ÚLTIMO DÍA DEL MES' : left === 1 ? 'QUEDA 1 DÍA' : `QUEDAN ${left} DÍAS`}`, 256, 462, { size: 14, ls: 2, align: 'center', color: DIM });
+  }, live: { r: [96, 84, 320, 320], fn: sweep(256, 244, 140), fps: 20 } }; },
+  movimientos: s => { const c = s.c; return { draw: x => {
+    panel(x, c, 'MOVIMIENTOS', 'TX·' + String(M.fin.last.length).padStart(2, '0'));
+    if (!M.fin.last.length) { empty(x, c, 'SIN MOVIMIENTOS', 'AÑADE EL PRIMERO EN FINANZAS'); return; }
+    M.fin.last.forEach(([n, sub, v], j) => {
+      const Y = 132 + j * 88; T(x, String(n).slice(0, 22), 44, Y, { size: 25, w: 700 }); T(x, String(sub).toUpperCase().slice(0, 34), 44, Y + 26, { size: 14, ls: 2, color: DIM });
+      T(x, sEur(v), 470, Y + 8, { size: 26, w: 700, align: 'right', color: v >= 0 ? UP : DOWN, glow: 8 });
+      if (j < M.fin.last.length - 1) { x.strokeStyle = rgba(c, .2); x.lineWidth = 1; L(x, 44, Y + 48, 470, Y + 48); }
+    });
+  } }; },
+  gasto: s => { const c = s.c; return { draw: x => {
+    const f = M.fin, v = f.daily14, av = v.reduce((a, b) => a + b, 0) / v.length;
+    panel(x, c, 'GASTO DIARIO', 'D·14');
+    T(x, eurS(f.spentToday), 40, 158, { size: 58, w: 700, glow: 14, glowColor: c }); T(x, `HOY · ${f.countToday} GASTO${f.countToday === 1 ? '' : 'S'}`, 42, 190, { size: 16, ls: 3, color: DIM });
+    kv(x, 'MEDIA 14 D', eurS(av), 330, 116);
+    vbars(x, 40, 232, 432, 196, v, c);
+    T(x, 'HACE 14 D', 40, 456, { size: 14, ls: 2, color: DIM }); T(x, 'HOY', 472, 456, { size: 14, ls: 2, color: DIM, align: 'right' });
+  }, live: { r: [40, 232, 432, 196], fn: scanLive(40, 232, 432, 196), fps: 18 } }; },
+  ingresos: s => { const c = s.c; return { draw: x => {
+    const f = M.fin; panel(x, c, 'INGRESOS', 'IN·M');
+    T(x, sEur(f.inc), 40, 166, { size: 56, w: 700, color: UP, glow: 14 });
+    T(x, `ESTE MES · ${f.incCount} INGRESO${f.incCount === 1 ? '' : 'S'}`, 42, 198, { size: 16, ls: 3, color: DIM });
+    vbars(x, 52, 236, 408, 180, f.weeksInc, c, true);
+    ['HACE 3 SEM', 'HACE 2', 'HACE 1', 'ESTA'].forEach((w, j) => T(x, w, 52 + (j + .5) * 102, 446, { size: 14, ls: 1, align: 'center', color: DIM }));
+  } }; },
+  ahorro: s => { const c = s.c; return { draw: x => {
+    const f = M.fin, rate = f.inc > 0 ? f.bal / f.inc : null;
+    panel(x, c, 'AHORRO', 'SAV·M');
+    ring(x, 256, 246, 112, rate == null ? 0 : clamp(rate, 0, 1), c, 14);
+    T(x, rate == null ? '—' : Math.round(rate * 100) + ' %', 256, 266, { size: 60, w: 700, align: 'center', glow: 14, glowColor: c });
+    T(x, 'AHORRO DEL MES', 256, 298, { size: 15, ls: 3, color: DIM, align: 'center' });
+    T(x, `ESTA SEMANA ${sEur(f.week)}`, 256, 436, { size: 18, w: 700, ls: 1.5, color: f.week >= 0 ? UP : DOWN, align: 'center' });
+    const d = f.prevWeek ? Math.round((f.week - f.prevWeek) / Math.abs(f.prevWeek) * 100) : null;
+    T(x, d == null ? 'SIN SEMANA ANTERIOR PARA COMPARAR' : `${d >= 0 ? '+' : ''}${d} % VS SEMANA ANTERIOR`, 256, 462, { size: 14, ls: 2, color: DIM, align: 'center' });
+  } }; },
+  habilidades: s => { const c = s.c; return { draw: x => {
+    panel(x, c, 'HABILIDADES', 'SKL·' + String(M.learn.nSkills).padStart(2, '0'));
+    const sk = M.learn.skills; if (!sk.length) { empty(x, c, 'SIN SESIONES TODAVÍA', 'REGISTRA TU PRIMERA HORA DE ESTUDIO'); return; }
+    const mx = Math.max(1, ...sk.map(s2 => s2[2]));
+    sk.forEach(([n, cat, h], j) => { const Y = 138 + j * 110; T(x, String(n).slice(0, 24), 44, Y, { size: 26, w: 700 }); T(x, String(cat).toUpperCase(), 44, Y + 24, { size: 14, ls: 2.5, color: DIM }); T(x, fmtN(h) + ' h', 470, Y, { size: 28, w: 700, align: 'right', color: c, glow: 8 }); hbar(x, 44, Y + 40, 426, 14, h / mx, c); });
+  } }; },
+  radar: s => { const c = s.c; return { draw: x => {
+    panel(x, c, 'EQUILIBRIO', 'RADAR');
+    const cx = 256, cy = 272, R0 = 148, V = M.radar;
+    for (let k = 1; k <= 4; k++) { x.strokeStyle = rgba(c, .16 + (k === 4 ? .14 : 0)); x.lineWidth = 1.2; x.beginPath(); for (let a = 0; a <= 5; a++) { const an = radarAng(a % 5), rr = R0 * k / 4; a ? x.lineTo(cx + Math.cos(an) * rr, cy + Math.sin(an) * rr) : x.moveTo(cx + Math.cos(an) * rr, cy + Math.sin(an) * rr); } x.stroke(); }
+    RADAR.ax.forEach((n, k) => { const an = radarAng(k); x.strokeStyle = rgba(c, .25); L(x, cx, cy, cx + Math.cos(an) * R0, cy + Math.sin(an) * R0); const lx = cx + Math.cos(an) * (R0 + 20), ly = cy + Math.sin(an) * (R0 + 20) + 6; T(x, n, lx, ly, { size: 15, ls: 2, color: DIM, align: Math.abs(Math.cos(an)) < .3 ? 'center' : Math.cos(an) > 0 ? 'left' : 'right' }); });
+    x.save(); x.beginPath(); V.forEach((v, k) => { const an = radarAng(k), vv = Math.max(.04, v); k ? x.lineTo(cx + Math.cos(an) * R0 * vv, cy + Math.sin(an) * R0 * vv) : x.moveTo(cx + Math.cos(an) * R0 * vv, cy + Math.sin(an) * R0 * vv); }); x.closePath();
+    x.fillStyle = rgba(c, .26); x.fill(); x.strokeStyle = c; x.lineWidth = 3; x.shadowColor = c; x.shadowBlur = 12; x.stroke(); x.restore();
+  }, live: { r: [96, 112, 320, 320], fn: radarLive(256, 272, 148), fps: 24 } }; }
+};
+// franja de cada hábito en la torre de Rutina
+function drawHabit(x, hb, c) {
+  x.clearRect(0, 0, 512, 96);
+  if (!hb) { T(x, 'AÑADE TUS HÁBITOS', 256, 61, { size: 26, w: 700, ls: 3, align: 'center', color: DIM }); return; }
+  const [name, tag, done] = hb;
+  x.fillStyle = rgba(c, done ? .24 : .07); x.fillRect(0, 12, 512, 72);
+  box(x, 16, 30, 36, done, c);
+  T(x, String(name).toUpperCase().slice(0, 26), 70, 61, { size: 29, w: 700, ls: 2, color: done ? W0 : 'rgba(234,244,255,.78)' });
+  T(x, tag === 'Fijo' ? 'FIJO' : 'VAR.', 496, 61, { size: 20, ls: 2, color: rgba(c, .95), align: 'right' });
+}
+// placa del archivo de Aprendizaje: una por día
+function drawPlate(x, day, h, c, today) {
+  const W = 256, H = 296, on = h > 0; x.clearRect(0, 0, W, H);
+  x.strokeStyle = rgba(c, on ? .55 : .25); x.lineWidth = 2; x.strokeRect(6, 6, W - 12, H - 12);
+  x.fillStyle = rgba(c, on ? .55 : .14); x.fillRect(14, 14, 96, 42);
+  T(x, today ? 'HOY' : day, 62, 46, { size: today ? 26 : 32, w: 700, align: 'center', color: on ? W0 : DIM });
+  T(x, on ? fmtN(h) + ' h' : '—', W - 18, 46, { size: 26, w: 700, align: 'right', color: on ? c : DIM, glow: on ? 8 : 0 });
+  for (let i = 0; i < 4; i++) { x.fillStyle = rgba(c, on ? .3 : .09); x.fillRect(18, 82 + i * 22, (W - 40) * (i % 2 ? .6 : .85), 6); }
+}
+// banda biométrica alrededor del núcleo de Salud: el trazo se desplaza moviendo la textura
+function drawBand(x, c) {
+  const W = 2048, s = M.salud; x.clearRect(0, 0, W, 96);
+  const beat = u => { u -= Math.floor(u); const g = (m, sd) => Math.exp(-((u - m) * (u - m)) / (2 * sd * sd)); return .12 * g(.1, .025) - .14 * g(.2, .008) + g(.23, .011) - .3 * g(.26, .01) + .26 * g(.46, .04); };
+  x.save(); x.strokeStyle = c; x.lineWidth = 3; x.lineJoin = 'round'; x.shadowColor = c; x.shadowBlur = 8; x.beginPath();
+  for (let px = 0; px <= W; px += 2) { const y = 70 - beat(px / W * 8) * 30; px ? x.lineTo(px, y) : x.moveTo(px, y); }
+  x.stroke(); x.restore();
+  const items = [`${fmt(s.kcal, 0)} / ${fmt(s.kcalGoal, 0)} KCAL`, `PROTEÍNA ${fmt(s.prot, 0)} G`, `ENTRENO ${s.sessions}/${s.target}`, s.sleep != null ? `SUEÑO ${fmtN(s.sleep)} H` : 'SUEÑO —', s.energy ? `ENERGÍA ${s.energy}/10` : 'ENERGÍA —', s.weight ? `PESO ${fmtN(s.weight)} KG` : 'PESO —'];
+  items.forEach((t, i) => T(x, t, 40 + i * (W / items.length), 28, { size: 24, w: 700, ls: 3, color: W0 }));
+}
+// cifras de cada sección para la superficie que se convierte en pantalla
+function kpisOf(k) {
+  const f = M.fin, s = M.salud, l = M.learn, r = M.rut30;
+  const pct = (a, b) => b ? clamp(a / b, 0, 1) : 0;
+  switch (k) {
+    case 'hoy': return [['Prioridades', `${M.prioDone} de ${M.prioTotal}`, pct(M.prioDone, M.prioTotal)], ['Próximo evento', M.next ? M.next.time : '—', M.next ? .6 : 0], ['Hábitos', `${M.habitsDone} de ${M.habitsTotal}`, pct(M.habitsDone, M.habitsTotal)]];
+    case 'plan': return [['Eventos hoy', String(M.eventsToday), pct(M.eventsToday, 4)], ['Objetivos semana', `${M.goals[0]} de ${M.goals[1]}`, pct(M.goals[0], M.goals[1])], ['Proyectos activos', String(M.projActive), pct(M.projActive, 3)]];
+    case 'rutina': return [['Hechos hoy', `${M.habitsDone} de ${M.habitsTotal}`, pct(M.habitsDone, M.habitsTotal)], ['Racha', `${M.streak} día${M.streak === 1 ? '' : 's'}`, pct(M.streak, 14)], ['Últimos 30 días', r == null ? '—' : Math.round(r * 100) + ' %', r || 0]];
+    case 'finanzas': return [['Gastado hoy', eurS(f.spentToday), f.budget ? pct(f.spentToday, f.budget / 30) : 0], ['Balance del mes', sEur(f.bal), clamp(.5 + f.bal / Math.max(1, f.inc || f.exp) / 2, 0, 1)], ['Presupuesto', f.budget ? eurS(Math.max(0, f.budget - f.exp)) : '—', pct(f.exp, f.budget)]];
+    case 'salud': return [['Calorías', `${fmt(s.kcal, 0)} kcal`, pct(s.kcal, s.kcalGoal)], ['Entrenos', `${s.sessions} de ${s.target}`, pct(s.sessions, s.target)], ['Sueño', s.sleep != null ? `${fmtN(s.sleep)} h` : '—', s.sleep != null ? pct(s.sleep, 8) : 0]];
+    case 'aprendizaje': return [['Esta semana', `${fmtN(l.wkHours)} h`, pct(l.wkHours, 5)], ['Últimos 30 días', `${fmtN(l.month)} h`, pct(l.month, 20)], ['Habilidades', String(l.nSkills), pct(l.nSkills, 5)]];
+    case 'evolucion': return [['Rutina 30 días', r == null ? '—' : Math.round(r * 100) + ' %', r || 0], ['Racha', `${M.streak} día${M.streak === 1 ? '' : 's'}`, pct(M.streak, 14)], ['Ahorro semana', sEur(f.week), clamp(.5 + f.week / 400, 0, 1)]];
+    default: return [];
+  }
+}
+// dato secundario al pasar por encima
+const SUB = {
+  plan: () => `${M.eventsToday} EVENTO${M.eventsToday === 1 ? '' : 'S'} HOY · OBJETIVOS ${M.goals[0]}/${M.goals[1]}`,
+  rutina: () => M.habitsTotal ? `${M.habitsDone} DE ${M.habitsTotal} HÁBITOS` : 'SIN HÁBITOS TODAVÍA',
+  finanzas: () => M.fin.budget ? `PRESUPUESTO AL ${Math.round(M.fin.exp / M.fin.budget * 100)} %` : `BALANCE ${sEur(M.fin.bal)}`,
+  salud: () => `${fmt(Math.max(0, M.salud.kcalGoal - M.salud.kcal), 0)} KCAL RESTANTES`,
+  aprendizaje: () => `${fmtN(M.learn.wkHours)} H ESTA SEMANA`,
+  evolucion: () => M.rut30 == null ? 'SIN DATOS DE RUTINA AÚN' : `RUTINA 30 DÍAS · ${Math.round(M.rut30 * 100)} %`
+};
+// estados de cada módulo: aviso y completado
+function flagsOf(k) {
+  switch (k) {
+    case 'finanzas': return { warn: M.fin.budget > 0 && M.fin.exp / M.fin.budget >= .9, done: false };
+    case 'rutina': return { warn: false, done: M.habitsTotal > 0 && M.habitsDone === M.habitsTotal };
+    case 'plan': return { warn: false, done: M.goals[1] > 0 && M.goals[0] >= M.goals[1] };
+    case 'salud': return { warn: M.salud.sleep != null && M.salud.sleep < 6, done: false };
+    case 'aprendizaje': return { warn: false, done: M.learn.week7.every(v => v > 0) };
+    case 'evolucion': return { warn: false, done: M.rut30 != null && M.rut30 >= .95 };
+    default: return { warn: false, done: false };
+  }
+}
+// superficie holográfica que se convertirá en la pantalla de la sección
+// texto en varias líneas que caben en un ancho
+function wrapLines(x, s, maxW, size, max) {
+  const out = []; let cur = '';
+  String(s).split(' ').forEach(w => { const t = cur ? cur + ' ' + w : w; if (cur && TW(x, t, size, 600, 2) > maxW) { out.push(cur); cur = w; } else cur = t; });
+  if (cur) out.push(cur);
+  if (out.length > max) { out.length = max; out[max - 1] += '…'; }
+  return out;
+}
+function portalCanvas(k, aspect) {
+  // en pantallas estrechas el lienzo es más alto para no deformar el texto al ajustarlo a la superficie
+  const s = secOf(k), H = aspect < .62 ? 820 : 512, W = clamp(Math.round(H * aspect), 240, 1024), cv = mk(W, H), x = cv.getContext('2d'), c = s.c, m = 12;
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rgba(c, .3)); g.addColorStop(.32, 'rgba(6,8,22,.86)'); g.addColorStop(1, 'rgba(4,5,15,.92)');
+  x.fillStyle = g; x.fillRect(m, m, W - 2 * m, H - 2 * m);
+  x.strokeStyle = rgba(c, .08); x.lineWidth = 1; for (let i = m + 32; i < W - m; i += 32) L(x, i, m, i, H - m); for (let j = m + 32; j < H - m; j += 32) L(x, m, j, W - m, j);
+  x.strokeStyle = rgba(c, .55); x.lineWidth = 2; x.strokeRect(m, m, W - 2 * m, H - 2 * m);
+  x.save(); x.strokeStyle = c; x.lineWidth = 5; x.shadowColor = c; x.shadowBlur = 14; const kk = 44, a = m + 2, bx = W - m - 2, by = H - m - 2;
+  [[a, a, 1, 1], [bx, a, -1, 1], [a, by, 1, -1], [bx, by, -1, -1]].forEach(([X, Y, sx, sy]) => { x.beginPath(); x.moveTo(X, Y + sy * kk); x.lineTo(X, Y); x.lineTo(X + sx * kk, Y); x.stroke(); }); x.restore();
+  const narrow = W < 460, tsz = Math.min(narrow ? 44 : 54, Math.floor((W - 80) / Math.max(4, s.l.length) / .72));
+  T(x, s.l.toUpperCase(), 40, 92, { size: tsz, w: 700, ls: 4, glow: 16, glowColor: c });
+  const dsz = narrow ? 15 : 16, lines = wrapLines(x, s.desc.toUpperCase(), W - 80, dsz, 2);
+  lines.forEach((ln, i) => T(x, ln, 42, 124 + i * (dsz + 7), { size: dsz, ls: 2, color: DIM }));
+  const y0 = 124 + lines.length * (dsz + 7) + 16;
+  const K = kpisOf(k), cols = narrow ? 1 : K.length, bw = (W - 80 - (cols - 1) * 16) / cols;
+  const bh = narrow ? clamp((H - y0 - 40 - (K.length - 1) * 12) / Math.max(1, K.length), 92, 150) : 150;
+  K.forEach((q, i) => {
+    const X = 40 + (i % cols) * (bw + 16), Y = y0 + Math.floor(i / cols) * (bh + 12);
+    x.fillStyle = rgba(c, .1); x.fillRect(X, Y, bw, bh); x.strokeStyle = rgba(c, .35); x.strokeRect(X + .5, Y + .5, bw - 1, bh - 1);
+    T(x, q[0].toUpperCase(), X + 16, Y + 30, { size: 14, ls: 2.5, color: DIM });
+    T(x, q[1], X + 16, Y + Math.min(84, bh - 26), { size: narrow ? 32 : 38, w: 700 });
+    if (bh >= 120) { x.fillStyle = rgba(c, .15); x.fillRect(X + 16, Y + bh - 22, bw - 32, 6); x.fillStyle = c; x.fillRect(X + 16, Y + bh - 22, (bw - 32) * clamp(q[2], .02, 1), 6); }
+  });
+  return cv;
+}
+
+/* ============ interfaz del mapa: paleta de órdenes, asistente con voz ============ */
+const root = $('#nexaMap');
+let speakTok = 0, speaking = 0, typeT = null, capHideT = null, lastInput = 0;
+let sugg = [], hl = 0;
+const KEYWORDS = { hoy: 'hoy prioridades dia nucleo sol', plan: 'plan agenda objetivos proyectos calendario eventos', rutina: 'rutina habitos checklist racha', finanzas: 'finanzas dinero gastos ingresos inversion negocio presupuesto', salud: 'salud nutricion comida calorias entreno gym sueño peso', aprendizaje: 'aprendizaje estudio habilidades ingles horas', evolucion: 'evolucion progreso informes comparativa', ajustes: 'ajustes configuracion nube cuenta' };
+const sentence = s => s ? s.charAt(0) + s.slice(1).toLowerCase() : '';
+function paletteItems() {
+  if (!M) return [];
+  const it = ['hoy', ...M.mods].map(k => ({ k, l: label(k), c: ACC[k], st: k === 'hoy' ? `${M.prioTotal - M.prioDone} prioridades pendientes` : sentence(SUB[k] ? SUB[k]() : '') }));
+  it.push({ k: 'ajustes', l: 'Ajustes', c: '#8B89B3', st: 'Nube, apariencia y secciones' });
+  return it;
+}
+function renderSugg() {
+  const q = norm($('#nxQ').value.trim()), all = paletteItems();
+  sugg = q ? all.filter(s => norm(s.l + ' ' + (KEYWORDS[s.k] || '')).includes(q)) : all; hl = 0;
+  $('#nxSugg').innerHTML = sugg.map((s, i) => `<button data-k="${s.k}" class="${i === hl ? 'hl' : ''}" style="--c:${s.c}"><span class="sw"></span>${s.l}<span class="st">${s.st}</span></button>`).join('') +
+    `<div class="tip">${sugg.length ? 'Enter para abrir' : 'Pulsa Enter y lo intento entender'} · prueba «informe», «modo foco» o «abre salud»</div>`;
+  $('#nxSugg').hidden = false;
+}
+function openSearch() { $('#nxSearch').classList.add('open'); $('#nxQ').focus(); renderSugg(); }
+function closeSearch() { $('#nxSearch').classList.remove('open'); $('#nxSugg').hidden = true; $('#nxQ').value = ''; $('#nxQ').blur(); }
+function goSection(k) { closeSearch(); APP().go(k); }
+function command(raw) {
+  const q = norm((raw || '').trim()); if (!q) return false;
+  const mins = (q.match(/(\d{1,3})/) || [])[1];
+  if (/foco|enfoque|concentr/.test(q) && !/salir|termina|para|deten/.test(q)) { closeSearch(); enterFocus(mins ? clamp(+mins, 1, 180) : 25); return true; }
+  if (/^(salir|terminar|termina|parar|para|detener|stop)\b/.test(q) || /(salir|termina|para|deten).*(foco|enfoque)/.test(q)) { closeSearch(); if (focusMode.on) exitFocus(); else say('No hay ninguna sesión de foco activa.'); return true; }
+  if (/sincroniz/.test(q)) { closeSearch(); syncNow(); return true; }
+  if (/informe|resumen|como voy|que tengo|hola|nexa/.test(q)) { closeSearch(); brief(); return true; }
+  const all = paletteItems();
+  const hit = all.find(s => s.k !== 'hoy' && q.includes(norm(s.l))) || all.find(s => (KEYWORDS[s.k] || '').split(' ').some(w => w.length > 3 && q.includes(w)));
+  if (hit && q.length > 2 && (q.split(' ').length > 1 || norm(hit.l) === q)) { say(hit.k === 'hoy' ? 'Abriendo tu día.' : `Abriendo ${hit.l}.`); goSection(hit.k); return true; }
+  return false;
+}
+function wireUI() {
+  $('#nxQ').addEventListener('focus', () => { $('#nxSearch').classList.add('open'); renderSugg(); });
+  $('#nxQ').addEventListener('input', renderSugg);
+  $('#nxQ').addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); hl = (hl + (e.key === 'ArrowDown' ? 1 : -1) + sugg.length) % Math.max(1, sugg.length); $$('#nxSugg button').forEach((b, i) => b.classList.toggle('hl', i === hl)); }
+    if (e.key === 'Enter') { const v = $('#nxQ').value; if (command(v)) return; if (sugg[hl]) goSection(sugg[hl].k); }
+    if (e.key === 'Escape') { e.stopPropagation(); closeSearch(); }
+  });
+  $('#nxSearch .nx-box').addEventListener('click', e => { if (!$('#nxSearch').classList.contains('open')) { e.preventDefault(); openSearch(); } });
+  $('#nxSugg').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) { e.stopPropagation(); goSection(b.dataset.k); } });
+  document.addEventListener('click', e => { if (visible && !e.target.closest('#nxSearch')) { if ($('#nxSearch').classList.contains('open')) closeSearch(); } });
+  document.addEventListener('keydown', e => {
+    if (!visible) return;
+    lastInput = performance.now();
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openSearch(); return; }
+    if (e.key === 'Escape' && !document.getElementById('ov') && focusMode.on) exitFocus();
+  });
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SR) $('#nxMic').classList.add('ok');
+  $('#nxMic').addEventListener('click', e => {
+    e.preventDefault(); e.stopPropagation();
+    try {
+      const r = new SR(); r.lang = 'es-ES'; r.interimResults = false; r.maxAlternatives = 1;
+      $('#nxQ').placeholder = 'Te escucho…';
+      r.onresult = ev => { const said = ev.results[0][0].transcript; $('#nxQ').value = said; if (!command(said)) renderSugg(); };
+      r.onerror = () => { closeSearch(); say('No puedo usar el micrófono aquí. Escríbemelo y lo hago.'); };
+      r.onend = () => { $('#nxQ').placeholder = '¿A dónde vamos? «abre finanzas», «modo foco»…'; };
+      r.start();
+    } catch (err) { say('No puedo usar el micrófono aquí.'); }
+  });
+  $('#nxVoice').onclick = () => { if ($('#nxVoice').classList.contains('on')) stopVoice(); else brief(); };
+}
+
+/* ---- asistente: informe hablado con tus datos y subtítulos sin tarjeta ---- */
+const speakTime = t => { const [h, mm] = String(t).split(':').map(Number); return mm ? `${h} y ${mm}` : `${h} en punto`; };
+function briefing() {
+  const m = M, pend = m.prioTotal - m.prioDone, nm = m.name ? ', ' + m.name : '', f = m.fin;
+  const L = [[`${saludo()}${nm}.`, `${saludo()}${nm}.`]];
+  let t2 = pend ? `Tienes ${pend} prioridad${pend === 1 ? '' : 'es'} pendiente${pend === 1 ? '' : 's'}` : 'No tienes prioridades pendientes';
+  t2 += m.eventsToday ? ` y ${m.eventsToday} evento${m.eventsToday === 1 ? '' : 's'} hoy` : ' ni eventos hoy';
+  let s2 = t2;
+  if (m.next) { t2 += `. El próximo, a las ${m.next.time}: ${m.next.title}`; s2 += `. El próximo, a las ${speakTime(m.next.time)}: ${m.next.title}`; }
+  L.push([t2 + '.', s2 + '.']);
+  const parts = [];
+  if (m.habitsTotal) parts.push(`Llevas ${m.habitsDone} de ${m.habitsTotal} hábitos`);
+  if (m.streak) parts.push(`${parts.length ? 'una' : 'Llevas una'} racha de ${m.streak} día${m.streak === 1 ? '' : 's'}`);
+  let t3 = parts.length ? parts.join(' y ') + '.' : '', s3 = t3;
+  if (f.budget && f.exp / f.budget >= .9) { const p = Math.round(f.exp / f.budget * 100); t3 += ` Ojo: has usado el ${p} % del presupuesto.`; s3 += ` Ojo: has usado el ${p} por ciento del presupuesto.`; }
+  else if (m.salud.kcal) { const r = Math.max(0, m.salud.kcalGoal - m.salud.kcal); t3 += ` Te quedan ${fmt(r, 0)} kcal.`; s3 += ` Te quedan ${Math.round(r)} kilocalorías.`; }
+  if (t3.trim()) L.push([t3.trim(), s3.trim()]);
+  const close = APP().cloud() === 'ok' ? 'Todo está sincronizado. ¿Por dónde empezamos?' : '¿Por dónde empezamos?';
+  L.push([close, close]);
+  return L;
+}
+function typeCap(text) {
+  const el = $('#nxCap'); clearInterval(typeT); clearTimeout(capHideT);
+  $('#nxCaption').classList.add('on');
+  let n = 0; el.innerHTML = '<i></i>';
+  if (reduce) { el.textContent = text; return; }
+  typeT = setInterval(() => { n += 2; el.innerHTML = text.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<i></i>'; if (n >= text.length) { clearInterval(typeT); el.textContent = text; } }, 24);
+}
+function hideCap(ms) { clearTimeout(capHideT); capHideT = setTimeout(() => { $('#nxCaption').classList.remove('on'); $('#nxVoice').classList.remove('on'); }, ms); }
+function voiceES() { try { const vs = speechSynthesis.getVoices(); return vs.find(v => /^es[-_]ES/i.test(v.lang)) || vs.find(v => /^es/i.test(v.lang)) || null; } catch (e) { return null; } }
+function speakLines(lines) {
+  const tk = ++speakTok, synth = window.speechSynthesis;
+  try { if (synth) synth.cancel(); } catch (e) { /* nada */ }
+  $('#nxVoice').classList.add('on');
+  let i = 0;
+  const next = () => {
+    if (tk !== speakTok) return;
+    if (i >= lines.length) { speaking = 0; hideCap(2600); return; }
+    const [shown, said] = lines[i++]; typeCap(shown); speaking = 1;
+    if (synth && window.SpeechSynthesisUtterance) {
+      try {
+        const u = new SpeechSynthesisUtterance(said); u.lang = 'es-ES'; const v = voiceES(); if (v) u.voice = v; u.rate = 1.03; u.pitch = .92;
+        let done = false; const fin = () => { if (done) return; done = true; setTimeout(next, 260); };
+        u.onend = fin; u.onerror = fin; setTimeout(fin, 1800 + said.length * 80);
+        synth.speak(u); return;
+      } catch (e) { /* sin voz: solo subtítulos */ }
+    }
+    setTimeout(next, 1100 + shown.length * 50);
+  };
+  next();
+}
+function brief() { if (M) speakLines(briefing()); }
+function say(text) { speakLines([[text, text]]); }
+function stopVoice() { speakTok++; speaking = 0; try { speechSynthesis.cancel(); } catch (e) { /* nada */ } hideCap(0); }
+function syncNow() { if (APP().sync()) { syncUntil = performance.now() + 2400; say('Sincronizando con la nube…'); } else say('Para sincronizar, inicia sesión con Google en Ajustes.'); }
+
+/* ============ escena 3D: NEXA Universe ============ */
+let webgl = false, ready = false, failed = false, visible = false, booted = false, loopOn = false;
+let renderer, scene, camera, composer, bloom, reflector, floorMat, carousel, deco, sun, sunShell, sunGlow, corona, dataRing, tickRing, coreLight, particles, reticle, orbitMat, shockRing, focusRing, ringCv, ringTex, coreP = null;
+let TX = null, white = null, chipGeo = null, ribGeo = null;
+const items = [], lives = [], floorRings = [], sunRings = [], words = [], holoT = { value: 0 }, partT = { value: 0 };
+let pickables = [];
+let rot = 0, rotVel = 0, targetRot = null, zoom = 1, hoverKey = null, selKey = null, retA = 0, amp = 0, kick = 0, shockT = 0, morphA = 0, coreHov = 0;
+let camPos, camLook, camGoalPos, camGoalLook;
+const par = { x: 0, y: 0, tx: 0, ty: 0 };
+let dive = null, morph = null, busy = false, bootT0 = 0, liveIdx = 0;
+let railW = 88, sizeKey = '', histDepth = 0, skipPop = 0, queued = null, lastSig = '', builtShape = '', pendingBursts = [];
+const R = 6.4, FX = 1; // FX: capa que no se refleja en el suelo
+let RX = R, RZ = R, PS = 1, LS = 1, portrait = null;
+const C = (a, b, c) => b === undefined ? new THREE.Color(a).convertSRGBToLinear() : new THREE.Color(a, b, c);
+let v1, v2, v3, v4;
+const CORE_STATES = {
+  idle: { label: 'EN ESPERA', glow: .85, pulse: 1.1, ring: .6, part: .6, rings: 2 },
+  active: { label: 'ACTIVO', glow: 1, pulse: 1.8, ring: 1, part: 1, rings: 3 },
+  focus: { label: 'ENFOQUE', glow: .9, pulse: .8, ring: .35, part: .35, rings: 1 },
+  high: { label: 'ALTO RENDIMIENTO', glow: 1.25, pulse: 2.3, ring: 1.6, part: 1.4, rings: 3 },
+  rest: { label: 'DESCANSO', glow: .6, pulse: .7, ring: .3, part: .3, rings: 1 },
+  syncing: { label: 'SINCRONIZANDO', glow: 1.1, pulse: 3.2, ring: 2.6, part: 1.2, rings: 3 }
+};
+let coreState = 'idle', syncUntil = 0, ringDirty = true, stateCheck = 0;
+const cs = { glow: 1, pulse: 1.8, ring: 1, part: 1, rings: [1, 1, 1] };
+const focusMode = { on: false, t0: 0, dur: 1500, mission: '', lastSec: -1 };
+// orden de los módulos alrededor del núcleo (el mismo del prototipo aprobado)
+const MOD_ORDER = ['plan', 'rutina', 'finanzas', 'salud', 'aprendizaje', 'evolucion'];
+const itemOf = k => items.find(i => i.s.k === k);
+const mainEl = () => document.querySelector('.main');
+const lastDays = n => { const D = ['D', 'L', 'M', 'X', 'J', 'V', 'S']; return Array.from({ length: n }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (n - 1 - i)); return D[d.getDay()]; }); };
+const modsOf = m => MOD_ORDER.filter(k => (m.mods || []).includes(k));
+const habitSlots = m => clamp(m.habits.length, 1, 8);
+const shapeOf = m => modsOf(m).join(',') + '|' + habitSlots(m);
+
+/* ---- materiales holográficos ---- */
+const HOLO_V = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+const HOLO_F = `uniform sampler2D map; uniform float uT; uniform float uOp; uniform float uGain; uniform float uSeed; uniform float uRev;
+varying vec2 vUv;
+void main(){
+  if (vUv.y > uRev + 0.002) discard;
+  vec4 c = texture2D(map, vUv);
+  c.rgb = pow(c.rgb, vec3(2.2));
+  float edge = (1.0 - smoothstep(0.0, 0.035, abs(vUv.y - uRev))) * step(uRev, 0.999);
+  float band = fract(vUv.y * 0.6 - uT * 0.16 + uSeed);
+  float b = smoothstep(0.0, 0.05, band) * (1.0 - smoothstep(0.05, 0.1, band));
+  float scan = 0.88 + 0.12 * step(1.5, mod(gl_FragCoord.y, 3.0));
+  float fl = 0.97 + 0.03 * sin(uT * 21.0 + uSeed * 50.0) * sin(uT * 3.7 + uSeed * 9.0);
+  vec3 col = c.rgb * uGain * scan * fl * (1.0 + b * 0.5) + edge * vec3(0.75, 0.92, 1.0) * 1.8;
+  gl_FragColor = vec4(col, max(c.a, edge * 0.9) * uOp);
+}`;
+function holoMat(map, seed, gain = 1.22) {
+  return new THREE.ShaderMaterial({ uniforms: { map: { value: map }, uT: holoT, uOp: { value: 1 }, uGain: { value: gain }, uSeed: { value: seed }, uRev: { value: 0 } }, vertexShader: HOLO_V, fragmentShader: HOLO_F, transparent: true, depthWrite: false });
+}
+function canvasTex(c, srgb) { const t = new THREE.CanvasTexture(c); if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy()); return t; }
+function glowTex() { const c = mk(128, 128), x = c.getContext('2d'), g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.3, 'rgba(255,255,255,.35)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); }
+function beamTex() { const c = mk(4, 256), x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.7, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,.75)'); x.fillStyle = g; x.fillRect(0, 0, 4, 256); return new THREE.CanvasTexture(c); }
+function shadowTex() { const c = mk(128, 128), x = c.getContext('2d'); for (let i = 0; i < 16; i++) { const s = 128 * (1 - i / 16 * .8); x.fillStyle = 'rgba(0,0,0,.07)'; x.fillRect((128 - s) / 2, (128 - s) / 2, s, s); } return new THREE.CanvasTexture(c); }
+function labelCanvas(txt, col) {
+  const c = mk(512, 128), x = c.getContext('2d');
+  T(x, txt.toUpperCase(), 256, 64, { size: 50, w: 700, ls: 12, align: 'center', color: '#F4F8FF', glow: 16, glowColor: col });
+  x.save(); x.strokeStyle = rgba(col, .95); x.lineWidth = 3; x.shadowColor = col; x.shadowBlur = 10;
+  L(x, 106, 94, 240, 94); L(x, 272, 94, 406, 94);
+  x.fillStyle = col; x.beginPath(); x.moveTo(256, 86); x.lineTo(264, 94); x.lineTo(256, 102); x.lineTo(248, 94); x.closePath(); x.fill();
+  x.fillRect(100, 90, 4, 8); x.fillRect(408, 90, 4, 8); x.restore();
+  return c;
+}
+function wordCanvas(txt) { const c = mk(1024, 96), x = c.getContext('2d'); T(x, txt, 512, 62, { size: 46, w: 600, ls: 24, align: 'center', color: 'rgba(206,200,255,.62)' }); return c; }
+function tickCanvas() { const c = mk(1024, 16), x = c.getContext('2d'); x.fillStyle = '#fff'; for (let i = 0; i < 1024; i += 8) x.fillRect(i, i % 64 === 0 ? 0 : 6, i % 64 === 0 ? 3 : 2, i % 64 === 0 ? 16 : 10); return c; }
+function reticleCanvas() {
+  const c = mk(256, 256), x = c.getContext('2d'); x.strokeStyle = '#fff'; x.lineWidth = 3; const k = 34, a = 14, b = 242;
+  [[a, a, 1, 1], [b, a, -1, 1], [a, b, 1, -1], [b, b, -1, -1]].forEach(([X, Y, sx, sy]) => { x.beginPath(); x.moveTo(X, Y + sy * k); x.lineTo(X, Y); x.lineTo(X + sx * k, Y); x.stroke(); });
+  x.lineWidth = 1.5; x.globalAlpha = .6; x.setLineDash([6, 10]); x.beginPath(); x.arc(128, 128, 100, 0, TAU); x.stroke(); x.setLineDash([]);
+  x.globalAlpha = 1; for (let q = 0; q < 4; q++) { const an = q * Math.PI / 2 + Math.PI / 4; L(x, 128 + Math.cos(an) * 104, 128 + Math.sin(an) * 104, 128 + Math.cos(an) * 120, 128 + Math.sin(an) * 120); }
+  return c;
+}
+function coronaCanvas() {
+  const S = 512, c = mk(S, S), x = c.getContext('2d'); x.translate(S / 2, S / 2);
+  let sd = 7; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 110; i++) {
+    const a = i / 110 * TAU + rnd() * .05, len = 110 + rnd() * 140, w = .008 + rnd() * .018;
+    const g = x.createLinearGradient(0, 0, Math.cos(a) * len, Math.sin(a) * len); g.addColorStop(.3, 'rgba(255,255,255,.4)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.beginPath(); x.moveTo(Math.cos(a - w) * 70, Math.sin(a - w) * 70); x.lineTo(Math.cos(a) * len, Math.sin(a) * len); x.lineTo(Math.cos(a + w) * 70, Math.sin(a + w) * 70); x.closePath(); x.fill();
+  }
+  return c;
+}
+// texto que gira en el anillo del núcleo: solo datos reales
+function ringMsg() {
+  if (focusMode.on) { const rem = Math.max(0, focusMode.lastSec); return `ENFOQUE  ◆  ${focusMode.mission.toUpperCase()}  ◆  ${String(Math.floor(rem / 60)).padStart(2, '0')}:${String(rem % 60).padStart(2, '0')}  ◆  `; }
+  const m = M, pend = m.prioTotal - m.prioDone, p = [`NÚCLEO · ${CORE_STATES[coreState].label}`];
+  p.push(!m.prioTotal ? 'SIN PRIORIDADES HOY' : pend ? `${pend} PRIORIDAD${pend === 1 ? '' : 'ES'}` : 'PRIORIDADES HECHAS');
+  p.push(m.eventsToday ? `${m.eventsToday} EVENTO${m.eventsToday === 1 ? '' : 'S'}${m.next ? ' · PRÓXIMO ' + m.next.time : ''}` : 'SIN EVENTOS HOY');
+  if (m.habitsTotal) p.push(`HÁBITOS ${m.habitsDone}/${m.habitsTotal}`);
+  if (m.streak) p.push(`RACHA ${m.streak} DÍA${m.streak === 1 ? '' : 'S'}`);
+  return p.join('  ◆  ') + '  ◆  ';
+}
+function drawRingText() {
+  const x = ringCv.getContext('2d'), msg = ringMsg();
+  x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, 2048, 64);
+  x.font = `600 34px ${HF}`; if ('letterSpacing' in x) x.letterSpacing = '6px';
+  const w = x.measureText(msg).width, n = Math.max(1, Math.round(2048 / w)), sx = 2048 / (n * w);
+  x.save(); x.scale(sx, 1); x.fillStyle = '#FFE6EE'; x.shadowColor = ACC.hoy; x.shadowBlur = 8;
+  for (let i = 0; i < n; i++) x.fillText(msg, i * w, 44);
+  x.restore(); ringTex.needsUpdate = true;
+}
+function drawSub(it) {
+  const x = it.subCv.getContext('2d'), w = it.flags.warn; x.clearRect(0, 0, 512, 64);
+  T(x, SUB[it.s.k]() + (w ? ' · AVISO' : ''), 256, 42, { size: 27, w: 700, ls: 4, align: 'center', color: w ? '#FFC9B3' : W0, glow: 10, glowColor: w ? COL.warning : it.s.c });
+  it.subTex.needsUpdate = true;
+}
+
+/* ---- shaders del universo ---- */
+// suelo pulido: paneles, juntas, reflejo difuminado, luz de cada módulo y onda de escaneo
+const FLOOR = {
+  uniforms: { color: { value: null }, tDiffuse: { value: null }, textureMatrix: { value: null }, uTime: { value: 0 }, uBg: { value: null }, uR: { value: R }, uS: { value: null }, uBlur: { value: .0024 }, uBoot: { value: 1 }, uCubeP: { value: [] }, uCubeC: { value: [] } },
+  vertexShader: 'uniform mat4 textureMatrix; varying vec4 vUv; varying vec3 vW; void main(){ vUv = textureMatrix * vec4(position, 1.0); vW = (modelMatrix * vec4(position, 1.0)).xyz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+  fragmentShader: `uniform vec3 color; uniform sampler2D tDiffuse; uniform float uTime; uniform vec3 uBg; uniform float uR; uniform vec2 uS; uniform float uBlur; uniform float uBoot;
+uniform vec3 uCubeP[6]; uniform vec3 uCubeC[6];
+varying vec4 vUv; varying vec3 vW;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float seam(float d, float w){ float fw = fwidth(d) * 1.2; return 1.0 - smoothstep(w, w + fw, abs(d)); }
+void main(){
+  vec2 p = vW.xz; vec2 pe = p / uS; float r = length(pe); float rt = length(p); float a = atan(pe.y, pe.x) + 3.14159265;
+  float plat = uR + 2.9; float s = 0.0; float pid; vec3 base; float gloss;
+  if (r < plat) {
+    float b1 = 2.95, b2 = uR - 1.95, b3 = uR + 1.95;
+    s = max(s, seam(r - b1, .018)); s = max(s, seam(r - b2, .018)); s = max(s, seam(r - b3, .018)); s = max(s, seam(r - plat + .03, .03));
+    float band = r < b1 ? 0.0 : (r < b2 ? 1.0 : (r < b3 ? 2.0 : 3.0));
+    float nseg = band < 0.5 ? 1.0 : (band < 1.5 ? 12.0 : (band < 2.5 ? 24.0 : 36.0));
+    float seg = 6.2831853 / nseg; float idx = floor(a / seg); float edge = (seg * 0.5 - abs(a - idx * seg - seg * 0.5)) * r;
+    if (band > 0.5) s = max(s, seam(edge, .016));
+    pid = hash(vec2(band, idx));
+    base = vec3(0.016, 0.017, 0.036) * (0.82 + 0.36 * pid);
+    gloss = 0.5 + 0.12 * pid;
+  } else {
+    vec2 q = pe / 2.4; vec2 cell = floor(q); vec2 f = abs(fract(q) - 0.5) * 2.4; float d = 1.2 - max(f.x, f.y);
+    s = seam(d, .016); pid = hash(cell);
+    base = vec3(0.010, 0.011, 0.024) * (0.8 + 0.4 * pid);
+    gloss = 0.34;
+  }
+  vec2 uv = vUv.xy / vUv.w; float bl = uBlur * (0.7 + pid * 0.6);
+  vec3 refl = texture2D(tDiffuse, uv).rgb * 0.36;
+  refl += (texture2D(tDiffuse, uv + vec2(bl, 0.0)).rgb + texture2D(tDiffuse, uv - vec2(bl, 0.0)).rgb + texture2D(tDiffuse, uv + vec2(0.0, bl)).rgb + texture2D(tDiffuse, uv - vec2(0.0, bl)).rgb) * 0.1;
+  refl += (texture2D(tDiffuse, uv + vec2(bl, bl) * 1.7).rgb + texture2D(tDiffuse, uv - vec2(bl, bl) * 1.7).rgb + texture2D(tDiffuse, uv + vec2(bl, -bl) * 1.7).rgb + texture2D(tDiffuse, uv - vec2(bl, -bl) * 1.7).rgb) * 0.06;
+  float fade = 1.0 - smoothstep(plat, plat + 16.0, r);
+  vec3 col = base * (1.0 - s * 0.7);
+  col += vec3(1.0, 0.2, 0.4) * 0.2 * exp(-rt * 0.5) * (1.0 - s * 0.5);
+  for (int i = 0; i < 6; i++) { vec2 d = p - uCubeP[i].xz; col += uCubeC[i] * exp(-dot(d, d) * 0.2) * 0.065; }
+  float pr = mod(uTime * 3.0, 36.0); float wave = exp(-abs(r - pr) * 2.5) * (1.0 - pr / 36.0);
+  col += s * (wave * vec3(1.0, 0.3, 0.6) * 1.1 + vec3(0.32, 0.3, 0.95) * 0.045 * step(r, plat));
+  col += refl * color * gloss * (1.0 - s) * fade;
+  float br = uBoot * 48.0;
+  col += s * vec3(0.9, 0.5, 1.0) * 2.0 * exp(-abs(r - br) * 1.2) * step(uBoot, 0.999);
+  col *= 1.0 - smoothstep(br - 2.0, br + 0.5, r);
+  col = mix(uBg, col, 1.0 - smoothstep(plat + 8.0, 46.0, r));
+  gl_FragColor = vec4(col, 1.0);
+}`
+};
+// núcleo biométrico orgánico (Salud)
+const BLOB_V = `uniform float uT; uniform float uBeat; varying vec3 vN; varying vec3 vV; varying float vD;
+float n3(vec3 p){ return sin(p.x * 1.7 + uT * 0.9) * sin(p.y * 2.3 - uT * 0.7) * sin(p.z * 1.9 + uT * 0.5); }
+void main(){
+  vec3 p = position; float d = n3(p * 2.4) * 0.07 + n3(p * 4.1 + 3.0) * 0.035 + uBeat * 0.045;
+  p += normal * d; vD = d;
+  vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(p, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv;
+}`;
+const BLOB_F = `uniform vec3 uC; uniform float uGlow; uniform float uOp; varying vec3 vN; varying vec3 vV; varying float vD;
+void main(){
+  float fr = pow(1.0 - max(dot(vN, vV), 0.0), 2.0);
+  vec3 col = uC * (0.22 + max(vD, 0.0) * 5.0) + uC * fr * 2.2 * uGlow + vec3(0.8, 1.0, 1.0) * pow(fr, 4.0) * 0.6;
+  gl_FragColor = vec4(col, (0.32 + fr * 0.6) * uOp);
+}`;
+// órbita que se ilumina junto a cada módulo
+const ORBIT_V = 'varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+const ORBIT_F = `uniform vec3 uBase; uniform float uR; uniform float uA[6]; uniform float uK[6]; uniform vec3 uC[6]; uniform float uOp; varying vec2 vP;
+void main(){
+  float a = atan(-vP.y, vP.x); float d = abs(length(vP) - uR);
+  float core = exp(-pow(d / 0.028, 2.0)); float halo = exp(-pow(d / 0.2, 2.0));
+  vec3 col = uBase * core * 0.55; float al = core * 0.3; float hi = 0.0;
+  for (int i = 0; i < 6; i++) { float da = abs(mod(a - uA[i] + 3.14159265, 6.2831853) - 3.14159265); float g = exp(-da * da / 0.045) * uK[i]; col += uC[i] * g * (core * 2.6 + halo * 0.55); hi += g; }
+  al += hi * (core * 0.9 + halo * 0.35);
+  gl_FragColor = vec4(col, min(1.0, al) * uOp);
+}`;
+// línea de energía entre el núcleo y cada módulo
+const RIB_V = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+const RIB_F = `uniform float uT; uniform float uK; uniform float uB; uniform float uLen; uniform vec3 uC; varying vec2 vUv;
+void main(){
+  float e = 1.0 - abs(vUv.y - 0.5) * 2.0; e = e * e;
+  float p = fract(vUv.x * uLen * 0.45 - uT * 1.1); float dash = smoothstep(0.0, 0.08, p) * (1.0 - smoothstep(0.08, 0.4, p));
+  float burst = uB > 0.0 ? exp(-pow((vUv.x - (1.0 - uB)) * 9.0, 2.0)) * 3.0 : 0.0;
+  float a = (0.18 + dash * 0.9) * uK + burst;
+  gl_FragColor = vec4(uC * a * e, a * e);
+}`;
+// temporizador del modo foco alrededor del núcleo
+const FRING_V = 'varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+const FRING_F = `uniform float uP; uniform vec3 uC; uniform float uOp; varying vec2 vP;
+void main(){ float a = fract(atan(vP.x, vP.y) / 6.2831853 + 1.0); float on = step(a, uP); gl_FragColor = vec4(uC * (0.25 + on * 1.6), (0.16 + on * 0.84) * uOp); }`;
+
+/* ---- utilidades de material: el mismo lenguaje en todos los módulos ---- */
+const fx = o => { o.layers.set(FX); return o; };
+const metal = (col, rough = .3) => new THREE.MeshStandardMaterial({ color: C(col), metalness: .85, roughness: rough, envMapIntensity: .45 });
+const glassM = (col, op = .12, em = .06) => new THREE.MeshPhysicalMaterial({ color: col, emissive: col, emissiveIntensity: em, metalness: 0, roughness: .1, transparent: true, opacity: op, clearcoat: 1, clearcoatRoughness: .1, envMapIntensity: .9, depthWrite: false });
+const edgesOf = (geo, col, k = 2.2, op = .9) => new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), new THREE.LineBasicMaterial({ color: col.clone().multiplyScalar(k), transparent: true, opacity: op, toneMapped: false }));
+const glowM = (col, k = 1.5, op = 1) => new THREE.MeshBasicMaterial({ color: col.clone().multiplyScalar(k), transparent: true, opacity: op, toneMapped: false, depthWrite: false });
+const addM = (col, k = 1.5, op = 1) => new THREE.MeshBasicMaterial({ color: col.clone().multiplyScalar(k), transparent: true, opacity: op, toneMapped: false, depthWrite: false, blending: THREE.AdditiveBlending });
+const pot = n => n > 360 ? 512 : n > 180 ? 256 : 128;
+// pantalla holográfica de una cara: se vuelve a dibujar cuando cambian tus datos
+function holoPanel(it, fd, size, seed) {
+  const cv = mk(512, 512), cx = cv.getContext('2d'); fd.draw(cx);
+  const tex = canvasTex(cv), mat = holoMat(tex, seed), m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), mat); m.renderOrder = 2;
+  const pn = { mat, live: null, redraw: () => { cx.setTransform(1, 0, 0, 1, 0, 0); cx.clearRect(0, 0, 512, 512); fd.draw(cx); tex.needsUpdate = true; } };
+  if (fd.live) {
+    const [X, Y, W, H] = fd.live.r, cw = fd.live.size || pot(W), ch = fd.live.size || pot(H);
+    const lc = mk(cw, ch), lt = canvasTex(lc), lm = holoMat(lt, seed, 1.3);
+    const lp = new THREE.Mesh(new THREE.PlaneGeometry(size * W / 512, size * H / 512), lm);
+    lp.position.set(((X + W / 2) / 512 - .5) * size, -((Y + H / 2) / 512 - .5) * size, 0.006); lp.renderOrder = 3; m.add(fx(lp));
+    pn.live = { c: lc, x: lc.getContext('2d'), t: lt, mat: lm, fn: fd.live.fn, r: fd.live.r, fps: fd.live.fps || 20, last: -1e9, face: m, col: it.s.c, y0: 1 - (Y + H) / 512, ys: H / 512, it };
+    lives.push(pn.live);
+  }
+  it.panels.push(pn); return m;
+}
+// franja o placa holográfica: su contenido lo actualiza el propio módulo
+function holoMesh(it, cv, w, h, seed, gain) { const mat = holoMat(canvasTex(cv), seed, gain), m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.renderOrder = 2; it.panels.push({ mat, live: null }); return m; }
+
+/* ---- superficie que se convierte en la sección ---- */
+function makePortal(k, ph) {
+  const cv = mk(16, 16), tex = canvasTex(cv, false); tex.minFilter = THREE.LinearFilter; tex.generateMipmaps = false;
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), holoMat(tex, .37, 1.15)); mesh.visible = false; mesh.renderOrder = 9; mesh.layers.set(FX);
+  return { k, mesh, tex, ph, w: ph, h: ph, pu: 0 };
+}
+const freeAspect = () => Math.max(.3, (innerWidth - railW) / innerHeight);
+function preparePortal(P) { const aspect = freeAspect(); P.h = P.ph; P.w = P.ph * aspect; P.tex.image = portalCanvas(P.k, aspect); P.tex.needsUpdate = true; }
+const portalFor = k => k === 'hoy' ? coreP : itemOf(k).P;
+function keyModule(it) { it.obj.traverse(o => { if (o.isMesh && o !== it.P.mesh) o.userData.key = it.s.k; }); }
+function rebuildPickables() { pickables = [sun, sunShell]; items.forEach(it => { pickables.push(it.lab, it.sub); it.pivot.traverse(o => { if (o.userData.key && o.isMesh) pickables.push(o); }); }); }
+
+/* ---- los artefactos: misma base tecnológica, geometría propia y tus datos ---- */
+const BUILD = {
+  // PLAN · cubo temporal: capas de tiempo, calendario holográfico arriba y eventos dentro de su día
+  plan: it => {
+    const { col, s } = it, g = new THREE.Group(), N = 5, W = 1.8, Hs = .28, gap = .09, slabs = [];
+    for (let i = 0; i < N; i++) {
+      const sg = new THREE.Group(), y = .3 + i * (Hs + gap) + Hs / 2, geo = new THREE.BoxGeometry(W, Hs, W);
+      const m = new THREE.Mesh(geo, glassM(col, .12, .06)); m.renderOrder = 3;
+      const e = edgesOf(geo, col, i === N - 1 ? 2.6 : 1.7, .85);
+      sg.position.y = y; sg.add(m, e); g.add(sg); slabs.push({ sg, m, e, y });
+    }
+    const cal = holoPanel(it, FACE.calendar(s), W * .94, .31); cal.rotation.x = -Math.PI / 2; cal.position.y = Hs / 2 + .006; slabs[N - 1].sg.add(cal);
+    let chips = [];
+    const setData = () => {
+      chips.forEach(c => { c.parent.remove(c); c.material.dispose(); }); chips = []; const per = {};
+      M.events.forEach(ev => {
+        const layer = N - 1 - Math.min(N - 1, ev.day), n = per[layer] = (per[layer] || 0) + 1; if (n > 6) return;
+        const c = new THREE.Mesh(chipGeo, glowM(col.clone().lerp(white, .25), 2.4, .95)); c.position.set(-.5 + ((n - 1) % 3) * .5, 0, (n - 1) % 2 ? .3 : -.3); c.userData.key = s.k; slabs[layer].sg.add(c); chips.push(c);
+      });
+    };
+    setData();
+    return { obj: g, setData, portal: { y: 1.15, z: W / 2 + .12 }, spin: false, update(st) {
+      const op = st.rev * (1 - st.dim * .55);
+      slabs.forEach((sl, i) => {
+        sl.sg.position.y = sl.y + st.ex * i * .24 + st.hov * i * .035;
+        sl.sg.rotation.y = Math.sin(st.t * .35 + i * .7) * (.04 + st.hov * .05) + (i - 2) * st.ex * .08;
+        sl.m.material.opacity = .12 * op; sl.e.material.opacity = .85 * op;
+      });
+      chips.forEach((c, j) => { c.material.opacity = (.65 + .35 * Math.sin(st.t * 3 + j * 1.7)) * op; });
+    } };
+  },
+  // RUTINA · torre de disciplina: un segmento por hábito (hasta 8), se enciende al cumplirlo
+  rutina: it => {
+    const { col, s } = it, g = new THREE.Group(), N = habitSlots(M), tall = N > 6, Hs = tall ? .22 : .28, gap = tall ? .055 : .07, segs = [];
+    const eBase = col.clone().multiplyScalar(1.3), eLit = col.clone().lerp(white, .25).multiplyScalar(2.7);
+    for (let i = 0; i < N; i++) {
+      const w = 1.42 - i * (tall ? .07 : .08), y = .3 + i * (Hs + gap) + Hs / 2, sg = new THREE.Group(); sg.position.y = y;
+      const geo = new THREE.BoxGeometry(w, Hs, w);
+      const shell = new THREE.Mesh(geo, glassM(col, .12, .05)); shell.renderOrder = 3;
+      const fill = new THREE.Mesh(new THREE.BoxGeometry(w * .9, Hs * .78, w * .9), addM(col, 1.6, 0));
+      const e = edgesOf(geo, col, 1.6, .8);
+      const cv = mk(512, 96);
+      const strip = holoMesh(it, cv, w * .92, Hs * .62, .2 + i * .1, 1.15); strip.position.z = w / 2 + .006;
+      sg.add(shell, fill, e, strip); g.add(sg);
+      segs.push({ sg, shell, fill, e, cv, tex: strip.material.uniforms.map.value, y, lit: 0 });
+    }
+    const top = .3 + N * (Hs + gap) - gap;
+    const beamC = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, 1, 12).translate(0, .5, 0), addM(col.clone().lerp(white, .5), 2.2, .9)); beamC.position.y = .3; g.add(beamC);
+    const crown = new THREE.Mesh(new THREE.TorusGeometry(.42, .024, 8, 72), glowM(col, 2.4, .2)); crown.rotation.x = Math.PI / 2; crown.position.y = top + .2; g.add(crown);
+    let target = [], done = false;
+    const setData = () => {
+      target = segs.map((_, i) => M.habits[i] && M.habits[i][2] ? 1 : 0); done = M.habitsTotal > 0 && M.habitsDone === M.habitsTotal;
+      segs.forEach((sg, i) => { drawHabit(sg.cv.getContext('2d'), M.habits[i], s.c); sg.tex.needsUpdate = true; });
+    };
+    setData();
+    return { obj: g, setData, portal: { y: 1.25, z: .9 }, spin: false, update(st) {
+      let lit = 0; const op = st.rev * (1 - st.dim * .55);
+      segs.forEach((sg, i) => {
+        sg.lit = lerp(sg.lit, target[i] || 0, 1 - Math.pow(.02, st.dt)); lit += sg.lit;
+        sg.sg.position.y = sg.y + st.ex * i * .2 + st.hov * i * .02;
+        sg.sg.rotation.y = (i % 2 ? 1 : -1) * st.ex * .22 + Math.sin(st.t * .4 + i) * .03;
+        const k = sg.lit;
+        sg.shell.material.opacity = (.1 + k * .1) * op; sg.shell.material.emissiveIntensity = .05 + k * .55;
+        sg.fill.material.opacity = k * (.55 + Math.sin(st.t * 2 + i) * .07) * op;
+        sg.e.material.color.copy(eBase).lerp(eLit, k); sg.e.material.opacity = (.5 + k * .5) * op;
+      });
+      beamC.scale.y = Math.max(.001, lit / N * (top - .3) + st.ex * lit * .2); beamC.material.opacity = .9 * op;
+      crown.material.opacity = (done ? .85 + Math.sin(st.t * 3) * .15 : .18) * op; crown.rotation.z += st.dt * (done ? 1.2 : .2);
+      crown.position.y = top + .2 + st.ex * (N - 1) * .2;
+    } };
+  },
+  // FINANZAS · bóveda/reactor hexagonal: núcleo de capital, anillos de ingresos y gastos, seis pantallas
+  finanzas: it => {
+    const { col, s } = it, g = new THREE.Group(), Rv = 1.05, Hv = 1.7, y0 = 1.2, ap = Rv * Math.cos(Math.PI / 6);
+    const shell = new THREE.Mesh(new THREE.CylinderGeometry(Rv, Rv, Hv, 6, 1, true, Math.PI / 6), glassM(col, .08, .05)); shell.position.y = y0; shell.renderOrder = 3; g.add(shell);
+    const e = edgesOf(new THREE.CylinderGeometry(Rv, Rv, Hv, 6, 1, false, Math.PI / 6), col, 2.4, .95); e.position.y = y0; g.add(e);
+    const panels = [FACE.balance, FACE.presupuesto, FACE.movimientos, FACE.gasto, FACE.ingresos, FACE.ahorro].map((f, k) => { const m = holoPanel(it, f(s), .84, .4 + k * .13); m.userData.th = k * Math.PI / 3; g.add(m); return m; });
+    const core = new THREE.Mesh(new THREE.SphereGeometry(.24, 32, 32), glowM(col, 2.4, 1)); core.position.y = y0; g.add(core);
+    const wire = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(.42, 0)), new THREE.LineBasicMaterial({ color: col.clone().multiplyScalar(1.8), transparent: true, opacity: .6, toneMapped: false })); wire.position.y = y0; g.add(wire);
+    const ringG = new THREE.Group(); ringG.position.y = y0; g.add(ringG);
+    const inc = new THREE.Mesh(new THREE.TorusGeometry(1.36, .02, 8, 180), glowM(col, 1.9, .85)); inc.rotation.x = Math.PI / 2 + .1; ringG.add(inc);
+    const track = new THREE.Mesh(new THREE.TorusGeometry(1.5, .018, 8, 180), glowM(col, 1, .12)); track.rotation.x = Math.PI / 2 - .08; ringG.add(track);
+    let exp = null, warn = false; const warnC = C(COL.warning);
+    const setData = () => {
+      if (exp) { ringG.remove(exp); exp.geometry.dispose(); exp.material.dispose(); }
+      const f = M.fin, base = f.budget > 0 ? f.budget : f.inc > 0 ? f.inc : 0, frac = base ? clamp(f.exp / base, .02, 1) : .02; warn = f.budget > 0 && f.exp / f.budget >= .9;
+      exp = new THREE.Mesh(new THREE.TorusGeometry(1.5, .026, 8, 180, TAU * frac), glowM(warn ? warnC : col, 2.2, .95)); exp.rotation.x = Math.PI / 2 - .08; exp.userData.key = s.k; ringG.add(exp);
+    };
+    setData();
+    return { obj: g, setData, portal: { y: y0, z: ap + .14 }, spin: true, snap: Math.PI / 3, update(st) {
+      const r = ap * .97 + st.ex * .5, op = st.rev * (1 - st.dim * .55);
+      panels.forEach(m => { const th = m.userData.th; m.position.set(Math.sin(th) * r, y0, Math.cos(th) * r); m.rotation.y = th; });
+      shell.material.opacity = .08 * op * (1 - st.ex * .7); e.material.opacity = .95 * op * (1 - st.ex * .5);
+      inc.rotation.z += st.dt * (.25 + st.hov * .6); exp.rotation.z -= st.dt * (.18 + st.hov * .5);
+      ringG.scale.setScalar(1 + st.ex * .3);
+      inc.material.opacity = .85 * op; track.material.opacity = .12 * op; exp.material.opacity = (warn ? .7 + .3 * Math.sin(st.t * 4) : .95) * op;
+      core.scale.setScalar(1 + Math.sin(st.t * 2) * .06); core.material.opacity = op;
+      wire.rotation.y += st.dt * .5; wire.rotation.x += st.dt * .2; wire.material.opacity = .6 * op;
+    } };
+  },
+  // SALUD · núcleo biométrico: forma orgánica que late, anillos de entreno/nutrición/descanso y banda con tus cifras
+  salud: it => {
+    const { col, s } = it, g = new THREE.Group(), y0 = 1.25;
+    const blobMat = new THREE.ShaderMaterial({ uniforms: { uT: holoT, uBeat: { value: 0 }, uC: { value: col.clone() }, uGlow: { value: 1 }, uOp: { value: 1 } }, vertexShader: BLOB_V, fragmentShader: BLOB_F, transparent: true, depthWrite: false });
+    const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(.64, 8), blobMat); blob.position.y = y0; g.add(blob);
+    const heart = new THREE.Mesh(new THREE.SphereGeometry(.16, 24, 24), glowM(col.clone().lerp(white, .4), 2.4, .95)); heart.position.y = y0; g.add(heart);
+    const rings = [[.88, .45, .15, [0, 0, .12]], [1.01, -.55, .7, [.03, 0, 0]], [1.14, 1.15, -.35, [-.04, 0, .05]]].map(([r, rx, rz, hsl], j) => {
+      const grp = new THREE.Group(); grp.position.y = y0; grp.rotation.set(rx, 0, rz); g.add(grp);
+      const tint = col.clone().offsetHSL(hsl[0], hsl[1], hsl[2]);
+      const trk = new THREE.Mesh(new THREE.TorusGeometry(r, .014, 8, 160), glowM(tint, 1, .14)); grp.add(trk);
+      return { grp, trk, arcM: null, r, tint, spin: [.35, -.28, .22][j] };
+    });
+    const bandCv = mk(2048, 96), bandTex = canvasTex(bandCv, true); bandTex.wrapS = THREE.RepeatWrapping;
+    const band = new THREE.Mesh(new THREE.CylinderGeometry(1.34, 1.34, .3, 160, 1, true), new THREE.MeshBasicMaterial({ map: bandTex, color: C(1.25, 1.25, 1.25), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+    band.position.y = y0 - .02; g.add(fx(band));
+    const bpm = 62; // latido decorativo: la app no mide tu pulso
+    const setData = () => {
+      const h = M.salud, vals = [h.target ? h.sessions / h.target : 0, h.kcalGoal ? h.kcal / h.kcalGoal : 0, h.sleep != null ? h.sleep / 8 : 0];
+      rings.forEach((rg, j) => { if (rg.arcM) { rg.grp.remove(rg.arcM); rg.arcM.geometry.dispose(); rg.arcM.material.dispose(); } rg.arcM = new THREE.Mesh(new THREE.TorusGeometry(rg.r, .022, 8, 160, TAU * clamp(vals[j], .02, 1)), glowM(rg.tint, 2.2, .95)); rg.arcM.userData.key = s.k; rg.grp.add(rg.arcM); });
+      drawBand(bandCv.getContext('2d'), s.c); bandTex.needsUpdate = true;
+    };
+    setData();
+    return { obj: g, setData, portal: { y: y0, z: 1.55 }, spin: true, update(st) {
+      const ph = st.t * bpm / 60, f = ph - Math.floor(ph), op = st.rev * (1 - st.dim * .55);
+      const beat = reduce ? 0 : Math.exp(-Math.pow(f * 9, 2)) + .55 * Math.exp(-Math.pow((f - .2) * 9, 2));
+      blobMat.uniforms.uBeat.value = beat * (1 + st.hov * .6); blobMat.uniforms.uOp.value = op; blobMat.uniforms.uGlow.value = 1 + st.hov * .4 + st.ex * .3;
+      heart.scale.setScalar(1 + beat * .25); heart.material.opacity = .95 * op;
+      rings.forEach(rg => { if (!reduce) rg.grp.rotation.y += st.dt * rg.spin * (1 + st.hov); rg.grp.scale.setScalar(1 + st.ex * .42); rg.trk.material.opacity = .14 * op; rg.arcM.material.opacity = .95 * op; });
+      if (!reduce) bandTex.offset.x = (bandTex.offset.x + st.dt * .025) % 1;
+      band.material.opacity = op * (1 - st.dim * .3); band.scale.set(1 + st.ex * .3, 1, 1 + st.ex * .3);
+    } };
+  },
+  // APRENDIZAJE · archivo holográfico: una placa por día; las de los días que estudiaste se levantan y brillan
+  aprendizaje: it => {
+    const { col, s } = it, g = new THREE.Group(), N = 7, pw = 1.22, ph = 1.4, plates = [];
+    const drawer = edgesOf(new THREE.BoxGeometry(1.5, .26, 2.05), col, 1.3, .55); drawer.position.y = .2; g.add(drawer);
+    const tray = new THREE.Mesh(new THREE.BoxGeometry(1.5, .03, 2.05), glassM(col, .12, .05)); tray.position.y = .08; g.add(tray);
+    for (let i = 0; i < N; i++) {
+      const pg = new THREE.Group(), z = -.78 + i * .26; pg.position.z = z;
+      const geo = new THREE.BoxGeometry(pw, ph, .02), m = new THREE.Mesh(geo, glassM(col, .08, .04)); m.renderOrder = 3;
+      const e = edgesOf(geo, col, 1.6, .5); pg.add(m, e);
+      const p = { pg, m, e, z, act: 0, cv: null, tex: null };
+      if (i === N - 1) { const front = holoPanel(it, FACE.habilidades(s), 1.06, .77); front.position.set(0, -.08, .016); pg.add(front); }
+      else { p.cv = mk(256, 296); const tab = holoMesh(it, p.cv, pw * .92, ph * .92, .1 + i * .13, 1.15); tab.position.z = .014; pg.add(tab); p.tex = tab.material.uniforms.map.value; }
+      g.add(pg); plates.push(p);
+    }
+    let week = M.learn.week7;
+    const setData = () => { week = M.learn.week7; const dl = lastDays(N); plates.forEach((p, i) => { if (!p.cv) return; drawPlate(p.cv.getContext('2d'), dl[i], week[i] || 0, s.c, false); p.tex.needsUpdate = true; }); };
+    setData();
+    return { obj: g, setData, portal: { y: 1.1, z: 1.0 }, spin: false, update(st) {
+      const op = st.rev * (1 - st.dim * .55);
+      plates.forEach((p, i) => {
+        const h = week[i] || 0; p.act = lerp(p.act, h > 0 ? 1 : 0, 1 - Math.pow(.02, st.dt));
+        p.pg.position.y = .35 + ph / 2 + p.act * (.14 + Math.min(1.5, h) * .1) + st.hov * p.act * .08 + Math.sin(st.t * 1.1 + i * .8) * .012;
+        p.pg.position.z = p.z * (1 + st.ex * .7); p.pg.rotation.y = (i - 3) * st.ex * .05;
+        p.m.material.opacity = (.07 + p.act * .08) * op; p.m.material.emissiveIntensity = .04 + p.act * .3;
+        p.e.material.opacity = (.3 + p.act * .7) * op;
+      });
+      drawer.material.opacity = .55 * op; tray.material.opacity = .12 * op;
+    } };
+  },
+  // EVOLUCIÓN · estructura ascendente: plataformas en espiral, encendidas hasta tu cumplimiento de 30 días
+  evolucion: it => {
+    const { col, s } = it, g = new THREE.Group(), hx = new THREE.Group(), N = 7, plats = [], pts = [];
+    const back = holoPanel(it, FACE.radar(s), 1.3, .91); back.position.set(0, 1.2, -.86); g.add(back);
+    g.add(hx);
+    const spine = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, 2.3, 10).translate(0, 1.15, 0), glowM(col, 1.4, .5)); spine.position.y = .15; hx.add(spine);
+    for (let i = 0; i < N; i++) {
+      const a = -1.2 + i * .95, r = .72, y = .3 + i * .31, pg = new THREE.Group(); pg.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
+      const disk = new THREE.Mesh(new THREE.CylinderGeometry(.3, .3, .05, 28), glassM(col, .2, .1));
+      const rimM = new THREE.Mesh(new THREE.TorusGeometry(.31, .014, 6, 48), glowM(col, 2, .9)); rimM.rotation.x = Math.PI / 2;
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(.065, 12, 12), glowM(col.clone().lerp(white, .3), 2.6, 1)); dot.position.y = .07;
+      pg.add(disk, rimM, dot); hx.add(pg); plats.push({ pg, disk, rimM, dot, y, on: 0 }); pts.push(new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r));
+    }
+    const tubeAll = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, .014, 6), glowM(col, 1.2, .25)); hx.add(tubeAll);
+    const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(.22), glassM(col, .3, .3)); crystal.position.y = .3 + N * .31 + .14; hx.add(crystal);
+    crystal.add(edgesOf(new THREE.OctahedronGeometry(.22), col, 2.6, .9));
+    let tubeOn = null, reached = 0, full = false;
+    const setData = () => {
+      const prog = M.rut30 || 0; reached = Math.round(prog * N); full = prog >= .95;
+      if (tubeOn) { hx.remove(tubeOn); tubeOn.geometry.dispose(); tubeOn.material.dispose(); tubeOn = null; }
+      if (reached >= 2) { tubeOn = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.slice(0, reached)), 120, .024, 6), glowM(col, 2.4, .95)); tubeOn.userData.key = s.k; hx.add(tubeOn); }
+    };
+    setData();
+    return { obj: g, setData, portal: { y: 1.2, z: 1.05 }, spin: false, update(st) {
+      const op = st.rev * (1 - st.dim * .55);
+      plats.forEach((p, i) => {
+        p.on = lerp(p.on, i < reached ? 1 : 0, 1 - Math.pow(.02, st.dt));
+        p.disk.material.opacity = (.12 + p.on * .3) * op; p.disk.material.emissiveIntensity = .05 + p.on * .9;
+        p.rimM.material.opacity = (.25 + p.on * .75) * op; p.dot.material.opacity = p.on * op;
+        p.pg.position.y = p.y + Math.sin(st.t * 1.2 + i) * .012;
+      });
+      tubeAll.material.opacity = .25 * op; if (tubeOn) tubeOn.material.opacity = .95 * op;
+      crystal.rotation.y += st.dt * (.5 + st.hov * 2); crystal.material.opacity = .3 * op; crystal.material.emissiveIntensity = full ? 1.2 : .25 + st.hov * .3;
+      spine.material.opacity = (.45 + st.hov * .3) * op;
+      hx.scale.set(1 + st.ex * .45, 1 + st.ex * .15, 1 + st.ex * .45);
+    } };
+  }
+};
+
+/* ---- escena estática: suelo, sistema orbital y núcleo ---- */
+function initGL() {
+  if (typeof THREE === 'undefined') return false;
+  try { renderer = new THREE.WebGLRenderer({ canvas: $('#nxGl'), antialias: true, powerPreference: 'high-performance' }); } catch (e) { return false; }
+  const mobile = Math.min(innerWidth, innerHeight) < 700;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.75 : 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+  v1 = new THREE.Vector3(); v2 = new THREE.Vector3(); v3 = new THREE.Vector3(); v4 = new THREE.Vector3();
+  white = new THREE.Color(1, 1, 1); chipGeo = new THREE.BoxGeometry(.32, .07, .2);
+  ribGeo = new THREE.PlaneGeometry(1, .09); ribGeo.translate(.5, 0, 0); ribGeo.rotateX(-Math.PI / 2);
+  TX = { glow: glowTex(), beam: beamTex(), sh: shadowTex() };
+  scene = new THREE.Scene(); scene.background = C(COL.bg);
+  camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200); camera.layers.enable(FX);
+  camPos = new THREE.Vector3(0, 16, 22); camLook = new THREE.Vector3(0, 0.8, 0); camGoalPos = camPos.clone(); camGoalLook = camLook.clone();
+  if (THREE.RoomEnvironment) { const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new THREE.RoomEnvironment(), 0.04).texture; pm.dispose(); }
+  scene.add(new THREE.AmbientLight(C(0x6a64c8), 0.3));
+  const key = new THREE.DirectionalLight(C(0xc9c4ff), 0.65); key.position.set(-6, 12, 8); scene.add(key);
+  coreLight = new THREE.PointLight(C(ACC.hoy), 3, 14, 1.8); coreLight.position.set(0, 2.2, 0); scene.add(coreLight);
+
+  // ---- suelo ----
+  const floorGeo = new THREE.CircleGeometry(48, 160);
+  if (THREE.Reflector && !window.__noReflect) {
+    const rs = mobile ? 768 : 1024;
+    reflector = new THREE.Reflector(floorGeo, { shader: FLOOR, clipBias: 0.003, textureWidth: rs, textureHeight: rs, color: 0x8c8ca8 });
+    reflector.rotation.x = -Math.PI / 2; scene.add(reflector); floorMat = reflector.material;
+  } else {
+    floorMat = new THREE.ShaderMaterial({ uniforms: THREE.UniformsUtils.clone(FLOOR.uniforms), vertexShader: FLOOR.vertexShader, fragmentShader: FLOOR.fragmentShader });
+    const black = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1); black.needsUpdate = true;
+    floorMat.uniforms.tDiffuse.value = black; floorMat.uniforms.textureMatrix.value = new THREE.Matrix4(); floorMat.uniforms.color.value = new THREE.Color(0, 0, 0);
+    const f = new THREE.Mesh(floorGeo, floorMat); f.rotation.x = -Math.PI / 2; scene.add(f);
+  }
+  floorMat.extensions.derivatives = true;
+  floorMat.uniforms.uBg.value = C(COL.bg); floorMat.uniforms.uS.value = new THREE.Vector2(1, 1);
+  floorMat.uniforms.uCubeP.value = Array.from({ length: 6 }, () => new THREE.Vector3());
+  floorMat.uniforms.uCubeC.value = Array.from({ length: 6 }, () => new THREE.Color(0, 0, 0));
+
+  // ---- sistema orbital (anillos, marcas y palabras del suelo) ----
+  deco = new THREE.Group(); scene.add(deco);
+  const neonRing = (r, w, color, intensity, opacity = 1, segs = 160, start = 0, len = TAU, parent = deco) => {
+    const m = new THREE.Mesh(new THREE.RingGeometry(r - w / 2, r + w / 2, segs, 1, start, len), new THREE.MeshBasicMaterial({ color: C(color).multiplyScalar(intensity), transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));
+    m.rotation.x = -Math.PI / 2; m.position.y = 0.025; m.userData.op = opacity; parent.add(fx(m)); floorRings.push(m); return m;
+  };
+  neonRing(2.75, 0.06, ACC.hoy, 2.4, 1, 160, 0, TAU, scene);
+  neonRing(3.35, 0.03, 0xff6a9a, 1.4, .7, 160, 0, TAU, scene);
+  for (let i = 0; i < 4; i++) neonRing(4.2, 0.07, i % 2 ? 0x8b6bff : 0x5a8cff, 2.2, .9, 48, i * Math.PI / 2 + 0.28, Math.PI / 2 - 0.56);
+  neonRing(R + 1.9, 0.025, 0x8b6bff, 1.2, .55);
+  neonRing(R + 1.9, 0.05, 0xff5d8f, 2.2, .9, 64, 0.35, 0.5); neonRing(R + 1.9, 0.05, 0xff5d8f, 2.2, .9, 64, Math.PI + 0.35, 0.5);
+  neonRing(R + 2.87, 0.04, 0x6f7dff, 1.6, .6);
+  orbitMat = new THREE.ShaderMaterial({ uniforms: { uBase: { value: C(0xb9a8ff).multiplyScalar(1.3) }, uR: { value: R }, uA: { value: [0, 0, 0, 0, 0, 0] }, uK: { value: [0, 0, 0, 0, 0, 0] }, uC: { value: Array.from({ length: 6 }, () => new THREE.Color()) }, uOp: { value: 1 } }, vertexShader: ORBIT_V, fragmentShader: ORBIT_F, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+  const orbit = new THREE.Mesh(new THREE.RingGeometry(R - .45, R + .45, 256, 1), orbitMat); orbit.rotation.x = -Math.PI / 2; orbit.position.y = .028; deco.add(fx(orbit));
+  const tc = mk(1024, 1024), tx = tc.getContext('2d'), sc = 1024 / 8.4; tx.translate(512, 512); tx.strokeStyle = '#fff';
+  for (let i = 0; i < 72; i++) { const a = i / 72 * TAU, l = (i % 6 ? .09 : .19) * sc; tx.lineWidth = i % 6 ? 3 : 4; L(tx, Math.cos(a) * (3.8 * sc - l), Math.sin(a) * (3.8 * sc - l), Math.cos(a) * (3.8 * sc + l), Math.sin(a) * (3.8 * sc + l)); }
+  const tickM = new THREE.Mesh(new THREE.PlaneGeometry(8.4, 8.4), new THREE.MeshBasicMaterial({ map: canvasTex(tc, true), color: C(0xa99cff).multiplyScalar(1.1), transparent: true, opacity: .55, toneMapped: false, depthWrite: false }));
+  tickM.rotation.x = -Math.PI / 2; tickM.position.y = 0.026; tickM.userData.op = .55; deco.add(fx(tickM)); floorRings.push(tickM);
+  [['DISCIPLINA', -Math.PI / 2], ['PROGRESO', Math.PI * 0.16], ['EQUILIBRIO', Math.PI / 2], ['ENFOQUE', Math.PI * 0.84]].forEach(([w, a]) => {
+    const geo = new THREE.PlaneGeometry(3.6, 0.34); geo.rotateX(-Math.PI / 2);
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: canvasTex(wordCanvas(w), true), transparent: true, depthWrite: false, toneMapped: false }));
+    let th = Math.PI / 2 - a; if (Math.sin(a) < 0) th += Math.PI; m.rotation.y = th; m.userData.a = a; scene.add(fx(m)); floorRings.push(m); words.push(m); m.userData.op = 1;
+  });
+
+  // ---- NEXA Core: el sol ----
+  const disc = (r1, r2, h, y, m) => { const d = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, 96), m); d.position.y = y; scene.add(d); return d; };
+  disc(2.5, 2.62, 0.26, 0.13, metal(0x0e0f22));
+  disc(1.95, 2.08, 0.24, 0.38, metal(0x16172f, .26));
+  disc(1.45, 1.55, 0.14, 0.57, metal(0x1d1e3c, .22));
+  const rim = (r, y, col, k) => { const m = new THREE.Mesh(new THREE.TorusGeometry(r, 0.022, 10, 160), new THREE.MeshBasicMaterial({ color: C(col).multiplyScalar(k), toneMapped: false })); m.rotation.x = Math.PI / 2; m.position.y = y; scene.add(m); return m; };
+  rim(2.6, 0.26, ACC.hoy, 2.6); rim(2.06, 0.5, 0xff6a9a, 2); rim(1.53, 0.64, 0xffa0c0, 2.4);
+  const pad = new THREE.Mesh(new THREE.CircleGeometry(1.42, 64), new THREE.MeshBasicMaterial({ map: TX.glow, color: C(ACC.hoy).multiplyScalar(1.6), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  pad.rotation.x = -Math.PI / 2; pad.position.y = 0.645; scene.add(pad);
+  sun = new THREE.Mesh(new THREE.SphereGeometry(0.98, 96, 96), new THREE.ShaderMaterial({
+    uniforms: { t: { value: 0 }, a: { value: C(0xd8184f) }, b: { value: C(0xff9ab8) }, uAmp: { value: 0 } },
+    vertexShader: 'varying vec3 vN; varying vec3 vP; varying vec3 vV; void main(){ vN = normalize(normalMatrix * normal); vP = position; vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: `uniform float t; uniform vec3 a; uniform vec3 b; uniform float uAmp; varying vec3 vN; varying vec3 vP; varying vec3 vV;
+      float hash(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+      float noise(vec3 x){ vec3 i = floor(x); vec3 f = fract(x); f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(mix(hash(i), hash(i + vec3(1.0, 0.0, 0.0)), f.x), mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x), f.y),
+                   mix(mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x), mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x), f.y), f.z); }
+      float fbm(vec3 p){ float s = 0.0, m = 0.5; for (int i = 0; i < 4; i++) { s += m * noise(p); p *= 2.03; m *= 0.5; } return s; }
+      void main(){
+        vec3 p = normalize(vP);
+        float n = fbm(p * 3.2 + vec3(0.0, t * 0.2, t * 0.08)); float n2 = fbm(p * 7.5 - vec3(t * 0.14, 0.0, t * 0.22));
+        float cells = smoothstep(0.32, 0.78, n * 0.65 + n2 * 0.45);
+        float fres = pow(1.0 - max(dot(vN, vV), 0.0), 2.2);
+        vec3 col = mix(a * 0.7, b, cells) + vec3(1.0, 0.85, 0.9) * pow(cells, 4.0) * 0.9;
+        float spec = pow(max(dot(vN, normalize(vec3(-0.45, 0.55, 0.7))), 0.0), 50.0);
+        col += fres * vec3(1.0, 0.35, 0.55) * 1.7 + spec * 1.6;
+        gl_FragColor = vec4(col * (1.3 + uAmp * 0.7), 1.0);
+      }`, toneMapped: false }));
+  sun.position.y = 2.15; sun.userData.key = 'hoy'; scene.add(sun);
+  sunShell = new THREE.Mesh(new THREE.SphereGeometry(1.06, 64, 64), new THREE.MeshPhysicalMaterial({ color: C(0xffc0d0), metalness: 0, roughness: .05, transparent: true, opacity: .12, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: 1.2, depthWrite: false }));
+  sunShell.position.copy(sun.position); sunShell.userData.key = 'hoy'; scene.add(sunShell);
+  sunGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: TX.glow, color: C(ACC.hoy).multiplyScalar(1.2), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  sunGlow.scale.set(5.2, 5.2, 1); sunGlow.position.copy(sun.position); scene.add(fx(sunGlow));
+  corona = new THREE.Sprite(new THREE.SpriteMaterial({ map: canvasTex(coronaCanvas()), color: C(0xff5a86), transparent: true, opacity: .42, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  corona.scale.set(6.2, 6.2, 1); corona.position.copy(sun.position); scene.add(fx(corona));
+  [[1.42, 0.022, 0.55, 0.2, 0xffd0dc], [1.58, 0.016, -0.45, 0.6, 0xff9fbc], [1.72, 0.012, 1.25, -0.3, 0xffffff]].forEach(([r, tb, rx, rz, col], i) => {
+    const m = new THREE.Mesh(new THREE.TorusGeometry(r, tb, 12, 180), new THREE.MeshStandardMaterial({ color: C(col), metalness: .9, roughness: .15, emissive: C(col), emissiveIntensity: .35, envMapIntensity: .8, transparent: true }));
+    const g = new THREE.Group(); g.position.copy(sun.position); g.rotation.set(rx, 0, rz); g.add(m); scene.add(g); sunRings.push({ g, m, s: [0.35, -0.28, 0.2][i] });
+  });
+  ringCv = mk(2048, 64); ringTex = canvasTex(ringCv, true); drawRingText();
+  dataRing = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.44, 160, 1, true), new THREE.MeshBasicMaterial({ map: ringTex, color: C(1.25, 1.25, 1.25), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, side: THREE.FrontSide }));
+  dataRing.position.y = 2.25; scene.add(fx(dataRing));
+  const tt = canvasTex(tickCanvas(), true); tt.wrapS = THREE.RepeatWrapping; tt.repeat.x = 3;
+  tickRing = new THREE.Mesh(new THREE.CylinderGeometry(2.36, 2.36, 0.07, 160, 1, true), new THREE.MeshBasicMaterial({ map: tt, color: C(0xff8fb0).multiplyScalar(1.4), transparent: true, opacity: .75, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  tickRing.position.y = 1.9; scene.add(fx(tickRing));
+  focusRing = new THREE.Mesh(new THREE.RingGeometry(2.5, 2.6, 180, 1), new THREE.ShaderMaterial({ uniforms: { uP: { value: 1 }, uC: { value: C(ACC.hoy).multiplyScalar(1.5) }, uOp: { value: 0 } }, vertexShader: FRING_V, fragmentShader: FRING_F, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+  focusRing.rotation.x = -Math.PI / 2; focusRing.position.y = 2.15; focusRing.visible = false; scene.add(fx(focusRing));
+  shockRing = new THREE.Mesh(new THREE.RingGeometry(.97, 1, 160, 1), new THREE.MeshBasicMaterial({ color: C(ACC.hoy).multiplyScalar(2), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, side: THREE.DoubleSide }));
+  shockRing.rotation.x = -Math.PI / 2; shockRing.position.y = .03; shockRing.visible = false; scene.add(fx(shockRing));
+  coreP = makePortal('hoy', 1.6); coreP.mesh.position.set(0, 2.15, 2.5); scene.add(coreP.mesh);
+
+  // motas de luz, muy discretas (se estiran con la órbita)
+  const N = 180, pos = new Float32Array(N * 3), aS = new Float32Array(N), aO = new Float32Array(N);
+  let sd = 3; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < N; i++) { const rr = 1.2 + Math.pow(rnd(), .7) * (R + 3), a = rnd() * TAU; pos[i * 3] = Math.cos(a) * rr; pos[i * 3 + 1] = rnd() * 5.5; pos[i * 3 + 2] = Math.sin(a) * rr; aS[i] = rnd(); aO[i] = rnd(); }
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pos, 3)); pg.setAttribute('aS', new THREE.BufferAttribute(aS, 1)); pg.setAttribute('aO', new THREE.BufferAttribute(aO, 1));
+  particles = new THREE.Points(pg, new THREE.ShaderMaterial({
+    uniforms: { uT: partT, uPR: { value: renderer.getPixelRatio() }, uC: { value: C(0xff9ab8).multiplyScalar(1.3) } },
+    vertexShader: 'attribute float aS; attribute float aO; uniform float uT; uniform float uPR; varying float vA; void main(){ vec3 p = position; p.y = mod(p.y + uT * (0.1 + aS * 0.22), 5.5); float f = smoothstep(0.0, 0.8, p.y) * (1.0 - smoothstep(4.0, 5.5, p.y)); vA = f * (0.3 + 0.7 * abs(sin(uT * (0.6 + aS) + aO * 6.28))); vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = (1.6 + aS * 2.4) * uPR * (20.0 / -mv.z); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: 'uniform vec3 uC; varying float vA; void main(){ float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard; float g = 1.0 - smoothstep(0.0, 0.5, r); gl_FragColor = vec4(uC * g * vA, g * vA); }',
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  scene.add(fx(particles));
+
+  carousel = new THREE.Group(); scene.add(carousel);
+  // retícula de fijado
+  reticle = new THREE.Sprite(new THREE.SpriteMaterial({ map: canvasTex(reticleCanvas(), true), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, toneMapped: false }));
+  reticle.renderOrder = 10; scene.add(fx(reticle));
+  makeComposer();
+  measureRail(); applyShape(freeAspect() < .85);
+  buildModules();
+  return true;
+}
+function makeComposer() {
+  if (!(THREE.EffectComposer && THREE.UnrealBloomPass) || window.__noBloom) return;
+  const gl2 = renderer.capabilities.isWebGL2;
+  const half = gl2 && renderer.extensions.has('EXT_color_buffer_float');
+  const opts = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBAFormat, type: half ? THREE.HalfFloatType : THREE.UnsignedByteType };
+  let rt;
+  if (gl2 && THREE.WebGLMultisampleRenderTarget && !window.__noMSAA) { rt = new THREE.WebGLMultisampleRenderTarget(4, 4, opts); rt.samples = 4; }
+  else rt = new THREE.WebGLRenderTarget(4, 4, opts);
+  composer = new THREE.EffectComposer(renderer, rt);
+  composer.setPixelRatio(renderer.getPixelRatio());
+  composer.addPass(new THREE.RenderPass(scene, camera));
+  bloom = new THREE.UnrealBloomPass(new THREE.Vector2(256, 256), 0.62, 0.42, 0.9);
+  composer.addPass(bloom);
+  if (THREE.GammaCorrectionShader) composer.addPass(new THREE.ShaderPass(THREE.GammaCorrectionShader));
+}
+// en vertical la órbita se estira para llenar la pantalla y los módulos crecen un poco
+function applyShape(p) {
+  portrait = p;
+  // en vertical: órbita más alta y estrecha, módulos y nombres más grandes (la barra lateral resta anchura)
+  if (p) { RX = R * .77; RZ = R * 1.36; PS = 1.34; LS = 1.85; } else { RX = R; RZ = R; PS = 1; LS = 1; }
+  if (!scene) return;
+  floorMat.uniforms.uS.value.set(RX / R, RZ / R);
+  deco.scale.set(RX / R, 1, RZ / R); particles.scale.set(RX / R, 1, RZ / R);
+  words.forEach(m => { const a = m.userData.a; m.position.set(Math.cos(a) * (RX + 2.38), 0.03, Math.sin(a) * (RZ + 2.38)); });
+  items.forEach(it => { it.pivot.scale.setScalar(PS); it.lab.scale.set(2.5 * LS, .625 * LS, 1); it.sub.scale.set(2.5 * LS, .3125 * LS, 1); });
+}
+
+/* ---- módulos: uno por cada área que usas, construidos con tus datos ---- */
+function disposeTree(o, keep) {
+  o.traverse(n => {
+    if (n.geometry && !keep.has(n.geometry)) n.geometry.dispose();
+    (n.material ? [].concat(n.material) : []).forEach(m => {
+      if (m.map && !keep.has(m.map)) m.map.dispose();
+      if (m.uniforms && m.uniforms.map && m.uniforms.map.value && !keep.has(m.uniforms.map.value)) m.uniforms.map.value.dispose();
+      m.dispose();
+    });
+  });
+}
+function clearModules() {
+  const keep = new Set([TX.glow, TX.beam, TX.sh, chipGeo, ribGeo]);
+  items.forEach(it => [it.pivot, it.lab, it.sub, it.rib].forEach(o => { if (o.parent) o.parent.remove(o); disposeTree(o, keep); }));
+  items.length = 0; lives.length = 0;
+}
+function buildModules() {
+  clearModules();
+  const mods = modsOf(M), N = mods.length, step = TAU / Math.max(1, N);
+  // con número par de módulos, el hueco queda justo delante del núcleo
+  const base = N === 1 ? -Math.PI * .75 : -Math.PI / 2 - (N % 2 === 0 ? step / 2 : 0);
+  mods.forEach((k, i) => buildModule(k, base + i * step));
+  builtShape = shapeOf(M); lastSig = JSON.stringify(M);
+  rebuildPickables(); ringDirty = true;
+}
+function buildModule(k, angle) {
+  const s = secOf(k), col = C(s.c);
+  const it = { s, col, angle, an: angle, panels: [], st: { t: 0, dt: 0, hov: 0, sel: 0, ex: 0, dim: 0, rev: 0 }, lift: 0, sc: booted ? 1 : .85, th: 0, burst: 0, flags: flagsOf(k),
+    edgeC: col.clone().multiplyScalar(2.2), warnC0: C(COL.warning), doneC: col.clone().lerp(white, .55).multiplyScalar(2.6) };
+  it.warnC = it.warnC0.clone().multiplyScalar(2.6);
+  const pivot = new THREE.Group(); pivot.position.set(Math.cos(angle) * RX, 0, Math.sin(angle) * RZ); pivot.scale.setScalar(PS); carousel.add(pivot); it.pivot = pivot;
+  // base tecnológica común
+  const sh = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 4.6), new THREE.MeshBasicMaterial({ map: TX.sh, transparent: true, opacity: .9, depthWrite: false, color: 0x000000 }));
+  sh.rotation.x = -Math.PI / 2; sh.position.y = 0.012; pivot.add(sh);
+  const p1 = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.3, 3.0), metal(0x0c0d1e, .3)); p1.position.y = 0.15; pivot.add(p1);
+  const p2 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.2, 2.5), metal(0x14152c, .24)); p2.position.y = 0.4; pivot.add(p2);
+  it.frame = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.53, 0.2, 2.53)), new THREE.LineBasicMaterial({ color: it.edgeC.clone(), transparent: true, opacity: .75, toneMapped: false }));
+  it.frame.position.y = 0.4; pivot.add(it.frame);
+  const frame1 = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3.02, 0.3, 3.02)), new THREE.LineBasicMaterial({ color: col.clone().multiplyScalar(1.1), transparent: true, opacity: .25, toneMapped: false }));
+  frame1.position.y = 0.15; pivot.add(frame1);
+  it.emit = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 2.3), new THREE.MeshBasicMaterial({ map: TX.glow, color: col.clone().multiplyScalar(1.5), transparent: true, opacity: .7, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  it.emit.rotation.x = -Math.PI / 2; it.emit.position.y = 0.505; pivot.add(fx(it.emit));
+  it.column = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.1, 2.7, 40, 1, true), new THREE.MeshBasicMaterial({ map: TX.beam, color: col.clone().multiplyScalar(1.1), transparent: true, opacity: .1, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
+  it.column.position.y = 1.85; pivot.add(fx(it.column));
+  it.light = new THREE.PointLight(col, 1.1, 5, 2); it.light.position.y = 1.6; pivot.add(it.light);
+  it.beam = new THREE.Mesh(new THREE.CylinderGeometry(.85, 1.15, 9, 40, 1, true), new THREE.MeshBasicMaterial({ map: TX.beam, color: col.clone().multiplyScalar(1.3), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
+  it.beam.position.y = 5; pivot.add(fx(it.beam));
+  // objeto propio del dominio
+  const api = BUILD[k](it); it.api = api; it.obj = api.obj; it.obj.position.y = .5; pivot.add(it.obj);
+  // superficie que se transformará en la pantalla de la sección
+  it.P = makePortal(k, 1.35); it.P.mesh.position.set(0, api.portal.y, api.portal.z); it.obj.add(it.P.mesh);
+  // nombre y dato secundario: solo texto holográfico
+  it.lab = new THREE.Sprite(new THREE.SpriteMaterial({ map: canvasTex(labelCanvas(s.l, s.c), true), transparent: true, opacity: 0, depthWrite: false, toneMapped: false }));
+  it.lab.center.set(.5, 0); it.lab.scale.set(2.5 * LS, .625 * LS, 1); it.lab.renderOrder = 6; scene.add(fx(it.lab));
+  it.subCv = mk(512, 64); it.subTex = canvasTex(it.subCv, true);
+  it.sub = new THREE.Sprite(new THREE.SpriteMaterial({ map: it.subTex, transparent: true, opacity: 0, depthWrite: false, toneMapped: false }));
+  it.sub.center.set(.5, 0); it.sub.scale.set(2.5 * LS, .3125 * LS, 1); it.sub.renderOrder = 6; scene.add(fx(it.sub));
+  drawSub(it);
+  // línea de energía hacia el núcleo
+  it.from = new THREE.Vector3(); it.to = new THREE.Vector3();
+  it.rib = new THREE.Mesh(ribGeo, new THREE.ShaderMaterial({ uniforms: { uT: holoT, uK: { value: .2 }, uB: { value: 0 }, uLen: { value: 4 }, uC: { value: col.clone().multiplyScalar(1.6) } }, vertexShader: RIB_V, fragmentShader: RIB_F, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  it.rib.renderOrder = 1; scene.add(fx(it.rib));
+  keyModule(it); p1.userData.key = p2.userData.key = k; it.lab.userData.key = it.sub.userData.key = k;
+  items.push(it);
+}
+
+/* ---- tus datos: se leen de la app y se reflejan en el universo ---- */
+function greet() { const g = $('#nxGreet'); if (g && M) g.textContent = saludo() + (M.name ? ', ' + M.name : ''); }
+function refresh(defer) {
+  let m; try { m = APP().data(); } catch (e) { console.error(e); return; }
+  const prev = M; M = m; RADAR.v = m.radar; greet();
+  if (!webgl) return;
+  const sig = JSON.stringify(m);
+  if (sig === lastSig) return;
+  if (shapeOf(m) !== builtShape) buildModules();
+  else {
+    items.forEach(it => { it.flags = flagsOf(it.s.k); it.api.setData(); it.panels.forEach(pn => { if (pn.redraw) pn.redraw(); }); keyModule(it); drawSub(it); });
+    lastSig = sig; rebuildPickables();
+  }
+  ringDirty = true;
+  // completar algo envía energía al núcleo
+  if (prev) {
+    if (m.habitsDone > prev.habitsDone && itemOf('rutina')) pendingBursts.push('rutina');
+    if (m.prioDone > prev.prioDone) pendingBursts.push('hoy');
+    if (m.goals[0] > prev.goals[0] && itemOf('plan')) pendingBursts.push('plan');
+    if (!busy && !defer) flushBursts();
+  }
+}
+function flushBursts() {
+  const list = [...new Set(pendingBursts)]; pendingBursts = [];
+  list.forEach((k, i) => setTimeout(() => { if (k === 'hoy') { kick = 1; shock(); } else burst(k); }, 250 + i * 380));
+}
+function burst(k) { const it = itemOf(k); if (it) it.burst = .0001; }
+function shock() { shockT = .0001; }
+
+/* ---- cámara: encaja el universo en el espacio libre, a la derecha de la barra ---- */
+function measureRail() {
+  const r = document.getElementById('rail'); railW = r ? Math.round(r.getBoundingClientRect().width) : 0;
+  document.body.style.setProperty('--nx-rail', railW + 'px');
+}
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  measureRail();
+  renderer.setSize(w, h, false);
+  if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
+  if (particles) particles.material.uniforms.uPR.value = renderer.getPixelRatio();
+  const p = freeAspect() < .85; if (p !== portrait) applyShape(p);
+  camera.aspect = w / h; camera.fov = portrait ? (window.__pfov || 36) : 34;
+  camera.updateProjectionMatrix();
+  refit();
+  [coreP, ...items.map(i => i.P)].forEach(P => { P.w = P.ph * freeAspect(); });
+  sizeKey = w + 'x' + h + ':' + railW;
+}
+function hud() {
+  const h = innerHeight, tp = root.querySelector('.nx-top').getBoundingClientRect(), hn = $('#nxHint').getBoundingClientRect();
+  return { top: tp.bottom + 6, bottom: Math.max(26, h - hn.top + 4) };
+}
+let probe = null, fitD = 24, fitLook = null, fitPitch = .54;
+function refit() {
+  if (!probe) probe = new THREE.PerspectiveCamera();
+  const w = innerWidth, h = innerHeight, H = hud(), fw = (w - railW) / w;
+  fitPitch = portrait ? 1.02 : 0.54;
+  fitLook = new THREE.Vector3(0, 0.7, 0);
+  const f = Math.max(0.2, (h - H.top - H.bottom) / h), fz = RZ * .87 + 2.2 * PS + .3 * LS;
+  const P0 = [[RX + 1.55 * PS, 0, 0], [-RX - 1.55 * PS, 0, 0], [RX * .5, 0, fz], [-RX * .5, 0, fz], [RX * .5, 3.0 * PS, -RZ * .87], [-RX * .5, 3.0 * PS, -RZ * .87], [0, 3.4, 0]];
+  // en vertical también cuentan la parte alta de los módulos laterales y sus nombres
+  if (portrait) P0.push([RX + 1.5 * PS, 2.0 * PS, 0], [-RX - 1.5 * PS, 2.0 * PS, 0], [RX + 1.05 * LS, .3 * LS, 2.15 * PS], [-RX - 1.05 * LS, .3 * LS, 2.15 * PS]);
+  const pts = P0.map(p => new THREE.Vector3(...p));
+  probe.fov = camera.fov; probe.aspect = camera.aspect; probe.near = .1; probe.far = 200; probe.updateProjectionMatrix();
+  const measure = d => {
+    probe.position.set(0, fitLook.y + Math.sin(fitPitch) * d, Math.cos(fitPitch) * d); probe.lookAt(fitLook); probe.updateMatrixWorld();
+    let minY = 9, maxY = -9, maxX = 0;
+    pts.forEach(p => { const v = p.clone().project(probe); minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y); maxX = Math.max(maxX, Math.abs(v.x)); });
+    return { ok: maxX < (portrait ? .94 : .88) * fw && (maxY - minY) / 2 < f * .97, minY, maxY };
+  };
+  let lo = 6, hi = 90;
+  for (let i = 0; i < 24; i++) { const m = (lo + hi) / 2; if (measure(m).ok) hi = m; else lo = m; }
+  fitD = hi;
+  const m = measure(fitD), centerFree = (H.bottom - H.top) / h, c = (m.minY + m.maxY) / 2;
+  // la vista se desplaza media barra a la derecha para centrarse en el espacio libre
+  camera.setViewOffset(w, h, -railW / 2, (centerFree - c) * h / 2, w, h);
+}
+function baseCamera() {
+  const d = fitD * zoom;
+  camGoalPos.set(par.x * 0.9, fitLook.y + Math.sin(fitPitch) * d + par.y * 0.6, Math.cos(fitPitch) * d);
+  camGoalLook.copy(fitLook);
+}
+
+/* ---- interacción ---- */
+let raycaster, ndc, down = null, dragged = false, pinch = null, idleAt = 0;
+const ptrs = new Map();
+const cursor = c => { renderer.domElement.className = 'nx-gl ' + c; };
+function pick(x, y) {
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set((x - r.left) / r.width * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
+  raycaster.setFromCamera(ndc, camera);
+  const hit = raycaster.intersectObjects(pickables, false)[0];
+  return hit ? hit.object.userData.key : null;
+}
+function onDown(e) {
+  lastInput = performance.now();
+  if (busy || !visible) return;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), z: zoom }; down = null; return; }
+  down = { x: e.clientX, y: e.clientY, rot }; dragged = false; targetRot = null; rotVel = 0;
+  try { e.target.setPointerCapture(e.pointerId); } catch (err) { /* nada */ }
+  hideHint();
+}
+function onMove(e) {
+  if (!visible) return;
+  if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  const w = innerWidth, h = innerHeight;
+  if (e.pointerType === 'mouse') { par.tx = (e.clientX / w - .5) * 2; par.ty = (e.clientY / h - .5) * 2; }
+  if (pinch && ptrs.size === 2) { const [a, b] = [...ptrs.values()]; zoom = clamp(pinch.z * pinch.d / Math.hypot(a.x - b.x, a.y - b.y), .7, 1.3); return; }
+  if (down) {
+    if (Math.abs(e.clientX - down.x) > 6 || Math.abs(e.clientY - down.y) > 6) dragged = true;
+    if (dragged) { lastInput = performance.now(); cursor('grabbing'); const nr = down.rot + (e.clientX - down.x) * 0.0065; rotVel = nr - rot; rot = nr; idleAt = performance.now(); }
+  } else if (e.pointerType === 'mouse' && !busy && e.target === renderer.domElement) {
+    const k = pick(e.clientX, e.clientY);
+    if (k !== hoverKey) { hoverKey = k; lastInput = performance.now(); cursor(k ? 'point' : 'grab'); }
+  }
+}
+function onUp(e) {
+  ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null;
+  if (!down || !visible) { down = null; return; }
+  cursor(hoverKey ? 'point' : 'grab');
+  if (!dragged) { const k = pick(e.clientX, e.clientY); if (k === 'hoy' && focusMode.on) exitFocus(); else if (k) APP().go(k); }
+  else if (Math.abs(rotVel) < 0.002) snap();
+  down = null;
+}
+const slot = () => TAU / Math.max(1, items.length);
+function snap() { const step = slot(); targetRot = Math.round(rot / step) * step; }
+function hideHint() { $('#nxHint').classList.add('gone'); }
+function frontRotFor(k) { const it = itemOf(k); let t = it.angle - Math.PI / 2; while (t - rot > Math.PI) t -= TAU; while (t - rot < -Math.PI) t += TAU; return t; }
+
+/* ---- del objeto a la pantalla: la superficie se proyecta y se convierte en la sección real ---- */
+function homography(q, w, h) {
+  const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
+  const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3, dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+  let a, b, c, d, e, f, g, hh;
+  if (Math.abs(dx3) < 1e-6 && Math.abs(dy3) < 1e-6) { a = x1 - x0; b = x2 - x1; c = x0; d = y1 - y0; e = y2 - y1; f = y0; g = 0; hh = 0; }
+  else { const det = dx1 * dy2 - dx2 * dy1; g = (dx3 * dy2 - dx2 * dy3) / det; hh = (dx1 * dy3 - dx3 * dy1) / det; a = x1 - x0 + g * x1; b = x3 - x0 + hh * x3; c = x0; d = y1 - y0 + g * y1; e = y3 - y0 + hh * y3; f = y0; }
+  return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${hh / h},0,0,1,0,${c},${f},0,1)`;
+}
+function portalQuad(k) {
+  const m = portalFor(k).mesh, w = innerWidth, h = innerHeight; m.updateWorldMatrix(true, false);
+  return [[-.5, .5], [.5, .5], [.5, -.5], [-.5, -.5]].map(([x, y]) => { v4.set(x, y, 0).applyMatrix4(m.matrixWorld).project(camera); return [(v4.x * .5 + .5) * w, (-v4.y * .5 + .5) * h]; });
+}
+// dónde termina la cámara al acercarse a la superficie del módulo (ya girado de frente)
+function diveGoal(k) {
+  const c = new THREE.Vector3();
+  if (k === 'hoy') c.copy(coreP.mesh.position);
+  else { const it = itemOf(k), an = it.angle - rot, sc = 1.06; c.set(Math.cos(an) * RX, PS * (.5 + .4 + it.api.portal.y * sc), Math.sin(an) * RZ + PS * it.api.portal.z * sc); }
+  const phW = portalFor(k).ph * (k === 'hoy' ? 1 : PS * 1.06), dist = (phW / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / .8;
+  return { p1: c.clone().add(new THREE.Vector3(0, phW * .22, dist)), l1: c };
+}
+function startDive(k) { const g = diveGoal(k); dive = { t0: performance.now(), dur: 700, p0: camPos.clone(), l0: camLook.clone(), p1: g.p1, l1: g.l1, k, morphed: false }; }
+function startMorph(k, dir) {
+  const el = mainEl();
+  document.body.style.setProperty('--nx-c', ACC[k]);
+  if (dir > 0) { document.body.classList.add('nx-morph'); el.scrollTop = 0; }
+  el.style.opacity = dir > 0 ? '0' : '1'; // el siguiente fotograma coloca la página sobre la superficie antes de pintarse
+  morph = { k, dir, t0: performance.now(), dur: dir > 0 ? 460 : 400 };
+}
+function updateMorph(now) {
+  const el = mainEl(), w = innerWidth - railW, h = innerHeight, c = ACC[morph.k];
+  const k = window.__morphK != null ? window.__morphK : clamp((now - morph.t0) / morph.dur, 0, 1);
+  morphA = morph.dir > 0 ? easeIO(k) : 1 - easeIO(k);
+  const q = portalQuad(morph.k).map(([x, y]) => [x - railW, y]), full = [[0, 0], [w, 0], [w, h], [0, h]];
+  el.style.transform = homography(q.map((p, j) => [lerp(p[0], full[j][0], morphA), lerp(p[1], full[j][1], morphA)]), w, h);
+  el.style.opacity = String(morph.dir > 0 ? clamp(k / .3, 0, 1) : clamp((1 - k) / .3, 0, 1));
+  const a = 1 - morphA; el.style.boxShadow = `0 0 0 1px ${rgba(c, .75 * a)}, 0 0 44px ${rgba(c, .42 * a)}, inset 0 0 90px ${rgba(c, .22 * a)}`;
+  if (k >= 1 && window.__morphK == null) finishMorph();
+}
+function finishMorph() {
+  const el = mainEl(), m = morph; morph = null; morphA = 0;
+  el.style.transform = ''; el.style.opacity = ''; el.style.boxShadow = '';
+  document.body.classList.remove('nx-morph');
+  if (m.dir > 0) {
+    hide(); busy = false; window.scrollTo(0, 0);
+    const hd = document.querySelector('#view-' + APP().view() + ' h1');
+    if (hd) { hd.setAttribute('tabindex', '-1'); hd.focus({ preventScroll: true }); }
+  } else { dive = null; selKey = null; busy = false; if (pendingBursts.length) flushBursts(); }
+  if (queued) { const q = queued; queued = null; q(); }
+}
+// abre una sección desde el mapa: el módulo gira de frente, la cámara se acerca y su superficie se convierte en la página
+function open(v, tab) {
+  if (!visible) return false;
+  if (busy) return true;
+  const A = APP();
+  if (!A.hasAccess(v)) { A.goView(v, tab); return true; }
+  closeSearch(); hideHint(); stopVoice(); lastInput = performance.now();
+  const k = v === 'hoy' || itemOf(v) ? v : null;
+  histDepth = A.push(v) ? 1 : 0; // solo volveremos atrás en el historial si este paso existe de verdad
+  if (!k || !webgl || !ready || reduce) { hide(); A.goView(v, tab); return true; }
+  A.goView(v, tab); // la sección se prepara oculta mientras la cámara viaja
+  busy = true; selKey = k; hoverKey = null; cursor('grab');
+  preparePortal(portalFor(k));
+  if (k === 'hoy') { setTimeout(() => startDive(k), 140); return true; }
+  targetRot = frontRotFor(k);
+  const wait = () => { if (!busy) return; if (targetRot === null || Math.abs(targetRot - rot) < 0.02) setTimeout(() => startDive(k), 140); else requestAnimationFrame(wait); };
+  wait();
+  return true;
+}
+// estados de reposo y de "módulo abierto", para entrar y salir sin saltos
+function snapIdle() {
+  selKey = null; hoverKey = null; dive = null; morph = null; targetRot = null; rotVel = 0; retA = 0; down = null;
+  items.forEach(it => { const st = it.st; st.sel = st.ex = st.dim = st.hov = 0; it.lift = 0; it.sc = 1; it.P.pu = 0; it.P.mesh.visible = false; it.beam.material.opacity = 0; });
+  if (coreP) { coreP.pu = 0; coreP.mesh.visible = false; }
+  if (items.length) rot = Math.round(rot / slot()) * slot();
+  if (camera && fitLook) { baseCamera(); camPos.copy(camGoalPos); camLook.copy(camGoalLook); }
+  if (renderer) cursor('grab');
+}
+function snapSelected(k) {
+  snapIdle(); selKey = k;
+  if (k !== 'hoy') {
+    rot = frontRotFor(k); const it = itemOf(k);
+    it.st.sel = it.st.ex = 1; it.lift = .4; it.sc = 1.06; it.th = -rot; it.P.pu = 1; it.beam.material.opacity = .3;
+    items.forEach(o => { if (o !== it) o.st.dim = 1; });
+  } else { coreP.pu = 1; items.forEach(o => { o.st.dim = 1; }); }
+  const g = diveGoal(k); camPos.copy(g.p1); camLook.copy(g.l1);
+  dive = { t0: -1e9, dur: 700, p0: g.p1.clone(), l0: g.l1.clone(), p1: g.p1, l1: g.l1, k, morphed: true };
+}
+function fadeIn() { root.classList.remove('nx-in'); void root.offsetWidth; root.classList.add('nx-in'); }
+// vuelve al mapa: si vienes de una sección con módulo, la página se recoge dentro de su superficie
+function show() {
+  if (failed) return false;
+  const A = APP();
+  if (visible) { if (A.view() !== 'mapa') A.setView('mapa'); return true; }
+  const from = A.view(), sy = window.scrollY;
+  if (A.closeModal) A.closeModal();
+  if (histDepth > 0) { histDepth = 0; skipPop++; A.setView('mapa', true); try { history.back(); } catch (e) { skipPop--; A.setView('mapa'); } }
+  else A.setView('mapa');
+  visible = true; root.hidden = false; document.body.classList.add('on-map');
+  refresh(true); // la energía de lo que completaste sale cuando la página ya se ha recogido
+  if (!ready) { fadeIn(); return true; }
+  measureRail(); if (sizeKey !== innerWidth + 'x' + innerHeight + ':' + railW) resize();
+  if (!reduce && (from === 'hoy' || itemOf(from)) && document.getElementById('view-' + from)) {
+    if (!booted) { booted = true; bootT0 = -1e7; setTimeout(hideHint, 9000); }
+    const el = mainEl();
+    snapSelected(from); preparePortal(portalFor(from));
+    document.body.classList.add('nx-morph'); el.scrollTop = sy;
+    busy = true; startMorph(from, -1);
+  } else { snapIdle(); if (!booted) bootNow(); fadeIn(); if (pendingBursts.length) setTimeout(flushBursts, MOTION.normal); }
+  startLoop();
+  return true;
+}
+function hide() {
+  if (!visible) return;
+  visible = false; root.hidden = true; document.body.classList.remove('on-map');
+  closeSearch(); stopVoice(); snapIdle();
+}
+// arranque: el suelo se escanea, el núcleo se enciende y la cámara entra desde arriba
+function bootNow() {
+  booted = true; bootT0 = performance.now();
+  baseCamera(); camPos.copy(camGoalPos).add(new THREE.Vector3(0, 7, 9)); camLook.copy(camGoalLook);
+  if (window.__still) { bootT0 = -1e7; camPos.copy(camGoalPos); }
+  setTimeout(hideHint, 9000);
+}
+// el botón atrás: ignora el paso atrás que hace el propio mapa y espera si hay una transición en curso
+function onPop(nav) {
+  if (skipPop > 0) { skipPop--; return true; }
+  histDepth = 0;
+  if (busy) { queued = nav; return true; }
+  return false;
+}
+
+/* ---- estado del núcleo, foco y reacciones ---- */
+function deriveState(now) {
+  const cl = APP().cloud();
+  if (now < syncUntil || cl === 'syncing' || cl === 'loading') return 'syncing';
+  if (focusMode.on) return 'focus';
+  const h = new Date().getHours(); if (h >= 23 || h < 6) return 'rest';
+  const parts = []; if (M.prioTotal) parts.push(M.prioDone / M.prioTotal); if (M.habitsTotal) parts.push(M.habitsDone / M.habitsTotal);
+  if (parts.length && parts.reduce((a, b) => a + b, 0) / parts.length >= .75) return 'high';
+  if (speaking || now - lastInput < 15000) return 'active';
+  return 'idle';
+}
+function enterFocus(min = 25) {
+  if (!webgl || !ready) { APP().toast('El modo foco necesita el mapa 3D'); return; }
+  if (!visible || busy) return;
+  focusMode.on = true; focusMode.t0 = performance.now(); focusMode.dur = Math.round(min * 60); focusMode.mission = (M.prioPending && M.prioPending[0]) || 'Tu siguiente tarea'; focusMode.lastSec = focusMode.dur; ringDirty = true;
+  say(`Modo foco: ${focusMode.mission}, ${min} minuto${min === 1 ? '' : 's'}. Toca el núcleo o pulsa Escape para salir.`);
+}
+function exitFocus(silent) { if (!focusMode.on) return; focusMode.on = false; ringDirty = true; if (!silent) say('Modo foco terminado.'); }
+function focusDone() { exitFocus(true); kick = 1; shock(); say('Sesión de foco completada. Buen trabajo.'); if (!visible) APP().toast('Sesión de foco completada · buen trabajo'); }
+// el foco sigue contando aunque abras una sección para trabajar
+setInterval(() => { if (focusMode.on && !visible && performance.now() - focusMode.t0 >= focusMode.dur * 1000) focusDone(); }, 1000);
+
+/* ---- bucle ---- */
+let last = performance.now(), fpsN = 0, fpsT = 0, quality = 2;
+function setQuality(q) {
+  quality = q;
+  const mobile = Math.min(innerWidth, innerHeight) < 700, rs = q === 2 ? (mobile ? 768 : 1024) : q === 1 ? 512 : 256;
+  renderer.setPixelRatio(q === 2 ? Math.min(window.devicePixelRatio || 1, mobile ? 1.75 : 2) : q === 1 ? Math.min(window.devicePixelRatio || 1, 1.25) : 1);
+  if (reflector && reflector.getRenderTarget) reflector.getRenderTarget().setSize(rs, rs);
+  resize();
+}
+function updateLives(now, t) {
+  const n = lives.length; if (!n) return;
+  let budget = quality > 1 ? 3 : 2;
+  for (let j = 0; j < n && budget > 0; j++) {
+    const lv = lives[(liveIdx + j) % n];
+    if (now - lv.last < 1000 / lv.fps) continue;
+    if (lv.it.st.rev < .05 || lv.mat.uniforms.uOp.value < .05) continue;
+    lv.face.getWorldPosition(v1); lv.face.getWorldDirection(v2); v3.copy(camera.position).sub(v1).normalize();
+    if (v2.dot(v3) < 0.12) continue;
+    const [X, Y, W, H] = lv.r, x = lv.x, cw = lv.c.width, ch = lv.c.height;
+    x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, cw, ch);
+    x.setTransform(cw / W, 0, 0, ch / H, -X * cw / W, -Y * ch / H);
+    x.save(); lv.fn(x, t, lv.col); x.restore();
+    lv.t.needsUpdate = true; lv.last = now; budget--;
+  }
+  liveIdx = (liveIdx + 1) % n;
+}
+function updatePortal(P, on, k60) {
+  P.pu = lerp(P.pu, on ? 1 : 0, k60 * .9);
+  const m = P.mesh;
+  if (!on && P.pu < .01) { m.visible = false; return; }
+  m.visible = true; const s = .25 + .75 * easeOut(clamp(P.pu, 0, 1));
+  m.scale.set(P.w * s, P.h * s, 1);
+  m.material.uniforms.uOp.value = clamp(P.pu, 0, 1) * (morph && morph.k === P.k ? 1 - morphA : 1);
+  m.material.uniforms.uRev.value = 1;
+}
+function startLoop() { if (loopOn || !ready) return; loopOn = true; last = performance.now(); requestAnimationFrame(frame); }
+function frame(now) {
+  if (!visible && !busy) { loopOn = false; return; } // si el mapa no se ve, no gastamos batería
+  requestAnimationFrame(frame);
+  window.__f = (window.__f || 0) + 1;
+  const dt = clamp((now - last) / 1000, 0, 0.05); last = Math.max(last, now); const t = now / 1000;
+  const boot = window.__bootAt != null ? window.__bootAt : reduce ? 1 : clamp((now - bootT0) / 3000, 0, 1);
+  if (quality > 0 && boot >= 1 && !window.__fixedQuality && !morph) { fpsN++; fpsT += dt; if (fpsN === 90) { if (fpsN / fpsT < (quality === 2 ? 27 : 17)) setQuality(quality - 1); fpsN = 0; fpsT = 0; } /* 30 fps (ahorro de batería del iPhone) no cuenta como lento */ }
+  if (now - stateCheck > 400) { stateCheck = now; const ns = deriveState(now); if (ns !== coreState) { coreState = ns; ringDirty = true; } }
+  if (focusMode.on) {
+    const rem = Math.max(0, Math.ceil(focusMode.dur - (now - focusMode.t0) / 1000));
+    if (rem !== focusMode.lastSec) { focusMode.lastSec = rem; ringDirty = true; }
+    if (rem <= 0) focusDone();
+  }
+  if (ringDirty) { drawRingText(); ringDirty = false; }
+
+  const k60 = 1 - Math.pow(0.001, dt);
+  if (targetRot !== null) { rot = lerp(rot, targetRot, 1 - Math.pow(0.0008, dt)); if (Math.abs(targetRot - rot) < 0.0005) { rot = targetRot; targetRot = null; } }
+  else if (!down) {
+    rot += rotVel; rotVel *= Math.pow(0.02, dt);
+    if (Math.abs(rotVel) < 0.0008 && rotVel !== 0) { rotVel = 0; snap(); }
+    if (!reduce && !selKey && !hoverKey && !focusMode.on && now - idleAt > 5000 && rotVel === 0 && targetRot === null && boot >= 1) rot += dt * 0.05;
+  }
+  holoT.value = t;
+
+  // NEXA Core: su estado modula luz, pulso, anillos y partículas
+  const S = CORE_STATES[coreState], ks = 1 - Math.pow(.2, dt);
+  cs.glow = lerp(cs.glow, S.glow, ks); cs.pulse = lerp(cs.pulse, S.pulse, ks); cs.ring = lerp(cs.ring, S.ring, ks); cs.part = lerp(cs.part, S.part, ks);
+  for (let j = 0; j < 3; j++) cs.rings[j] = lerp(cs.rings[j], j < S.rings ? 1 : 0, ks);
+  amp = lerp(amp, speaking ? .55 + .45 * Math.abs(Math.sin(t * 13) * Math.sin(t * 5.3 + 1)) : 0, 1 - Math.pow(0.0005, dt));
+  kick *= Math.pow(.06, dt);
+  coreHov = lerp(coreHov, hoverKey === 'hoy' ? 1 : 0, k60 * .6);
+  const sb = easeOut(clamp(boot / .35, 0, 1)), energy = amp + (cs.glow - 1) * .9 + kick * .9 + coreHov * .25;
+  sun.material.uniforms.t.value = t; sun.material.uniforms.uAmp.value = energy;
+  sun.scale.setScalar((.4 + .6 * sb) * (1 + amp * .05 + kick * .08)); sunShell.scale.copy(sun.scale);
+  const pulseS = (5.2 + Math.sin(t * cs.pulse * 1.6) * .35 + amp * 1.6 + kick * 1.6 + coreHov * .5) * sb; sunGlow.scale.set(pulseS, pulseS, 1);
+  sunGlow.material.opacity = .75 + .25 * cs.glow;
+  corona.material.rotation += dt * (.03 + cs.ring * .03 + amp * .4); corona.material.opacity = (.28 + cs.glow * .1 + amp * .35 + kick * .3) * sb;
+  const cr = (6.2 + amp * 1.2 + kick * 1.4) * sb; corona.scale.set(cr, cr, 1);
+  dataRing.rotation.y += dt * (.08 * cs.ring + amp * .5); tickRing.rotation.y -= dt * (.14 * cs.ring + amp * .6);
+  dataRing.material.opacity = clamp((boot - .3) / .3, 0, 1); tickRing.material.opacity = .75 * dataRing.material.opacity;
+  sunRings.forEach((o, j) => { if (!reduce) o.m.rotation.z += o.s * dt * (1.4 * cs.ring + amp * 5); o.m.material.opacity = cs.rings[j]; o.m.visible = cs.rings[j] > .02; o.g.scale.setScalar(.85 + .15 * cs.rings[j]); });
+  partT.value += dt * cs.part;
+  coreLight.intensity = (2.7 * cs.glow + Math.sin(t * cs.pulse * 1.6) * .5 + amp * 2.5 + kick * 3) * sb;
+  floorRings.forEach((m, j) => { m.material.opacity = m.userData.op * clamp(boot * 2.2 - .25 - j * .03, 0, 1) * (focusMode.on ? .45 : 1); });
+  floorRings[0].material.opacity *= .8 + Math.sin(t * 2.2) * .2;
+  floorMat.uniforms.uTime.value = t; floorMat.uniforms.uBoot.value = easeOut(clamp(boot / .6, 0, 1));
+  if (shockT > 0) { shockT += dt / 1.2; const s2 = 2.7 + easeOut(Math.min(1, shockT)) * 7.5; shockRing.visible = true; shockRing.scale.set(s2 * RX / R, s2 * RZ / R, 1); shockRing.material.opacity = (1 - shockT) * .9; if (shockT >= 1) { shockT = 0; shockRing.visible = false; } }
+  const fo = focusMode.on ? 1 : 0; focusRing.material.uniforms.uOp.value = lerp(focusRing.material.uniforms.uOp.value, fo, k60 * .5); focusRing.visible = focusRing.material.uniforms.uOp.value > .01;
+  if (focusMode.on) focusRing.material.uniforms.uP.value = clamp(focusMode.lastSec / focusMode.dur, 0, 1);
+
+  // módulos
+  const labOn = clamp((boot - .72) / .25, 0, 1);
+  items.forEach((it, i) => {
+    const st = it.st, isSel = selKey === it.s.k, isHov = hoverKey === it.s.k && !selKey, api = it.api, fl = it.flags;
+    const an = it.angle - rot, px = Math.cos(an) * RX, pz = Math.sin(an) * RZ, dl = Math.hypot(px, pz);
+    it.an = an; it.pivot.position.set(px, 0, pz); it.pivot.rotation.y = rot;
+    st.t = t; st.dt = dt;
+    st.rev = reduce ? 1 : clamp((boot - .25 - i * .07) / .4, 0, 1);
+    st.dim = lerp(st.dim, (selKey && !isSel) || focusMode.on ? 1 : 0, k60 * .9);
+    st.hov = lerp(st.hov, isHov ? 1 : 0, k60 * .7);
+    st.sel = lerp(st.sel, isSel ? 1 : 0, k60 * .7);
+    st.ex = lerp(st.ex, isSel ? 1 : 0, k60 * .55);
+    it.lift = lerp(it.lift, isSel ? .4 : isHov ? .18 : 0, k60 * .8);
+    it.sc = lerp(it.sc, (isSel ? 1.06 : isHov ? 1.03 : 1) * (.85 + .15 * easeOut(st.rev)), k60 * .8);
+    it.obj.position.y = .5 + it.lift + (reduce ? 0 : Math.sin(t * 1.1 + i * 1.1) * .035);
+    it.obj.scale.setScalar(it.sc);
+    // orientación: mira al frente, gira despacio si es radial y se encara al señalarlo
+    const near = a => a + TAU * Math.round((it.th - a) / TAU);
+    if (isSel) it.th = lerp(it.th, near(-rot), k60 * .95);
+    else if (api.spin) { if (isHov && api.snap) { const q = api.snap; it.th = lerp(it.th, Math.round((it.th + rot) / q) * q - rot, k60 * .45); } else if (!reduce) it.th += dt * (isHov ? .04 : .12); }
+    else { const osc = isHov || reduce ? 0 : Math.sin(t * .3 + i) * .22; it.th = lerp(it.th, near(-rot + osc), k60 * .35); }
+    it.obj.rotation.y = it.th; it.obj.rotation.z = st.hov * Math.sin(t * 1.3 + i) * .025;
+    api.update(st);
+    const op = 1 - st.dim * .65;
+    it.panels.forEach(pn => { pn.mat.uniforms.uRev.value = st.rev; pn.mat.uniforms.uOp.value = op; if (pn.live) { pn.live.mat.uniforms.uOp.value = op; pn.live.mat.uniforms.uRev.value = clamp((st.rev - pn.live.y0) / pn.live.ys, 0, 1); } });
+    // base: estados completado / aviso
+    const wv = fl.warn ? .55 + .45 * Math.sin(t * 3.2) : 0;
+    it.frame.material.color.copy(it.edgeC).lerp(it.doneC, fl.done ? .6 + .4 * Math.sin(t * 2) : 0).lerp(it.warnC, wv);
+    it.frame.material.opacity = (.75 + st.hov * .25) * st.rev * (1 - st.dim * .5);
+    it.emit.material.opacity = (.55 + st.hov * .35 + st.sel * .3 + (fl.done ? .3 : 0)) * st.rev * (1 - st.dim * .5);
+    it.column.material.opacity = (.07 + st.hov * .1 + st.sel * .14) * st.rev * (1 - st.dim * .7) * (.92 + Math.sin(t * 7 + i * 2) * .05 + Math.sin(t * 23 + i) * .03);
+    it.beam.material.opacity = lerp(it.beam.material.opacity, isSel ? .3 : 0, k60 * .7);
+    it.light.intensity = (1.1 + st.hov * .9 + st.sel * 1.2) * st.rev * (1 - st.dim * .6);
+    updatePortal(it.P, isSel, k60);
+    // luz del módulo sobre el suelo
+    if (i < 6) {
+      it.pivot.getWorldPosition(floorMat.uniforms.uCubeP.value[i]);
+      floorMat.uniforms.uCubeC.value[i].copy(fl.warn ? it.warnC0 : it.col).multiplyScalar(st.rev * (1 - st.dim * .6) * (1 + st.hov * .4 + st.sel * .7));
+    }
+    // nombre y dato secundario
+    it.lab.position.set(px, .04 + .3 * LS, pz + 2.15 * PS); it.sub.position.set(px, .04, pz + 2.15 * PS);
+    it.lab.material.opacity = labOn * (1 - st.dim * .8) * (.88 + st.hov * .12);
+    it.sub.material.opacity = labOn * st.hov * (1 - st.dim * .8);
+    // línea de energía con el núcleo
+    it.from.set(px / dl * 2.75, 0, pz / dl * 2.75); it.to.set(px - px / dl * 1.55 * PS, 0, pz - pz / dl * 1.55 * PS);
+    const ddx = it.to.x - it.from.x, ddz = it.to.z - it.from.z, len = Math.hypot(ddx, ddz);
+    it.rib.position.set(it.from.x, .035, it.from.z); it.rib.rotation.y = -Math.atan2(ddz, ddx); it.rib.scale.x = len;
+    const ru = it.rib.material.uniforms; ru.uLen.value = len; ru.uK.value = (.22 + st.hov * .9 + st.sel * .5) * st.rev * (1 - st.dim * .85);
+    if (it.burst > 0) { it.burst += dt / .7; if (it.burst >= 1) { it.burst = 0; kick = 1; shock(); } }
+    ru.uB.value = it.burst;
+    // órbita iluminada junto al módulo
+    if (i < 6) {
+      orbitMat.uniforms.uA.value[i] = Math.atan2(Math.sin(an), Math.cos(an));
+      orbitMat.uniforms.uK.value[i] = (.25 + st.hov * .95 + st.sel * .6) * st.rev * (1 - st.dim * .8);
+      orbitMat.uniforms.uC.value[i].copy(fl.warn ? it.warnC0 : it.col);
+    }
+  });
+  for (let i = items.length; i < 6; i++) { orbitMat.uniforms.uK.value[i] = 0; floorMat.uniforms.uCubeC.value[i].setRGB(0, 0, 0); }
+  orbitMat.uniforms.uOp.value = clamp(boot * 2 - .3, 0, 1) * (focusMode.on ? .5 : 1);
+  updatePortal(coreP, selKey === 'hoy', k60);
+
+  // retícula de fijado
+  const rk = hoverKey || selKey, rIt = rk && rk !== 'hoy' ? itemOf(rk) : null;
+  if (rk === 'hoy') { reticle.position.copy(sun.position); reticle.material.color.copy(C(ACC.hoy)).multiplyScalar(1.3); }
+  else if (rIt) { rIt.obj.getWorldPosition(reticle.position); reticle.position.y += 1.2 * PS; reticle.material.color.copy(rIt.flags.warn ? rIt.warnC0 : rIt.col).multiplyScalar(1.3); }
+  retA = lerp(retA, rk && !dive ? 1 : 0, k60 * .5);
+  reticle.material.opacity = retA * .9; reticle.material.rotation += dt * .5;
+  const rsz = (rk === 'hoy' ? 3.3 : 3.6 * PS) * (1.35 - retA * .35); reticle.scale.set(rsz, rsz, 1);
+
+  // cámara
+  par.x = lerp(par.x, reduce ? 0 : par.tx, k60 * .15); par.y = lerp(par.y, reduce ? 0 : par.ty, k60 * .15);
+  if (dive) {
+    const k = window.__diveK != null ? window.__diveK : Math.min(1, (now - dive.t0) / dive.dur), e = easeIO(k);
+    camPos.lerpVectors(dive.p0, dive.p1, e); camLook.lerpVectors(dive.l0, dive.l1, e);
+    if (k >= .58 && !dive.morphed && window.__diveK == null) { dive.morphed = true; startMorph(dive.k, 1); }
+  } else {
+    baseCamera();
+    const kc = 1 - Math.pow(boot < 1 ? 0.12 : 0.02, dt);
+    camPos.lerp(camGoalPos, kc); camLook.lerp(camGoalLook, kc);
+  }
+  camera.position.copy(camPos); camera.lookAt(camLook); camera.updateMatrixWorld();
+  if (morph) updateMorph(now);
+  if (visible) updateLives(now, t);
+  if (composer && quality > 0) composer.render(); else renderer.render(scene, camera);
+}
+
+/* ---- arranque: la app aparece al instante y el 3D se carga después (el service worker lo guarda para usarlo sin conexión) ---- */
+const LIB = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/';
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.async = false; s.crossOrigin = 'anonymous'; s.onload = res; s.onerror = () => rej(new Error(src)); document.head.appendChild(s); }); }
+async function loadThree() {
+  if (typeof THREE === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
+  await Promise.all(['shaders/CopyShader.js', 'shaders/LuminosityHighPassShader.js', 'shaders/GammaCorrectionShader.js', 'postprocessing/EffectComposer.js', 'environments/RoomEnvironment.js', 'objects/Reflector.js'].map(p => loadScript(LIB + p)));
+  await Promise.all(['postprocessing/RenderPass.js', 'postprocessing/ShaderPass.js', 'postprocessing/UnrealBloomPass.js'].map(p => loadScript(LIB + p)));
+}
+function glSupported() {
+  if (window.__noGL) return false;
+  try { const c = document.createElement('canvas'), gl = c.getContext('webgl2') || c.getContext('webgl'); if (!gl) return false; const x = gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); return true; } catch (e) { return false; }
+}
+// si el 3D no puede funcionar, la app sigue igual que siempre, empezando por Hoy
+function fail() {
+  failed = true; ready = false;
+  const ld = $('#nxLoader'); if (ld) ld.hidden = true;
+  if (visible) { hide(); APP().goView('hoy'); } else if (APP().rail) APP().rail();
+}
+async function start() {
+  const fonts = document.fonts ? Promise.race([Promise.all(['700 50px Rajdhani', '600 20px Rajdhani', '500 20px Rajdhani', "700 30px 'Unbounded'"].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2500))]).catch(() => {}) : Promise.resolve();
+  try { await Promise.all([loadThree(), fonts]); } catch (e) { fail(); return; }
+  try { webgl = initGL(); } catch (e) { console.error(e); webgl = false; }
+  if (!webgl) { fail(); return; }
+  ready = true;
+  raycaster = new THREE.Raycaster(); raycaster.layers.enableAll(); ndc = new THREE.Vector2();
+  const c = renderer.domElement;
+  c.addEventListener('pointerdown', onDown);
+  addEventListener('pointermove', onMove);
+  addEventListener('pointerup', onUp);
+  addEventListener('pointercancel', onUp);
+  c.addEventListener('wheel', e => { e.preventDefault(); lastInput = performance.now(); zoom = clamp(zoom * (1 + e.deltaY * .001), .7, 1.3); }, { passive: false });
+  addEventListener('resize', () => { if (visible) resize(); });
+  c.addEventListener('webglcontextlost', e => e.preventDefault());
+  const ld = $('#nxLoader'); ld.classList.add('out'); setTimeout(() => { ld.hidden = true; }, MOTION.slow);
+  if (visible) { resize(); bootNow(); startLoop(); }
+}
+function boot() {
+  wireUI();
+  measureRail();
+  try { M = APP().data(); RADAR.v = M.radar; greet(); } catch (e) { console.error(e); }
+  if (!glSupported()) { failed = true; return; }
+  start();
+  // con una conexión muy lenta no te dejamos esperando: entras en Hoy y el mapa queda listo para después
+  setTimeout(() => { if (!ready && !failed && visible && !document.getElementById('ov')) { hide(); APP().goView('hoy'); } }, 15000);
+}
+window.NEXA_HUB = {
+  boot, ok: () => !failed, ready: () => ready, visible: () => visible, busy: () => busy,
+  show, hide, open, refresh, onPop,
+  state: () => ({ mods: items.map(i => i.s.k), habitsDone: M && M.habitsDone, bursts: items.filter(i => i.burst > 0).map(i => i.s.k), pending: pendingBursts.slice(), core: coreState, focus: focusMode.on ? focusMode.lastSec : 0, quality }),
+  // posición en pantalla de un módulo o del núcleo (para pruebas y accesibilidad)
+  where: k => { if (!ready) return null; const o = k === 'hoy' ? sun : (itemOf(k) || {}).obj; if (!o) return null; o.getWorldPosition(v1); if (k !== 'hoy') v1.y += .9 * PS; v1.project(camera); return [Math.round((v1.x * .5 + .5) * innerWidth), Math.round((-v1.y * .5 + .5) * innerHeight)]; }
+};
+})();
 
 (() => {
 'use strict';
@@ -1257,7 +3044,8 @@ function seed() {
 }
 
 let S;
-try { const raw = localStorage.getItem(KEY); S = raw ? migrate(JSON.parse(raw)) : seed(); } catch (e) { S = seed(); }
+let FRESH = false; // primera vez en este dispositivo
+try { const raw = localStorage.getItem(KEY); S = raw ? migrate(JSON.parse(raw)) : (FRESH = true, seed()); } catch (e) { S = seed(); FRESH = true; }
 let saveTimer;
 function writeLocal() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* almacenamiento no disponible */ } }
 function save(touch = true) {
@@ -1393,17 +3181,138 @@ function metrics(a, b) {
   };
 }
 
+/* ================= puente con el mapa 3D (NEXA Universe) ================= */
+const HUB_DESC = {
+  hoy: 'El núcleo de tu día: prioridades, agenda y cómo vas.', plan: 'Objetivos, proyectos y tu calendario.', rutina: 'Tus no negociables del día, con historial.',
+  finanzas: 'Movimientos, inversiones y negocio.', salud: 'Nutrición, entrenamiento y sueño.', aprendizaje: 'Horas de estudio por habilidad.', evolucion: 'Cómo vas frente a la semana pasada.'
+};
+// Módulos del mapa: los de tu barra y, además, los que ya tienen datos.
+function hubMods() {
+  const L = layout();
+  const has = { plan: S.events.length + S.projects.length + S.goals.semanal.length, rutina: S.habits.length, finanzas: S.finances.length, salud: S.meals.length + S.exercises.length + S.sleep.length, evolucion: Object.keys(S.habitLog).length, aprendizaje: S.skillLog.length };
+  return SECTION_ORDER.filter(k => L.rail.includes(k) || has[k] > 0);
+}
+// Todo lo que el universo necesita, calculado con tus datos reales en un único sitio.
+function hubData() {
+  const t = TODAY, st = S.settings, ws = weekStart(t), ms = monthStart(t), wd = diffDays(t, ws);
+  const now = new Date(), hm = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const prio = S.priorities, prioDone = prio.filter(p => p.done).length;
+  const evT = S.events.filter(e => e.date === t).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+  const next = evT.find(e => e.time && e.time >= hm) || null;
+  const events = S.events.filter(e => e.date >= t && e.date <= addDays(t, 4)).map(e => ({ day: diffDays(e.date, t) }));
+  const monthDays = [...new Set(S.events.filter(e => e.date.slice(0, 7) === t.slice(0, 7)).map(e => +e.date.slice(8)))];
+  const gw = S.goals.semanal, goals = [gw.filter(g => g.done).length, gw.length];
+  const hs = habitsOn(t), dn = doneOn(t);
+  const habits = [...hs].sort((a, b) => (b.fixed ? 1 : 0) - (a.fixed ? 1 : 0)).map(h => [h.text, h.fixed ? 'Fijo' : 'Variable', dn.includes(h.id) ? 1 : 0]);
+  const m30 = metrics(addDays(t, -29), t), rut30 = m30.rutina == null ? null : m30.rutina / 100;
+  const isExp = f => f.type === 'expense', F = finIn(ms, t);
+  const daily14 = []; for (let i = 13; i >= 0; i--) { const d = addDays(t, -i); daily14.push(sum(S.finances.filter(f => f.date === d && isExp(f)), f => f.amount)); }
+  const cum = []; let acc = 0; for (let d = ms; d <= t; d = addDays(d, 1)) { acc += finIn(d, d).bal; cum.push(acc); }
+  const weeksInc = []; for (let i = 3; i >= 0; i--) { const a = addDays(ws, -7 * i); weeksInc.push(finIn(a, i ? addDays(a, 6) : t).inc); }
+  const W = finIn(ws, t), Wp = finIn(addDays(ws, -7), addDays(ws, -7 + wd));
+  const kcal = kcalOn(t), sessions = sessionsIn(ws, t);
+  const sl = [...S.sleep].sort((a, b) => b.date.localeCompare(a.date))[0] || null, sleep = sl && diffDays(t, sl.date) <= 1 ? sl.hours : null;
+  const week7 = []; for (let i = 6; i >= 0; i--) { const d = addDays(t, -i); week7.push(sum(S.skillLog.filter(l => l.date === d), l => l.hours)); }
+  const totSk = s => sum(S.skillLog.filter(l => l.skillId === s.id), l => l.hours);
+  const wkHours = sum(S.skillLog.filter(l => l.date >= ws), l => l.hours);
+  const part = arr => { const v = arr.filter(x => x != null); return v.length ? clamp(avg(v), 0, 1) : 0; };
+  return {
+    name: st.name || '', today: t, mods: hubMods(), labels: Object.fromEntries(Object.entries(SECTIONS).map(([k, v]) => [k, v.l])), desc: HUB_DESC,
+    prioDone, prioTotal: prio.length, prioPending: prio.filter(p => !p.done).map(p => p.text),
+    eventsToday: evT.length, next: next ? { time: next.time, title: next.title } : null, events, monthDays, goals,
+    projActive: S.projects.filter(p => p.status === 'Activo').length,
+    habits, habitsDone: habits.filter(h => h[2]).length, habitsTotal: habits.length, streak: comboStreak(), rut30,
+    fin: {
+      inc: F.inc, exp: F.exp, bal: F.bal, budget: st.budget || 0, daily14, cum, weeksInc, week: W.bal, prevWeek: Wp.bal,
+      spentToday: sum(S.finances.filter(f => f.date === t && isExp(f)), f => f.amount), countToday: S.finances.filter(f => f.date === t && isExp(f)).length,
+      incCount: S.finances.filter(f => f.type === 'income' && between(f.date, ms, t)).length,
+      last: [...S.finances].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map(f => [f.concept, `${f.category} · ${dayLabel(f.date)}`, f.type === 'income' ? f.amount : -f.amount])
+    },
+    salud: { kcal, kcalGoal: st.kcal || 2400, prot: protOn(t), protGoal: st.prot || 150, sessions, target: st.train || 4, sleep, energy: energyToday(), weight: lastWeight() },
+    learn: { week7, wkHours, month: m30.horas || 0, nSkills: S.skills.length, skills: S.skills.map(s => [s.name, s.cat || '', totSk(s)]).sort((a, b) => b[2] - a[2]).slice(0, 3) },
+    radar: [rut30 || 0, part([kcal ? clamp(kcal / (st.kcal || 2400), 0, 1) : null, sleep != null ? clamp(sleep / 8, 0, 1) : null, clamp(sessions / (st.train || 4), 0, 1)]),
+      F.inc > 0 ? clamp(F.bal / F.inc + .5, 0, 1) : F.exp > 0 ? clamp(1 - F.exp / (st.budget || 1), 0, 1) : 0, clamp(wkHours / 5, 0, 1), goals[1] ? goals[0] / goals[1] : 0]
+  };
+}
+
+/* ================= secciones, diseño personal y planes ================= */
+const SECTIONS = {
+  plan: { l: 'Plan', i: 'cal' }, rutina: { l: 'Rutina', i: 'dumbbell' }, finanzas: { l: 'Finanzas', i: 'coins' },
+  salud: { l: 'Salud', i: 'heart' }, evolucion: { l: 'Evolución', i: 'bars' }, aprendizaje: { l: 'Aprendizaje', i: 'book' }
+};
+const SECTION_ORDER = Object.keys(SECTIONS);
+const BLOCKS = {
+  tiles: { l: 'Resumen (casillas de arriba)', span: 6, sel: '#hoyTiles' },
+  kcal: { l: 'Calorías de hoy', span: 6, sel: '#kcalRing', needs: 'salud' },
+  dinero: { l: 'Dinero de hoy y del mes', span: 6, sel: '#hoyMoney', needs: 'finanzas' },
+  prio: { l: 'Prioridades de hoy', span: 2, sel: '#prioList' },
+  agenda: { l: 'Agenda de hoy', span: 2, sel: '#hoyAgenda', needs: 'plan' },
+  estado: { l: 'Estado general', span: 2, sel: '#hoyState', needs: 'salud' },
+  rutina: { l: 'Rutina de hoy', span: 3, sel: '#hoyRutina', needs: 'rutina' },
+  objetivos: { l: 'Objetivos de esta semana', span: 3, sel: '#hoyGoals', needs: 'plan' },
+  cierre: { l: 'Cierre del día', span: 6, sel: '#closeForm' }
+};
+const defaultLayout = () => ({ rail: ['plan', 'rutina', 'finanzas', 'salud', 'evolucion'], hoy: Object.keys(BLOCKS), hoyOff: [] });
+function layout() {
+  const L = S.settings.layout = S.settings.layout || defaultLayout();
+  L.rail = (L.rail || []).filter(k => SECTIONS[k]);
+  L.hoy = (L.hoy || []).filter(k => BLOCKS[k]); Object.keys(BLOCKS).forEach(k => { if (!L.hoy.includes(k)) L.hoy.push(k); });
+  L.hoyOff = (L.hoyOff || []).filter(k => BLOCKS[k]);
+  return L;
+}
+const inRail = k => k === 'hoy' || layout().rail.includes(k);
+
+// Planes: preparados pero desactivados (todo desbloqueado) hasta que haya cobros reales en las tiendas.
+const PAYWALL_ON = false;
+const PACKS = { finanzas: 'finanzas', salud: 'salud', evolucion: 'completo', aprendizaje: 'completo' };
+const PLAN_INFO = [
+  ['gratis', 'Gratis', '0 €', 'Hoy, Plan y Rutina'],
+  ['finanzas', 'Pack Finanzas', '1,99 €/mes', 'Movimientos, inversión con precios en vivo y negocio'],
+  ['salud', 'Pack Salud', '1,99 €/mes', 'Comida con lista de alimentos, entreno y sueño'],
+  ['completo', 'Completo', '3,99 €/mes', 'Todo, más Evolución, informes y Aprendizaje']
+];
+function hasAccess(v) {
+  if (!PAYWALL_ON || !PACKS[v]) return true;
+  const plan = S.settings.plan || 'gratis';
+  return plan === 'completo' || plan === PACKS[v];
+}
+function showPlans(v) {
+  const sh = modal(`<div class="sheet-h"><span class="ico sm c-amber">${ic('lock')}</span><h3>${SECTIONS[v] ? SECTIONS[v].l + ' es de pago' : 'Planes'}</h3><button class="icon-btn" id="plClose" aria-label="Cerrar" style="color:var(--ink)">${ic('x', 'i')}</button></div>
+    <div class="sheet-b"><div class="grid g2">${PLAN_INFO.map(p => `<div class="plan-card"><b>${p[1]}</b><span class="hint">${p[3]}</span><div class="price num">${p[2]}</div></div>`).join('')}</div></div>
+    <div class="sheet-f"><span class="hint">Los pagos se activarán cuando la app esté en las tiendas.</span></div>`);
+  sh.querySelector('#plClose').onclick = closeModal;
+}
+
+function renderRail() {
+  const L = layout();
+  const btn = (k, l, i) => `<button class="rail-btn ${view === k ? 'active' : ''}" data-view="${k}">${ic(i, 'i')}${l}${hasAccess(k) ? '' : `<span class="lock-dot">${ic('lock')}</span>`}</button>`;
+  const more = SECTION_ORDER.filter(k => !L.rail.includes(k));
+  const moreActive = view === 'ajustes' || more.includes(view);
+  $('#rail').innerHTML = (window.NEXA_HUB && window.NEXA_HUB.ok() ? btn('mapa', 'Mapa', 'orbit') : '') + btn('hoy', 'Hoy', 'home') + L.rail.map(k => btn(k, SECTIONS[k].l, SECTIONS[k].i)).join('')
+    + `<button class="rail-btn ${moreActive ? 'active' : ''}" id="moreBtn">${ic('dots', 'i')}Más</button>`;
+  const colors = { plan: 'c-plan', rutina: 'c-routine', finanzas: 'c-finance', salud: 'c-health', evolucion: 'c-evolution', aprendizaje: 'c-learning' };
+  $('#morePop').innerHTML = more.map(k => `<button data-view="${k}"><span class="ico sm ${colors[k]}">${ic(SECTIONS[k].i)}</span>${SECTIONS[k].l}${hasAccess(k) ? '' : ' ' + ic('lock')}</button>`).join('')
+    + `<button data-view="ajustes"><span class="ico sm c-violet">${ic('gear')}</span>Ajustes</button>`;
+}
+
 /* ================= navegación ================= */
 let view = 'hoy';
 const tabs = { plan: 'objetivos', rutina: 'hoy', fin: 'mov', salud: 'nut' };
 const VIEW_TAB = { plan: 'plan', rutina: 'rutina', finanzas: 'fin', salud: 'salud' };
+// go(): punto único de navegación. Si el mapa 3D está a la vista, él hace la transición física hacia la sección.
 function go(v, tab) {
+  const H = window.NEXA_HUB;
+  if (H && H.busy()) return;
+  if (v === 'mapa') { if (H && H.show()) return; v = 'hoy'; }
+  if (H && H.visible()) { if (H.open(v, tab)) return; H.hide(); }
+  goView(v, tab);
+}
+function goView(v, tab) {
   if (!document.getElementById('view-' + v)) v = 'hoy';
+  if (!hasAccess(v)) { showPlans(v); return; }
   view = v;
   if (tab && VIEW_TAB[v]) tabs[VIEW_TAB[v]] = tab;
   $$('.view').forEach(s => { s.hidden = s.id !== 'view-' + v; });
-  $$('.rail-btn[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
-  $('#moreBtn').classList.toggle('active', v === 'aprendizaje' || v === 'ajustes');
   $('#morePop').hidden = true;
   applyTabs();
   window.scrollTo(0, 0);
@@ -1417,9 +3326,11 @@ function applyTabs() {
     $$(`[data-panel^="${grp}-"]`).forEach(p => { p.hidden = p.dataset.panel !== `${grp}-${cur}`; });
   });
 }
-$$('.rail-btn[data-view], .more-pop [data-view]').forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
-$('#moreBtn').addEventListener('click', e => { e.stopPropagation(); $('#morePop').hidden = !$('#morePop').hidden; });
-document.addEventListener('click', e => { if (!e.target.closest('#morePop') && !e.target.closest('#moreBtn')) $('#morePop').hidden = true; });
+document.addEventListener('click', e => {
+  if (e.target.closest('#moreBtn')) { e.stopPropagation(); $('#morePop').hidden = !$('#morePop').hidden; return; }
+  const nav = e.target.closest('#rail [data-view], #morePop [data-view]'); if (nav) { go(nav.dataset.view); return; }
+  if (!e.target.closest('#morePop')) $('#morePop').hidden = true;
+});
 document.addEventListener('click', e => {
   const g = e.target.closest('[data-goto]'); if (g) { go(g.dataset.goto, g.dataset.tab); return; }
   const h = e.target.closest('[data-history]'); if (h) openHistory(h.dataset.history);
@@ -1428,6 +3339,35 @@ $$('[data-tabs]').forEach(seg => seg.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   tabs[seg.dataset.tabs] = b.dataset.tab; applyTabs(); render();
 }));
+
+// Reorganiza la pantalla Hoy en bloques sueltos que se pueden ocultar y ordenar.
+(function setupHoyBlocks() {
+  const host = document.createElement('div'); host.className = 'hoy-blocks'; host.id = 'hoyBlocks';
+  $('#hoyTiles').before(host);
+  for (const [k, b] of Object.entries(BLOCKS)) {
+    const el = k === 'tiles' ? $(b.sel) : $(b.sel).closest('.card');
+    el.dataset.block = k; el.classList.add('span-' + b.span);
+    if (k === 'tiles') { el.classList.remove('grid', 'g4'); el.classList.add('tiles-grid'); }
+    host.appendChild(el);
+  }
+  $$('#view-hoy > .grid').forEach(g => { if (!g.children.length) g.remove(); });
+})();
+function applyHoyLayout() {
+  const L = layout(), host = $('#hoyBlocks');
+  L.hoy.forEach(k => { const el = host.querySelector(`[data-block="${k}"]`); if (el) { host.appendChild(el); el.hidden = L.hoyOff.includes(k); } });
+  // Las tarjetas pequeñas seguidas se reparten la fila para no dejar huecos.
+  const vis = L.hoy.filter(k => !L.hoyOff.includes(k));
+  let run = [];
+  const flush = () => {
+    for (let i = 0; i < run.length; i += 3) {
+      const row = run.slice(i, i + 3), span = 6 / row.length;
+      row.forEach(k => { const el = host.querySelector(`[data-block="${k}"]`); el.classList.remove('span-2', 'span-3', 'span-6'); el.classList.add('span-' + span); });
+    }
+    run = [];
+  };
+  vis.forEach(k => { if (BLOCKS[k].span < 6) run.push(k); else flush(); });
+  flush();
+}
 
 /* ================= HOY ================= */
 function greeting() { const h = new Date().getHours(); return h < 6 ? 'Buenas noches' : h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches'; }
@@ -1443,7 +3383,11 @@ function renderHoy() {
   const todayEv = S.events.filter(e => e.date === TODAY).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
   const pend = S.priorities.filter(p => !p.done).length;
   const split = SPLIT[dow(TODAY)];
-  $('#briefText').textContent = `Tienes ${pend} prioridad${pend === 1 ? '' : 'es'}, ${split.startsWith('Descanso') ? 'día de descanso' : 'entrenamiento de ' + split.toLowerCase()} y ${todayEv.length} compromiso${todayEv.length === 1 ? '' : 's'}.`;
+  const parts = [`${pend} prioridad${pend === 1 ? '' : 'es'}`];
+  if (inRail('salud') && (!S.settings.needs || S.settings.needs.includes('entreno'))) parts.push(split.startsWith('Descanso') ? 'día de descanso' : 'entrenamiento de ' + split.toLowerCase());
+  parts.push(`${todayEv.length} compromiso${todayEv.length === 1 ? '' : 's'}`);
+  $('#briefText').textContent = 'Tienes ' + parts.slice(0, -1).join(', ') + ' y ' + parts[parts.length - 1] + '.';
+  applyHoyLayout();
   $('#sundayBanner').innerHTML = dow(TODAY) === 6
     ? `<div class="sunday"><span class="ico sm c-green">${ic('sparkle')}</span><div style="flex:1"><b>Tu informe semanal está listo.</b><div class="hint">Revisa la semana y fija las tres prioridades de la siguiente.</div></div><button class="btn green" data-goto="evolucion">Ver informe</button></div>` : '';
 
@@ -1455,11 +3399,13 @@ function renderHoy() {
   const mon = finIn(monthStart(TODAY), TODAY);
   const en = energyToday();
   const tile = (c, icon, lab, val, pct, v, tab) => `<button class="tile" style="--c:${c}" data-goto="${v}"${tab ? ` data-tab="${tab}"` : ''}><div class="top"><span class="ico" style="--c:${c}">${ic(icon, 'i')}</span><div style="min-width:0"><div class="lab">${lab}</div><div class="val num">${val}</div></div>${ic('chev', 'i chev')}</div>${bar(pct, c, 'thin')}</button>`;
-  $('#hoyTiles').innerHTML =
-    tile('var(--cyan)', 'list', 'Rutina', `${hd} / ${hs.length}`, hs.length ? hd / hs.length * 100 : 0, 'rutina') +
-    tile('var(--violet)', 'cal', 'Agenda', `${todayEv.length} evento${todayEv.length === 1 ? '' : 's'}`, todayEv.length ? passed / todayEv.length * 100 : 0, 'plan', 'agenda') +
-    tile('var(--amber)', 'wallet', 'Dinero', eur(spentToday), st.budget ? mon.exp / st.budget * 100 : 0, 'finanzas') +
-    tile('var(--green)', 'bolt', 'Energía', en ? `${en} / 10` : '— / 10', en ? en * 10 : 0, 'salud', 'sue');
+  const tl = [];
+  if (inRail('rutina')) tl.push(tile('var(--cyan)', 'list', 'Rutina', `${hd} / ${hs.length}`, hs.length ? hd / hs.length * 100 : 0, 'rutina'));
+  if (inRail('plan')) tl.push(tile('var(--violet)', 'cal', 'Agenda', `${todayEv.length} evento${todayEv.length === 1 ? '' : 's'}`, todayEv.length ? passed / todayEv.length * 100 : 0, 'plan', 'agenda'));
+  if (inRail('finanzas')) tl.push(tile('var(--amber)', 'wallet', 'Dinero', eur(spentToday), st.budget ? mon.exp / st.budget * 100 : 0, 'finanzas'));
+  tl.push(tile('var(--green)', 'bolt', 'Energía', en ? `${en} / 10` : '— / 10', en ? en * 10 : 0, inRail('salud') ? 'salud' : 'hoy', inRail('salud') ? 'sue' : ''));
+  $('#hoyTiles').innerHTML = tl.join('');
+  $('#hoyTiles').style.gridTemplateColumns = `repeat(${tl.length}, minmax(0, 1fr))`;
 
   // calorías
   const k = kcalOn(TODAY), goal = st.kcal, rem = Math.max(0, goal - k), pct = goal ? Math.round(k / goal * 100) : 0;
@@ -2223,7 +4169,7 @@ $('#importInput').addEventListener('change', e => {
   const rd = new FileReader();
   rd.onload = () => {
     try { const o = JSON.parse(rd.result); if (!o || o.v !== 2) throw new Error(); S = migrate(o); delete S.exportedAt; applyTheme(); commit(); $('#dataMsg').className = 'hint ok'; $('#dataMsg').textContent = 'Copia restaurada.'; }
-    catch (err) { $('#dataMsg').className = 'hint err'; $('#dataMsg').textContent = 'Ese archivo no es una copia de Agenda 2.0.'; }
+    catch (err) { $('#dataMsg').className = 'hint err'; $('#dataMsg').textContent = 'Ese archivo no es una copia de NEXA ni de Agenda.'; }
     e.target.value = '';
   };
   rd.readAsText(f);
@@ -2233,6 +4179,7 @@ $('#resetBtn').onclick = async () => {
   const keep = S.settings; S = blank(); S.settings = keep; commit(); toast('Datos borrados');
 };
 function renderAjustes() {
+  renderLayout();
   renderCloud();
   const st = S.settings;
   if (document.activeElement !== $('#setName')) $('#setName').value = st.name;
@@ -2445,8 +4392,92 @@ function renderCloud() {
 }
 window.addEventListener('online', () => { if (cloud.user && cloud.status !== 'ok') upload(); });
 
+
+/* ================= MIS SECCIONES y PREGUNTAS INICIALES ================= */
+function setSection(k, on) {
+  const L = layout();
+  if (on && !L.rail.includes(k)) {
+    L.rail.push(k); L.rail.sort((x, y) => SECTION_ORDER.indexOf(x) - SECTION_ORDER.indexOf(y));
+    Object.keys(BLOCKS).forEach(b => { if (BLOCKS[b].needs === k) L.hoyOff = L.hoyOff.filter(x => x !== b); });
+  }
+  if (!on) {
+    L.rail = L.rail.filter(x => x !== k);
+    Object.keys(BLOCKS).forEach(b => { if (BLOCKS[b].needs === k && !L.hoyOff.includes(b)) L.hoyOff.push(b); });
+  }
+}
+function moveIn(arr, k, d) { const i = arr.indexOf(k), j = i + d; if (i < 0 || j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; }
+function renderLayout() {
+  const L = layout(), box = $('#layoutBody'); if (!box) return;
+  const arrows = (grp, k, i, n, dis) => `<span class="lay-arrows"><button class="icon-btn" data-lay-move="${grp}:${k}:-1" aria-label="Subir" ${dis || i === 0 ? 'disabled' : ''}>${ic('up2')}</button><button class="icon-btn" data-lay-move="${grp}:${k}:1" aria-label="Bajar" ${dis || i === n - 1 ? 'disabled' : ''}>${ic('down2')}</button></span>`;
+  const secs = L.rail.concat(SECTION_ORDER.filter(k => !L.rail.includes(k)));
+  const secRows = secs.map(k => {
+    const on = L.rail.includes(k), i = L.rail.indexOf(k);
+    return `<div class="li ${on ? '' : 'off'}"><span class="ico sm" style="--c:${on ? 'var(--blue)' : 'var(--faint)'}">${ic(SECTIONS[k].i)}</span><span class="t">${SECTIONS[k].l}<small>${on ? 'En la barra lateral' : 'En “Más”'}</small></span>${on ? arrows('rail', k, i, L.rail.length) : ''}<button class="switch sm ${on ? 'on' : ''}" data-lay-sec="${k}" aria-label="${SECTIONS[k].l} en la barra"></button></div>`;
+  }).join('');
+  const blkRows = L.hoy.map((k, i) => {
+    const on = !L.hoyOff.includes(k);
+    return `<div class="li ${on ? '' : 'off'}"><span class="t">${BLOCKS[k].l}<small>${on ? 'Visible en Hoy' : 'Oculto'}</small></span>${arrows('hoy', k, i, L.hoy.length)}<button class="switch sm ${on ? 'on' : ''}" data-lay-blk="${k}" aria-label="Mostrar ${BLOCKS[k].l}"></button></div>`;
+  }).join('');
+  box.innerHTML = `<div><div class="day-head"><span>Barra lateral</span><span>Hoy siempre va primero</span></div><div class="list lay-list">${secRows}</div></div>
+    <div><div class="day-head"><span>Pantalla Hoy</span><span>Orden de arriba a abajo</span></div><div class="list lay-list">${blkRows}</div></div>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-lay-sec],[data-lay-blk],[data-lay-move]'); if (!t) return;
+  const L = layout();
+  if (t.dataset.laySec) { const k = t.dataset.laySec; setSection(k, !L.rail.includes(k)); }
+  if (t.dataset.layBlk) { const k = t.dataset.layBlk; L.hoyOff = L.hoyOff.includes(k) ? L.hoyOff.filter(x => x !== k) : L.hoyOff.concat(k); }
+  if (t.dataset.layMove) { const [g, k, d] = t.dataset.layMove.split(':'); moveIn(g === 'rail' ? L.rail : L.hoy, k, +d); }
+  commit();
+});
+
+const NEEDS = [
+  ['plan', '🗓️', 'Agenda y objetivos'], ['rutina', '✅', 'Hábitos diarios'], ['finanzas', '💶', 'Gastos e ingresos'],
+  ['inversion', '📈', 'Inversiones'], ['comida', '🍽️', 'Comida y calorías'], ['entreno', '🏋️', 'Entrenamiento'],
+  ['sueno', '😴', 'Sueño'], ['aprendizaje', '📚', 'Estudios y habilidades'], ['evolucion', '📊', 'Ver mi progreso']
+];
+function openOnboarding(fromSettings) {
+  const sel = new Set(fromSettings ? [] : ['plan', 'rutina']);
+  let mode = 'vacia';
+  const sh = modal(`<div class="sheet-h"><span class="ico sm c-blue">${ic('sparkle')}</span><h3>${fromSettings ? 'Reorganiza tus secciones' : 'Bienvenido a NEXA'}</h3>${fromSettings ? `<button class="icon-btn" id="obClose" aria-label="Cerrar" style="color:var(--ink)">${ic('x', 'i')}</button>` : ''}</div>
+    <div class="sheet-b"><div class="form">
+      <div class="field"><span>¿Qué quieres organizar?</span><div class="onb-grid" id="obNeeds">${NEEDS.map(n => `<button type="button" class="chip" data-need="${n[0]}"><span class="e">${n[1]}</span>${n[2]}</button>`).join('')}</div></div>
+      <span class="hint">Lo que no marques no se pierde: queda guardado en “Más” por si lo necesitas.</span>
+      ${fromSettings ? '' : `<label class="field"><span>¿Cómo te llamas?</span><input class="in" id="obName" placeholder="Tu nombre (opcional)" autocomplete="given-name"></label>
+      <div class="field"><span>¿Cómo quieres empezar?</span><div class="chips" id="obMode"><button type="button" class="chip on" data-mode="vacia">Vacía, con mis datos</button><button type="button" class="chip" data-mode="ejemplo">Con datos de ejemplo</button></div></div>`}
+    </div></div>
+    <div class="sheet-f">${fromSettings ? '<span class="hint"></span>' : '<button class="link-btn" id="obHave">Ya la uso en otro dispositivo</button><span class="hint"></span>'}<button class="btn" id="obGo">${fromSettings ? 'Aplicar' : 'Empezar'}</button></div>`);
+  const paint = () => sh.querySelectorAll('[data-need]').forEach(b => b.classList.toggle('on', sel.has(b.dataset.need)));
+  paint();
+  sh.querySelector('#obNeeds').onclick = e => { const b = e.target.closest('[data-need]'); if (!b) return; sel.has(b.dataset.need) ? sel.delete(b.dataset.need) : sel.add(b.dataset.need); paint(); };
+  if (!fromSettings) {
+    sh.querySelector('#obMode').onclick = e => { const b = e.target.closest('[data-mode]'); if (!b) return; mode = b.dataset.mode; sh.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); };
+    sh.querySelector('#obHave').onclick = () => { S.settings.onboarded = true; save(false); writeLocal(); closeModal(); go('ajustes'); toast('Entra con Google para traer tus datos'); };
+  } else sh.querySelector('#obClose').onclick = closeModal;
+  sh.querySelector('#obGo').onclick = () => {
+    if (!sel.size) { toast('Marca al menos una cosa'); return; }
+    const map = { plan: 'plan', rutina: 'rutina', finanzas: 'finanzas', inversion: 'finanzas', comida: 'salud', entreno: 'salud', sueno: 'salud', aprendizaje: 'aprendizaje', evolucion: 'evolucion' };
+    const secs = [...new Set([...sel].map(n => map[n]))];
+    const name = !fromSettings ? $('#obName').value.trim() : S.settings.name;
+    if (!fromSettings && mode === 'vacia') { const keep = S.settings; S = blank(); S.settings = keep; }
+    const L = S.settings.layout = defaultLayout();
+    L.rail = SECTION_ORDER.filter(k => secs.includes(k));
+    L.hoyOff = Object.keys(BLOCKS).filter(b => BLOCKS[b].needs && !L.rail.includes(BLOCKS[b].needs));
+    if (L.rail.includes('salud') && !sel.has('comida')) L.hoyOff.push('kcal');
+    S.settings.saludTab = sel.has('comida') ? 'nut' : sel.has('entreno') ? 'ent' : 'sue';
+    S.settings.finTab = sel.has('finanzas') || !sel.has('inversion') ? 'mov' : 'inv';
+    tabs.salud = S.settings.saludTab; tabs.fin = S.settings.finTab;
+    S.settings.name = name; S.settings.onboarded = true; S.settings.needs = [...sel];
+    closeModal(); commit(); go(window.NEXA_HUB && window.NEXA_HUB.ok() ? 'mapa' : 'hoy');
+    toast('Todo listo. Este es tu universo');
+  };
+}
+$('#redoOnboarding').addEventListener('click', () => openOnboarding(true));
+
 /* ================= render ================= */
 function render() {
+  renderRail();
+  applyHoyLayout();
+  if (view === 'mapa') { try { if (window.NEXA_HUB) window.NEXA_HUB.refresh(); } catch (e) { console.error(e); } return; }
   const R = { hoy: renderHoy, plan: renderPlan, rutina: renderRutina, finanzas: renderFinanzas, salud: renderSalud, evolucion: renderEvolucion, aprendizaje: renderAprendizaje, ajustes: renderAjustes };
   try { (R[view] || renderHoy)(); } catch (e) { console.error(e); }
 }
@@ -2462,9 +4493,28 @@ setInterval(rollover, 60000);
 S.priorities = S.priorities.filter(p => !(p.done && p.date < TODAY));
 applyTheme();
 save(false);
+if (S.settings.saludTab) tabs.salud = S.settings.saludTab;
+if (S.settings.finTab) tabs.fin = S.settings.finTab;
+const VIEWS = ['mapa', 'hoy', 'plan', 'rutina', 'finanzas', 'salud', 'evolucion', 'aprendizaje', 'ajustes'];
+window.NEXA_APP = {
+  data: hubData, go, goView, hasAccess, toast, closeModal, rail: renderRail,
+  view: () => view,
+  setView: (v, keepHash) => { view = v; renderRail(); if (!keepHash) try { history.replaceState(null, '', '#' + v); } catch (e) { /* sin historial */ } },
+  push: v => { try { history.pushState(null, '', '#' + v); return location.hash === '#' + v; } catch (e) { return false; } },
+  cloud: () => cloud.status,
+  sync: () => { if (!cloud.user) return false; upload(); return true; }
+};
+if (window.NEXA_HUB) window.NEXA_HUB.boot();
+// El botón atrás del móvil vuelve al mapa desde una sección abierta desde él
+window.addEventListener('popstate', () => {
+  const nav = () => { const h = (location.hash || '').replace('#', ''); go(VIEWS.includes(h) ? h : (window.NEXA_HUB ? 'mapa' : 'hoy')); };
+  if (window.NEXA_HUB && window.NEXA_HUB.onPop(nav)) return;
+  nav();
+});
 const start = (location.hash || '').replace('#', '');
-go(['hoy', 'plan', 'rutina', 'finanzas', 'salud', 'evolucion', 'aprendizaje', 'ajustes'].includes(start) ? start : 'hoy');
+go(VIEWS.includes(start) ? start : (window.NEXA_HUB ? 'mapa' : 'hoy'));
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { heroW = 0; drawHero(); });
+if (FRESH && !S.settings.onboarded) openOnboarding(false);
 initCloud();
 if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) navigator.serviceWorker.register('./sw.js').catch(() => {});
 })();
