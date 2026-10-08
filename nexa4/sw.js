@@ -1,5 +1,5 @@
 // NEXA 4 · funciona sin conexión. Todo se sirve desde el propio sitio; Google (tu nube) va siempre directo.
-const CACHE = 'nexa4-v1', LIBS = 'nexa4-lib-v1';
+const CACHE = 'nexa4-v2', LIBS = 'nexa4-lib-v1';
 const FILES = ['./', './index.html', './manifest.json', './privacidad.html', './aviso-legal.html', './favicon.png', './apple-touch-icon.png', './icon-192.png', './icon-512.png'];
 const LIB = ["./lib/CopyShader.js", "./lib/EffectComposer.js", "./lib/LuminosityHighPassShader.js", "./lib/Reflector.js", "./lib/RenderPass.js", "./lib/ShaderPass.js", "./lib/UnrealBloomPass.js", "./lib/three.min.js", "./fonts/rajdhani-Medium.woff", "./fonts/rajdhani-SemiBold.woff", "./fonts/rajdhani-Bold.woff"];
 self.addEventListener('install', e => { e.waitUntil(Promise.all([caches.open(CACHE).then(c => c.addAll(FILES)), caches.open(LIBS).then(c => c.addAll(LIB))])); self.skipWaiting(); });
