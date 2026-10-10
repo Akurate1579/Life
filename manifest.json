@@ -5,12 +5,12 @@
   "description": "Tu sistema operativo personal: objetivos, rutina, salud, finanzas, aprendizaje y evolución en un universo 3D.",
   "lang": "es",
   "dir": "ltr",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#04050D",
-  "theme_color": "#04050D",
+  "background_color": "#05070F",
+  "theme_color": "#05070F",
   "categories": [
     "productivity",
     "lifestyle",
@@ -41,48 +41,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Mapa",
-      "url": "./index.html#mapa",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Hoy",
-      "url": "./index.html#hoy",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Finanzas",
-      "url": "./index.html#finanzas",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Salud",
-      "url": "./index.html#salud",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
     }
   ]
 }
